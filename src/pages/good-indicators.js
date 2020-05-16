@@ -62,7 +62,7 @@ class GoodIndicators extends Component {
     return(
       <section className="home">
         <Navbar></Navbar>
-        <SearchBar handleSearchBar={this.handleSearchBar} value={search}></SearchBar>
+        <SearchBar handleSearchBar={this.handleSearchBar} value={search} placeholder={"Ativo"}></SearchBar>
         <Layout>
           <List shares={shares} value={search} goToFundamentus={this.goToFundamentus} fixTableHeader={fixTableHeader}></List>
         </Layout>

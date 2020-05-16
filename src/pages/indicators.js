@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "../components/Navbar";
 import Layout from "../skeleton/layout";
+import SearchBar from '../components/SearchBar'
 import { definitionsList } from "../const/definitions";
 import Fonts from "../components/Fonts";
 import Template from "../components/Template";
@@ -10,13 +11,21 @@ class Definitions extends Component {
     super(props);
     this.state = {
       definitionsList,
+      search: '',
     };
 
-    this.handleDef = this.handleDef.bind(this);
+    this.handleDef = this.handleDef.bind(this)
+    this.handleSearchBar = this.handleSearchBar.bind(this)
   }
 
   componentDidMount() {
     Fonts();
+  }
+
+  handleSearchBar(e){
+    this.setState({
+      search: e.target.value,
+    })
   }
 
   handleDef(e) {
@@ -29,15 +38,19 @@ class Definitions extends Component {
   }
 
   render() {
-    const { definitionsList } = this.state;
+    const { definitionsList, search } = this.state;
+    let filteredItems = definitionsList.filter((item) =>
+    item.alias.toUpperCase().includes(search.toUpperCase()) || 
+    item.name.toUpperCase().includes(search.toUpperCase()))
 
     return (
       <Template>
         <section className="definitions">
           <Navbar></Navbar>
+          <SearchBar handleSearchBar={this.handleSearchBar} value={search} placeholder={"Indicador"}></SearchBar>
           <Layout>
             <div className="definitions__list">
-              {definitionsList.map((def) => {
+              {filteredItems.map((def) => {
                 return !def.showDef ? (
                   <div
                     className="definitions__list_item"

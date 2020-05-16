@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
 
-const SearchBar = ({ handleSearchBar, value }) => (
+const SearchBar = ({ handleSearchBar, value, placeholder }) => (
   <>
     <section className="search-navbar">
-      <input className="search-navbar__input" onChange={ handleSearchBar } value={ value } placeholder="Ativo"/>
+      <input className="search-navbar__input" onChange={ handleSearchBar } value={ value } placeholder={ placeholder }/>
     </section>
 
     <style jsx>{`

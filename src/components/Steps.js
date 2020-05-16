@@ -15,25 +15,23 @@ export default function Steps(props) {
       </section>
       <section className="step-taker">
         <div className="step-taker__prev" onClick={handleCountPrev}>
-          Prev
+          {`<-`}
         </div>
         <div className="step-taker__next" onClick={handleCountNext}>
-          Next
+          {`->`}
         </div>
       </section>
       <style jsx>{`
         .steps {
-          margin: 5% 5% 2%;
-          border: 1px solid #ccc;
-          height: 50vh;
-          padding: 5%;
-          overflow-y: scroll;
+          margin: 5% auto;
+          width: 50%;
+          min-height: 50vh;
         }
 
         .steps__title {
           font-size: 40px;
           text-align: center;
-          margin: 0;
+          margin: 100px;
         }
 
         .steps__description {

@@ -82,6 +82,7 @@ class Shares extends Component {
         <SearchBar
           handleSearchBar={this.handleSearchBar}
           value={search}
+          placeholder={"Ativo"}
         ></SearchBar>
         <Layout>
           <List
