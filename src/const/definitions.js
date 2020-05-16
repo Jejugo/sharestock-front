@@ -69,6 +69,7 @@ const definitionsList = [
     name: "Divída Líquida / EBITDA",
     definition:
       "Ela dá ao investidor a noção de quanto tempo levaria (anos) para uma empresa pagar a sua dívida, caso a Dívida Líquida e o EBITDA se mantenha constantes. E também, indica o grau de endividamento da companhia, sendo quanto menor o múltiplo, mais saudável e sustentável se encontra a relação da dívida com o EBITDA",
+    showDef: false,
   },
   {
     id: 10,
@@ -84,19 +85,21 @@ const definitionsList = [
     name: "Margem Bruta",
     definition:
       "Retorna o valor de quanto a empresa está gerando resultado diante de sua atividade",
+    showDef: false,
   },
   {
     id: 12,
     alias: "Marg. Líq.",
     name: "Margem Líquida",
     definition: "Mede a fração de cada real que resultou em lucro líquido",
+    showDef: false,
   },
   {
     id: 13,
-    alias: "Líq. Corr.",
+    alias: "Líq. Corrente",
     name: "Liquidez Corrente",
     definition:
-      "A liquidez corrente é essencial para diagnosticar a saúde financeira de uma companhia. Mas, de forma mais pessoal, é de extrema valia para que o investidor possa mensurar a possibilidade de receber ou não proventos no futuro, se esse for o seu objetivo com o investimento. ",
+      `A liquidez corrente é essencial para diagnosticar a saúde financeira de uma companhia. Mas, de forma mais pessoal, é de extrema valia para que o investidor possa mensurar a possibilidade de receber ou não proventos no futuro, se esse for o seu objetivo com o investimento`,
     showDef: false,
   },
   {

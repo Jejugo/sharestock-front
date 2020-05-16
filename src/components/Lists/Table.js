@@ -11,10 +11,24 @@ class Table extends Component {
 
     this.state = {
       showModal: { show: false, data: {} },
+      headerFilter: {
+        acao: false,
+        cotacao: false,
+        pl: false,
+        pvp: false,
+        evebitda:false,
+        cresc5anos: false,
+        dy: false,
+        divbrutapl: false,
+        liqcorrente: false,
+        ml: false,
+        roe: false
+      }
     };
 
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.handleTableFilter = this.handleTableFilter.bind(this);
   }
 
   showModal(item) {
@@ -29,30 +43,51 @@ class Table extends Component {
     })
   }
 
+  handleTableFilter(e){
+    e.preventDefault()
+    const name = e.target.id
+
+    this.setState(({ headerFilter }) => ({
+      headerFilter: {
+        ...headerFilter, 
+        [name]: !headerFilter[name]
+      }}))
+  }
+
   render() {
-    const { filteredItems, goToFundamentus, fixTableHeader } = this.props;
+    const { filteredItems, fixTableHeader } = this.props;
+    const { headerFilter } = this.state;
+
     const {
       showModal: { show, data },
     } = this.state;
+
+    const columnsToCheck = Object.keys(headerFilter).filter(key => headerFilter[key])
+
+    const filterByColumnFilter = filteredItems
+      .sort((a, b) => columnsToCheck
+        .map(column => a[column] > b[column] ? 1 : -1))
+
+    console.log(filterByColumnFilter)
     
     return (
       <>
         {show && <ShareModal data={data} hideModal={this.hideModal}/>}
         <section id="share-data" className={show ? "list__shares--blur" : "list__shares"}>
           <section className={fixTableHeader ? "list__shares_row--first--fixed" : "list__shares_row--first"}>
-            <div className="list__shares_row_item--first">Ação</div>
-            <div className="list__shares_row_item--first">Cotação</div>
-            <div className="list__shares_row_item--first">P/L</div>
-            <div className="list__shares_row_item--first">P/VP</div>
-            <div className="list__shares_row_item--first">EV/EBITDA</div>
-            <div className="list__shares_row_item--first">Cresc 5 Anos</div>
-            <div className="list__shares_row_item--first">DY.</div>
-            <div className="list__shares_row_item--first">Div.Brut/Pat.</div>
-            <div className="list__shares_row_item--first">Liq. Corrente</div>
-            <div className="list__shares_row_item--first">Margem Liq</div>
-            <div className="list__shares_row_item--first">ROE</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="acao">Ação {headerFilter.acao ? `F`: `N`} </div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="cotacao">Cotação {headerFilter.cotacao ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="pl">P/L {headerFilter.pl ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="pvp">P/VP {headerFilter.pvp ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="evebitda">EV/EBITDA {headerFilter.evebitda ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="cresc5anos">Cresc 5 Anos {headerFilter.cresc5anos ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="dy">DY. {headerFilter.dy ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="divbrutapl">Div.Brut/Pat. {headerFilter.divbrutapl ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="liqcorrente">Liq. Corrente {headerFilter.liqcorrente ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="ml">Margem Liq {headerFilter.ml ? `F`: `N`}</div>
+            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="roe">ROE {headerFilter.roe ? `F`: `N`}</div>
           </section>
-          {filteredItems.map((item, index) => {
+          {filterByColumnFilter.map((item, index) => {
             return (
               <section
                 name={item["Papel"]}
