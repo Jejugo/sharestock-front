@@ -1,4 +1,5 @@
 import React from "react";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 export default function Steps(props) {
   const { steps, count, handleCountNext, handleCountPrev } = props;
@@ -15,10 +16,10 @@ export default function Steps(props) {
       </section>
       <section className="step-taker">
         <div className="step-taker__prev" onClick={handleCountPrev}>
-          {`<-`}
+         <FaArrowLeft />
         </div>
         <div className="step-taker__next" onClick={handleCountNext}>
-          {`->`}
+        <FaArrowRight />
         </div>
       </section>
       <style jsx>{`

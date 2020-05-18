@@ -1,9 +1,23 @@
 import React, { Component } from "react";
 import { validator } from "../../validations/indicators";
-import { render } from "react-dom";
+import { FaSort } from "react-icons/fa";
 import ShareModal from "../ShareModal";
 
 const listClass = "list__shares_row_item";
+
+const Indicadores = [
+  {id: 1, nome: "Papel", alias: "Papel", value: ""},
+  {id: 2, nome: "Cotação", alias: "Cotação", value: ""},
+  {id: 3, nome: "P/L", alias: "P/L", value: ""},
+  {id: 4, nome: "P/VP", alias: "P/VP", value: ""},
+  {id: 5, nome: "EV/EBITDA", alias: "EV/EBITDA", value: ""},
+  {id: 6, nome: "Cresc.5anos", alias: "Cresc.5anos", value: ""},
+  {id: 7, nome: "Dividend Yield", alias: "DY", value: ""},
+  {id: 8, nome: "Dívida Bruta/Patrim.", alias: "DivBrut/PL", value: ""},
+  {id: 9, nome: "Líq. Corrente", alias: "Liq. Corr.", value: ""},
+  {id: 10, nome: "Margem Líquida", alias: "Marg. Liq.", value: ""},
+  {id: 11, nome: "ROE", alias: "ROE", value: ""}
+]
 
 class Table extends Component {
   constructor(props) {
@@ -11,24 +25,66 @@ class Table extends Component {
 
     this.state = {
       showModal: { show: false, data: {} },
-      headerFilter: {
-        acao: false,
-        cotacao: false,
-        pl: false,
-        pvp: false,
-        evebitda:false,
-        cresc5anos: false,
-        dy: false,
-        divbrutapl: false,
-        liqcorrente: false,
-        ml: false,
-        roe: false
-      }
+      headerFilter: [
+        {id: 1, nome: "Papel", alias: "Papel", value: ""},
+        {id: 2, nome: "Cotação", alias: "Cotação", value: ""},
+        {id: 3, nome: "P/L", alias: "P/L", value: ""},
+        {id: 4, nome: "P/VP", alias: "P/VP", value: ""},
+        {id: 5, nome: "EV/EBITDA", alias: "EV/EBITDA", value: ""},
+        {id: 6, nome: "Cresc.5anos", alias: "Cresc.5anos", value: ""},
+        {id: 7, nome: "Dividend Yield", alias: "DY", value: ""},
+        {id: 8, nome: "Dívida Bruta/Patrim.", alias: "DivBrut/PL", value: ""},
+        {id: 9, nome: "Líq. Corrente", alias: "Liq. Corr.", value: ""},
+        {id: 10, nome: "Margem Líquida", alias: "Marg. Liq.", value: ""},
+        {id: 11, nome: "ROE", alias: "ROE", value: ""}
+      ],
+      currentFilter: "",
     };
 
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
     this.handleTableFilter = this.handleTableFilter.bind(this);
+    this.updateItem = this.updateItem.bind(this);
+  }
+
+  updateItem(id, changeValue, currentFilter, reset = false){
+    const index = this.state.headerFilter.findIndex(x=> x.id === id);
+
+    const resetValues = [
+      {id: 1, nome: "Papel", alias: "Papel", value: ""},
+      {id: 2, nome: "Cotação", alias: "Cotação", value: ""},
+      {id: 3, nome: "P/L", alias: "P/L", value: ""},
+      {id: 4, nome: "P/VP", alias: "P/VP", value: ""},
+      {id: 5, nome: "EV/EBITDA", alias: "EV/EBITDA", value: ""},
+      {id: 6, nome: "Cresc.5anos", alias: "Cresc.5anos", value: ""},
+      {id: 7, nome: "Dividend Yield", alias: "DY", value: ""},
+      {id: 8, nome: "Dívida Bruta/Patrim.", alias: "DivBrut/PL", value: ""},
+      {id: 9, nome: "Líq. Corrente", alias: "Liq. Corr.", value: ""},
+      {id: 10, nome: "Margem Líquida", alias: "Marg. Liq.", value: ""},
+      {id: 11, nome: "ROE", alias: "ROE", value: ""}
+    ]
+
+    if (index === -1)
+      throw new Error('There was an error finding the element for #handleTableFilter() function ')
+    if(!reset){
+      return this.setState(({ headerFilter }) => ({
+        headerFilter: [
+           ...resetValues.slice(0,index),
+           Object.assign({}, headerFilter[index], changeValue),
+           ...resetValues.slice(index+1)
+        ],
+        currentFilter
+      }))
+    }
+
+    this.setState(({ headerFilter }) => ({
+      headerFilter: [
+          ...headerFilter.slice(0,index),
+          Object.assign({}, headerFilter[index], changeValue),
+          ...headerFilter.slice(index+1)
+      ],
+      currentFilter
+    }))
   }
 
   showModal(item) {
@@ -37,55 +93,66 @@ class Table extends Component {
     }));
   }
 
-  hideModal(){
+  hideModal() {
     this.setState({
-      showModal: { show: false, data: {}}
-    })
+      showModal: { show: false, data: {} },
+    });
   }
 
-  handleTableFilter(e){
-    e.preventDefault()
-    const name = e.target.id
+  handleTableFilter(e) {
+    e.preventDefault();
+    const { headerFilter } = this.state
+    const currentFilter = e.currentTarget.id
+    const column = headerFilter.find(column => column.nome === currentFilter)
 
-    this.setState(({ headerFilter }) => ({
-      headerFilter: {
-        ...headerFilter, 
-        [name]: !headerFilter[name]
-      }}))
+    if (column.value === "")
+      return this.updateItem(column.id, { value: true }, currentFilter)
+    
+    this.updateItem(column.id, { value: !column.value }, currentFilter, true)
   }
 
   render() {
     const { filteredItems, fixTableHeader } = this.props;
-    const { headerFilter } = this.state;
-
+    const { headerFilter, currentFilter } = this.state;
     const {
       showModal: { show, data },
     } = this.state;
 
-    const columnsToCheck = Object.keys(headerFilter).filter(key => headerFilter[key])
+    const column = headerFilter.find(column => column.nome === currentFilter)
 
-    const filterByColumnFilter = filteredItems
-      .sort((a, b) => columnsToCheck
-        .map(column => a[column] > b[column] ? 1 : -1))
+    const filterByColumnFilter = filteredItems.sort((a, b) => {
+      if(column){
+        if (column.value)
+          return a[currentFilter] > b[currentFilter] ? 1 : -1;
+          
+        return a[currentFilter] < b[currentFilter] ? 1 : -1;
+      }
+    });
 
-    console.log(filterByColumnFilter)
-    
     return (
       <>
-        {show && <ShareModal data={data} hideModal={this.hideModal}/>}
-        <section id="share-data" className={show ? "list__shares--blur" : "list__shares"}>
-          <section className={fixTableHeader ? "list__shares_row--first--fixed" : "list__shares_row--first"}>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="acao">Ação {headerFilter.acao ? `F`: `N`} </div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="cotacao">Cotação {headerFilter.cotacao ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="pl">P/L {headerFilter.pl ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="pvp">P/VP {headerFilter.pvp ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="evebitda">EV/EBITDA {headerFilter.evebitda ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="cresc5anos">Cresc 5 Anos {headerFilter.cresc5anos ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="dy">DY. {headerFilter.dy ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="divbrutapl">Div.Brut/Pat. {headerFilter.divbrutapl ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="liqcorrente">Liq. Corrente {headerFilter.liqcorrente ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="ml">Margem Liq {headerFilter.ml ? `F`: `N`}</div>
-            <div className="list__shares_row_item--first" onClick={this.handleTableFilter} id="roe">ROE {headerFilter.roe ? `F`: `N`}</div>
+        {show && <ShareModal data={data} hideModal={this.hideModal} />}
+        <section
+          id="share-data"
+          className={show ? "list__shares--blur" : "list__shares"}
+        >
+          <section
+            className={
+              fixTableHeader
+                ? "list__shares_row--first--fixed"
+                : "list__shares_row--first"
+            }
+          >
+            {Indicadores.map((indicador) => (
+              <>
+                <div className="list__shares_row_item--first">
+                  <span>{indicador.alias}&nbsp;&nbsp;</span>
+                  <div id={indicador.nome} className="icon" onClick={this.handleTableFilter}>
+                    <FaSort />
+                  </div>
+                </div>
+              </>
+            ))}
           </section>
           {filterByColumnFilter.map((item, index) => {
             return (
@@ -122,7 +189,7 @@ class Table extends Component {
                   {item["Dívida Bruta/Patrim."]}
                 </div>
                 <div className={validator(listClass, item, "Líq. Corrente")}>
-                  {item["Líq. Corrente"] }
+                  {item["Líq. Corrente"]}
                 </div>
                 <div className={validator(listClass, item, "Margem Líquida")}>
                   {item["Margem Líquida"]}
@@ -174,7 +241,7 @@ class Table extends Component {
               position: fixed;
               top: 0;
               background-color: grey;
-              opacity: 0.8
+              opacity: 0.8;
             }
 
             .list__shares_row:hover {
@@ -193,6 +260,11 @@ class Table extends Component {
 
             .bad {
               background-color: rgb(167, 60, 60);
+            }
+
+            .icon {
+              position: relative;
+              top: 3px;
             }
           `}</style>
         </section>
