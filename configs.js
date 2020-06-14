@@ -1,3 +1,3 @@
 module.exports = {
-  SHARE_API: 'http://localhost:5001'
+  SHARE_API: 'https://ms-sharestock.herokuapp.com'
 }
