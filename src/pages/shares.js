@@ -14,8 +14,6 @@ import config from '../configs';
 
 const { SHARE_API } = config;
 
-
-
 class Shares extends Component {
   constructor(props) {
     super(props);
