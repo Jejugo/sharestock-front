@@ -1,7 +1,3 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import Router from 'next/router';
-
 const Navbar = (props) => (
   <section className="container">
     <nav className="navbar">
