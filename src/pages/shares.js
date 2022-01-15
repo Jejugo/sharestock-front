@@ -18,8 +18,8 @@ const Shares = (props) => {
 
   useEffect(() => {
     Fonts()
-    const { shares } = props;
-    setShares(shares)
+    const { shareAsset } = props;
+    setShares(shareAsset)
     window.addEventListener('scroll', handleScroll)
   }, [])
 
@@ -33,10 +33,6 @@ const Shares = (props) => {
     router.push(
       `//fundamentus.com.br/detalhes.php?papel=${share.toUpperCase()}`
     );
-  }
-
-  const setNewShares = (shares) => {
-    setShares(shares)
   }
 
   const isTableHeaderFixed = (position) => position.top < 0
@@ -62,7 +58,7 @@ const Shares = (props) => {
             shares={shares}
             value={search}
             goToFundamentus={goToFundamentus}
-            setNewShares={setNewShares}
+            setNewShares={setShares}
           ></List>
         </Layout>
 
@@ -86,7 +82,7 @@ export async function getServerSideProps() {
   const { items } = await shares.json();
   return {
     props: {
-      shares: items
+      shareAsset: items
     }
   }
 };

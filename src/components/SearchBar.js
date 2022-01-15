@@ -1,14 +1,19 @@
-import React, { Component } from 'react'
-import Head from 'next/head'
+import React, { Component } from "react";
+import Head from "next/head";
 
 const SearchBar = ({ handleSearchBar, value, placeholder }) => (
   <>
     <section className="search-navbar">
-      <input className="search-navbar__input" onChange={ handleSearchBar } value={ value } placeholder={ placeholder }/>
+      <input
+        className="search-navbar__input"
+        onChange={handleSearchBar}
+        value={value}
+        placeholder={placeholder}
+      />
     </section>
 
     <style jsx>{`
-      .search-navbar{
+      .search-navbar {
         width: 100%;
         display: flex;
         height: 250px;
@@ -17,7 +22,7 @@ const SearchBar = ({ handleSearchBar, value, placeholder }) => (
         justify-content: center;
       }
 
-      .search-navbar__input{
+      .search-navbar__input {
         margin: 0 auto;
         padding: 10px;
         border: none;
@@ -33,25 +38,26 @@ const SearchBar = ({ handleSearchBar, value, placeholder }) => (
       ::-webkit-input-placeholder {
         text-align: center;
       }
-     
-      :-moz-placeholder { /* Firefox 18- */
-          text-align: center;  
-      }
-      
-      ::-moz-placeholder {  /* Firefox 19+ */
-          text-align: center;  
-      }
-      
-      :-ms-input-placeholder {  
-          text-align: center; 
+
+      :-moz-placeholder {
+        /* Firefox 18- */
+        text-align: center;
       }
 
-      .search-navbar__text{
+      ::-moz-placeholder {
+        /* Firefox 19+ */
+        text-align: center;
+      }
+
+      :-ms-input-placeholder {
+        text-align: center;
+      }
+
+      .search-navbar__text {
         color: white;
       }
-
     `}</style>
   </>
-)
+);
 
-export default SearchBar
+export default SearchBar;
