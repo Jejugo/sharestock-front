@@ -1,6 +1,4 @@
-import Head from 'next/head';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Navbar from '../components/Navbar';
 import Router from 'next/router';
@@ -8,77 +6,53 @@ import List from '../components/List';
 import SearchBar from '../components/SearchBar';
 import Layout from '../skeleton/layout';
 import Fonts from '../components/Fonts';
-import actions from '../_redux/actions';
-import { fetchShare, getAllShares } from '../_redux/actions/shares';
 import config from '../configs';
 
 const { SHARE_API } = config;
 
-class Shares extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: '',
-      shares: [],
-      fixTableHeader: false
-    };
+const Shares = (props) => {
 
-    this.handleSearchBar = this.handleSearchBar.bind(this);
-    this.goToFundamentus = this.goToFundamentus.bind(this);
-    this.setNewShares = this.setNewShares.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    this.isTableHeaderFixed = this.isTableHeaderFixed.bind(this);
-  }
+  const [search, setSearch] = useState('')
+  const [shares, setShares] = useState([])
+  const [fixTableHeader, setFixTableHeader] = useState(false)
 
-  async componentDidMount() {
+  useEffect(() => {
     Fonts()
-    const { shares } = this.props;
-    this.setState({
-      shares
-    })
-    window.addEventListener('scroll', this.handleScroll)
+    const { shares } = props;
+    setShares(shares)
+    window.addEventListener('scroll', handleScroll)
+  }, [])
+
+  const handleSearchBar = (e) => {
+    setSearch(e.target.value)
+    setFixTableHeader(false)
   }
 
-  handleSearchBar(e) {
-    this.setState({
-      search: e.target.value,
-      fixTableHeader: false
-    });
-  }
-
-  goToFundamentus(share) {
+  const goToFundamentus = () => {
     const router = Router;
     router.push(
       `//fundamentus.com.br/detalhes.php?papel=${share.toUpperCase()}`
     );
   }
 
-  setNewShares(shares){
-    this.setState({
-      shares
-    })
+  const setNewShares = (shares) => {
+    setShares(shares)
   }
 
-  isTableHeaderFixed(position){
-    return position.top < 0
-  }
+  const isTableHeaderFixed = (position) => position.top < 0
 
-  handleScroll(){
+  const handleScroll = () => {
     const elem = document.getElementById("share-data")
     let position = elem.getBoundingClientRect();
 
-    this.setState({
-      fixTableHeader: this.isTableHeaderFixed(position)
-    })
+    setFixTableHeader(isTableHeaderFixed(position))
   }
-  render() {
-    const { search, shares, fixTableHeader } = this.state;
 
-    return (
+  return (
       <section className='home'>
         <Navbar></Navbar>
         <SearchBar
-          handleSearchBar={this.handleSearchBar}
+          handleSearchBar={handleSearchBar}
           value={search}
           placeholder={"Ativo"}
         ></SearchBar>
@@ -87,8 +61,8 @@ class Shares extends Component {
             fixTableHeader={fixTableHeader}
             shares={shares}
             value={search}
-            goToFundamentus={this.goToFundamentus}
-            setNewShares={this.setNewShares}
+            goToFundamentus={goToFundamentus}
+            setNewShares={setNewShares}
           ></List>
         </Layout>
 
@@ -104,16 +78,16 @@ class Shares extends Component {
           }
         `}</style>
       </section>
-    );
-  }
+  );
 }
 
-Shares.getInitialProps = async function () {
+export async function getServerSideProps() {
   let shares = await fetch(`${SHARE_API}/shares`)
   const { items } = await shares.json();
-  
   return {
-    shares: items
+    props: {
+      shares: items
+    }
   }
 };
 
