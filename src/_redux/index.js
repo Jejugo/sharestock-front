@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from "redux";
+import { createWrapper } from "next-redux-wrapper"
 import thunk from "redux-thunk";
 
 import reducers from "./reducers";
@@ -14,6 +15,7 @@ const enhancers = compose(
   reduxDevtools
 );
 
-export const makeStore = initialState => {
-  return createStore(reducers, initialState, enhancers);
-};
+// create a makeStore function
+const makeStore = (context) => createStore(reducers, context, enhancers);
+
+export const wrapper = createWrapper(makeStore, {debug: true});

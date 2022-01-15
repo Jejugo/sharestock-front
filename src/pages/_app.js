@@ -1,9 +1,7 @@
 import React from "react";
 import App from "next/app";
 import { Provider } from "react-redux";
-import withRedux from "next-redux-wrapper";
-
-import { makeStore } from "../_redux";
+import { wrapper } from "../_redux"
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -19,12 +17,10 @@ class MyApp extends App {
 
     return (
       <React.Fragment>
-        <Provider store={store}>
           <Component {...pageProps} />
-        </Provider>
       </React.Fragment>
     );
   }
 }
 
-export default withRedux(makeStore)(MyApp);
+export default wrapper.withRedux(MyApp);

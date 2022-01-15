@@ -1,5 +1,5 @@
 const validator = (classStart, row, value) => {
-  style = {
+  const style = {
     normal: classStart,
     good: `${classStart} good`,
     alert: `${classStart} alert`,
@@ -10,7 +10,7 @@ const validator = (classStart, row, value) => {
     case "Cresc.5anos":
       if(row[value] > 0)
         return style.good
-      if(row[value] <= 0 && row[value] > -1)
+      if(row[value] > -1 && row[value] <= 0)
         return style.alert
       if(row[value] < -1)
         return style.bad
@@ -18,7 +18,7 @@ const validator = (classStart, row, value) => {
     case "Dividend Yield":
       if(row[value] > 0.05)
         return style.good
-      if(row[value] <= 0.05 && row[value] > 0)
+      if(row[value] >= 0 && row[value] <= 0.05)
         return style.alert
       if(row[value] < 0)
         return style.bad
@@ -26,22 +26,22 @@ const validator = (classStart, row, value) => {
     case "Dívida Bruta/Patrim.":
       if(row[value] < 1.15)
         return style.good
-      if(row[value] >= 1.15 && row[value] > 2)
+      if(row[value] >= 1.15 && row[value] < 2)
         return style.alert
-      if(row[value] < 5)
+      if(row[value] >= 2 && row[value] < 5)
         return style.bad
 
     case "Líq. Corrente":
       if(row[value] >= 1)
         return style.good
-      if(row[value] < 1 && row[value] >= 0)
+      if(row[value] >= 0 && row[value] < 1)
         return style.alert
       if(row[value] < 0)
         return style.bad
     case "Margem Líquida":
       if(row[value] >= 0.1)
         return style.good
-      if(row[value] < 0.1 && row[value] >= 0)
+      if(row[value] >= 0 && row[value] < 0.1)
         return style.alert
       if(row[value] < 0)
       return style.bad
@@ -49,7 +49,7 @@ const validator = (classStart, row, value) => {
     case "ROE":
       if(row[value] >= 0.1)
         return style.good
-      if(row[value] < 0.1 && row[value] >= 0)
+      if(row[value] >= 0 && row[value] < 0.1)
         return style.alert
       if(row[value] < 0)
     return style.bad
