@@ -1,4 +1,6 @@
 import React from "react";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 export default function Steps(props) {
   const { steps, count, handleCountNext, handleCountPrev } = props;
@@ -15,10 +17,10 @@ export default function Steps(props) {
       </section>
       <section className="step-taker">
         <div className="step-taker__prev" onClick={handleCountPrev}>
-          {`<-`}
+          <ArrowBackIosNewIcon></ArrowBackIosNewIcon>
         </div>
         <div className="step-taker__next" onClick={handleCountNext}>
-          {`->`}
+          <ArrowForwardIosIcon></ArrowForwardIosIcon>
         </div>
       </section>
       <style jsx>{`
