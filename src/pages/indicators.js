@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import Layout from "../skeleton/layout";
+import TableLayout from "../skeleton/TableLayout";
 import SearchBar from '../components/SearchBar'
 import { definitionsList } from "../const/definitions";
 import Fonts from "../components/Fonts";
@@ -50,7 +50,7 @@ const Definitions = () => {
     <section className="definitions">
       <Navbar></Navbar>
       <SearchBar handleSearchBar={handleSearchBar} value={search} placeholder={"Indicador"}></SearchBar>
-      <Layout>
+      <TableLayout>
         <div className="definitions__list">
           {filteredItems.map((def) => {
             return !def.showDef ? (
@@ -77,7 +77,7 @@ const Definitions = () => {
             );
           })}
         </div>
-      </Layout>
+      </TableLayout>
 
       <style jsx global>{`
         body,

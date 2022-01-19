@@ -1,5 +1,6 @@
 const Navbar = (props) => (
-  <section className="container">
+  <>
+  <section className="navbar-container">
     <nav className="navbar">
       <ul className="navbar__wrap">
         <li className="navbar__item">
@@ -16,24 +17,30 @@ const Navbar = (props) => (
         </li>
       </ul>
     </nav>
-
+</section>
   <style jsx>{`
     .navbar{
       height: 60px;
-      background-color: #201F1F;
+      background-color: #ddd;
       margin: 0;
+      opacity: 1;
+    }
+
+    .navbar a {
+      color: #000;
     }
 
     .navbar__wrap{
       display: flex;
       list-style: none;
-      justify-content: space-around;
+      justify-content: flex-start;
       align-items: center;
       height: 100%;
       margin: 0;
     }
 
     .navbar__item{
+      flex-basis: 10em;
       font-size: 20px;
     }
 
@@ -42,7 +49,7 @@ const Navbar = (props) => (
       color: white;
     }
   `}</style>
-  </section>
+  </>
 )
 
 export default Navbar
