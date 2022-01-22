@@ -1,51 +1,49 @@
 import { useState } from "react";
 import { auth } from "../firebase"
-import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
-import Router from "next/router"
+import { createUserWithEmailAndPassword, getAuth } from "@firebase/auth";
 
-const LoginComponent = () => {
+const SignupComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
       e.preventDefault()
-      try {
-        const router = Router
-        const user = await signInWithEmailAndPassword(auth, email, password)
+      try{
+        const user = await createUserWithEmailAndPassword(auth, email, password)
         if(user)
           router.push('/')
       }
       catch(err){
-        alert('Couldnt sign you in: ', err.message)
+        alert("Error: ", err.message)
       }
   }
 
   return (
-    <form className="login" onSubmit={handleSubmit}>
-      <h1 className="login__title">Login</h1>
-      <div className="login__input">
+    <form className="signup" onSubmit={handleSubmit}>
+      <h1 className="signup__title">Sign up</h1>
+      <div className="signup__input">
         <input
-          className="login__input_value"
+          className="signup__input_value"
           value={email}
           onChange={(e) => setEmail(() => e.target.value)}
           placeholder="Digite seu email"
         ></input>
       </div>
-      <div className="login__input">
+      <div className="signup__input">
         <input
-          className="login__input_value"
+          className="signup__input_value"
           value={password}
           onChange={(e) => setPassword(() => e.target.value)}
           placeholder="Digite sua senha"
         ></input>
       </div>
-      <button className="submit" type="submit">Enviar</button>
+      <button className="submit" type="submit">Registrar</button>
       <style jsx global>{`
-        .login__title{
+        .signup__title{
           text-align: center;
           font-size: 30px;
         }
-        .login {
+        .signup {
           width: 40%;
           height: 50%;
           margin: 0 auto;
@@ -57,13 +55,13 @@ const LoginComponent = () => {
           justify-content: center;
         }
 
-        .login__input{
+        .signup__input{
             width: 50%;
             height: 30px;
             margin: 10px 0;
         }
 
-        .login__input_value {
+        .signup__input_value {
             width: 100%;
             padding: 5px;
             font-size: 20px;
@@ -77,4 +75,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
+export default SignupComponent;

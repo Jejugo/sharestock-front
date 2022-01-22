@@ -1,4 +1,27 @@
-const Navbar = (props) => (
+import { useState } from 'react'; 
+import { auth } from "../firebase"
+import { signOut, onAuthStateChanged, getAuth } from "@firebase/auth";
+import Router from 'next/router'
+
+const authData = getAuth()
+
+const Navbar = (props) => {
+  const [loggedUser, setLoggedUser] = useState('')
+
+  onAuthStateChanged(authData, (currentUser) => {
+    setLoggedUser(currentUser?.email)
+  })
+
+  const handleSignout = async () => {
+    await signOut(auth)
+    const router = Router;
+    router.push(
+      '/login'
+    );
+  }
+
+
+return (
   <section className="container">
     <nav className="navbar">
       <ul className="navbar__wrap">
@@ -16,7 +39,19 @@ const Navbar = (props) => (
         </li>
       </ul>
       <ul className="navbar__wrap">
-        <li className="navbar__item"><a href="/login" className="navbar__item_link">Login</a></li>
+        {
+          loggedUser ? (
+            <>
+            <li className="navbar__item"><a className="navbar__item_link">{loggedUser}</a></li>
+            <li className="navbar__item"><a href="#" className="navbar__item_link" onClick={handleSignout}>Sign out</a></li>
+            </>
+          ) : (
+            <>
+            <li className="navbar__item"><a href="/login" className="navbar__item_link">Login</a></li>
+            <li className="navbar__item"><a href="/signup" className="navbar__item_link">Signup</a></li>
+            </>
+          )
+        }
       </ul>
     </nav>
 
@@ -56,5 +91,5 @@ const Navbar = (props) => (
   `}</style>
   </section>
 )
-
+  }
 export default Navbar
