@@ -1,6 +1,5 @@
 import React from "react";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import Arrows from "./Arrows"
 
 export default function Steps(props) {
   const { steps, count, handleCountNext, handleCountPrev } = props;
@@ -15,25 +14,24 @@ export default function Steps(props) {
           dangerouslySetInnerHTML={{ __html: steps[count].explanation }}
         ></div>
       </section>
-      <section className="step-taker">
-        <div className="step-taker__prev" onClick={handleCountPrev}>
-          <ArrowBackIosNewIcon></ArrowBackIosNewIcon>
-        </div>
-        <div className="step-taker__next" onClick={handleCountNext}>
-          <ArrowForwardIosIcon></ArrowForwardIosIcon>
-        </div>
-      </section>
+      <Arrows handleCountPrev={handleCountPrev} handleCountNext={handleCountNext}></Arrows>
       <style jsx>{`
+        .wrapper {
+          margin-top: 10%
+        }
         .steps {
-          margin: 5% auto;
-          width: 50%;
+          margin: 0 auto;
+          width: 80%;
           min-height: 50vh;
+          max-height: 70vh;
+          overflow-y: auto;
+          padding: 10px 0;
         }
 
         .steps__title {
           font-size: 40px;
           text-align: center;
-          margin: 100px;
+          margin: 0
         }
 
         .steps__description {
@@ -44,38 +42,6 @@ export default function Steps(props) {
         .steps__explanation {
           font-size: 20px;
           text-align: justify;
-        }
-
-        .next {
-          left: 0;
-          top: 45%;
-          margin: 20px;
-          position: absolute;
-          border: 1px solid #ccc;
-          cursor: pointer;
-        }
-
-        .prev {
-          right: 0;
-          top: 45%;
-          margin: 20px;
-          position: absolute;
-          border: 1px solid #ccc;
-          cursor: pointer;
-        }
-
-        .step-taker {
-          display: flex;
-          justify-content: space-around;
-          font-size: 30px;
-        }
-
-        .step-taker__next {
-          cursor: pointer;
-        }
-
-        .step-taker__prev {
-          cursor: pointer;
         }
       `}</style>
     </div>

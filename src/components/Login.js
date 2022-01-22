@@ -11,6 +11,7 @@ const LoginComponent = () => {
 
   return (
     <form className="login" onSubmit={handleSubmit}>
+      <h1 className="login__title">Login</h1>
       <div className="login__input">
         <input
           className="login__input_value"
@@ -27,14 +28,18 @@ const LoginComponent = () => {
           placeholder="Digite sua senha"
         ></input>
       </div>
-      <button type="submit">Enviar</button>
+      <button className="submit" type="submit">Enviar</button>
       <style jsx global>{`
+        .login__title{
+          text-align: center;
+          font-size: 30px;
+        }
         .login {
           width: 40%;
           height: 50%;
           margin: 0 auto;
           position: relative;
-          top: 20%;
+          top: 15%;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -44,12 +49,17 @@ const LoginComponent = () => {
         .login__input{
             width: 50%;
             height: 30px;
-            margin: 5px 0;
+            margin: 10px 0;
         }
 
         .login__input_value {
             width: 100%;
+            padding: 5px;
             font-size: 20px;
+        }
+
+        .submit{
+          margin: 10px 0 0 0;
         }
       `}</style>
     </form>

@@ -57,6 +57,7 @@ class Table extends Component {
               <section
                 name={item["Papel"]}
                 className="list__shares_row"
+                onClick={() => goToFundamentus(item["Papel"])}
                 key={index}
               >
                 <div className={validator(listClass, item, "Papel")}>

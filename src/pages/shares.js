@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Router from 'next/router';
 import List from '../components/List';
 import SearchBar from '../components/SearchBar';
-import Layout from '../skeleton/layout';
+import TableLayout from '../skeleton/TableLayout';
 import Fonts from '../components/Fonts';
 import config from '../configs';
 
@@ -28,10 +28,10 @@ const Shares = (props) => {
     setFixTableHeader(false)
   }
 
-  const goToFundamentus = () => {
+  const goToFundamentus = (share) => {
     const router = Router;
     router.push(
-      `//fundamentus.com.br/detalhes.php?papel=${share.toUpperCase()}`
+      `https://statusinvest.com.br/acoes/${share.toLowerCase()}`
     );
   }
 
@@ -52,7 +52,7 @@ const Shares = (props) => {
           value={search}
           placeholder={"Ativo"}
         ></SearchBar>
-        <Layout>
+        <TableLayout>
           <List
             fixTableHeader={fixTableHeader}
             shares={shares}
@@ -60,7 +60,7 @@ const Shares = (props) => {
             goToFundamentus={goToFundamentus}
             setNewShares={setShares}
           ></List>
-        </Layout>
+        </TableLayout>
 
         <style jsx global>{`
           body,

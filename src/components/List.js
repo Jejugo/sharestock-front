@@ -33,13 +33,21 @@ const List = (props) => {
     window.scroll({top: 450, behavior: 'smooth' })
   }
 
-  const syncData = async ({ setShares }) => {
+  const syncData = async (e) => {
+    const { setShares } = props
     e.preventDefault();
     setLoading(true)
-    await axios.get(`${SHARE_API}/sharesSync`)
-    const newShares = await axios.get(`${SHARE_API}/shares`)
-    setLoading(false)
-    setShares(newShares)
+    console.log(`${SHARE_API}/sharesSync`)
+    try {
+      const data = await axios.get(`${SHARE_API}/shares`) 
+      console.log('data: ', data)
+    } 
+    catch(err){
+      console.log('error: ', err)
+    }
+    // const newShares = await axios.get(`${SHARE_API}/shares`)
+    // setLoading(false)
+    // setShares(newShares)
   }
 
   return (
@@ -50,7 +58,7 @@ const List = (props) => {
       <div className="visualize__wrapper">
         <li className="view__item--click" name="table" onClick={(e) => handleView(e)}><FormatAlignJustifyIcon/></li>
         <li className="view__item--click" name="frames" onClick={(e) => handleView(e)}><ViewModuleIcon/></li>
-        <li className="view__item--click" name="frames" onClick={(e) => syncData(e)}><CachedIcon/></li>
+        <li className="view__item--click" name="frames" onClick={syncData}><CachedIcon/></li>
       </div>
     </ul>
     {listMode === 'table' && (
