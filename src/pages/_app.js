@@ -1,6 +1,6 @@
 import React from "react";
 import App from "next/app";
-import { wrapper } from "../_redux"
+import { wrapper } from "../_redux";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -16,7 +16,21 @@ class MyApp extends App {
 
     return (
       <React.Fragment>
-          <Component {...pageProps} />
+        <Component {...pageProps} />
+        <style jsx global>
+          {`
+            body,
+            html {
+              margin: 0px;
+              color: white;
+              background-color: #000000;
+              font-family: "Baloo Bhaina 2", cursive;
+              font-style: normal;
+              font-display: swap;
+              line-height: 3vh;
+            }
+          `}
+        </style>
       </React.Fragment>
     );
   }

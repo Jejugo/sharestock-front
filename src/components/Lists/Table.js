@@ -57,7 +57,6 @@ class Table extends Component {
               <section
                 name={item["Papel"]}
                 className="list__shares_row"
-                onClick={() => this.showModal(item)}
                 key={index}
               >
                 <div className={validator(listClass, item, "Papel")}>

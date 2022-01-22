@@ -15,13 +15,23 @@ const Navbar = (props) => (
           <a href='/good-indicators' className="navbar__item_link">Atrativos</a>
         </li>
       </ul>
+      <ul className="navbar__wrap">
+        <li className="navbar__item"><a href="/login" className="navbar__item_link">Login</a></li>
+      </ul>
     </nav>
 
   <style jsx>{`
     .navbar{
       height: 60px;
-      background-color: #201F1F;
-      margin: 0;
+      background-color: #ddd;
+      padding: 0 5%;
+      opacity: 1;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .navbar a {
+      color: #000;
     }
 
     .navbar__wrap{
@@ -34,6 +44,8 @@ const Navbar = (props) => (
     }
 
     .navbar__item{
+      flex-basis: auto;
+      margin: 0 30px 0 0;
       font-size: 20px;
     }
 
