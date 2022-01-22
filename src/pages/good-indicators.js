@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 import Router from 'next/router'
 import List from '../components/List'
 import SearchBar from '../components/SearchBar'
-import Layout from '../skeleton/layout'
+import TableLayout from '../skeleton/TableLayout'
 import config from '../configs'
 import Fonts from '../components/Fonts';
 
@@ -55,7 +55,7 @@ const GoodIndicators = (props) => {
           value={search}
           placeholder={"Ativo"}
         ></SearchBar>
-        <Layout>
+        <TableLayout>
           <List
             fixTableHeader={fixTableHeader}
             shares={shares}
@@ -63,7 +63,7 @@ const GoodIndicators = (props) => {
             goToFundamentus={goToFundamentus}
             setNewShares={setNewShares}
           ></List>
-        </Layout>
+        </TableLayout>
 
         <style jsx global>{`
           body,
