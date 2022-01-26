@@ -7,15 +7,15 @@ const SignupComponent = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-      e.preventDefault()
-      try{
-        const user = await createUserWithEmailAndPassword(auth, email, password)
-        if(user)
-          router.push('/')
-      }
-      catch(err){
-        alert("Error: ", err.message)
-      }
+      // e.preventDefault()
+      // try{
+      //   const user = await createUserWithEmailAndPassword(auth, email, password)
+      //   if(user)
+      //     router.push('/')
+      // }
+      // catch(err){
+      //   alert("Error: ", err.message)
+      // }
   }
 
   return (

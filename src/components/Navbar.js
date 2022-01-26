@@ -1,16 +1,13 @@
-import { useState } from 'react'; 
-import { auth } from "../firebase"
+import { useState, useContext, useEffect } from 'react'; 
 import { signOut, onAuthStateChanged, getAuth } from "@firebase/auth";
 import Router from 'next/router'
+import { useAuth } from '../context/AuthUserContext'
 
-const authData = getAuth()
+const auth = getAuth()
 
 const Navbar = (props) => {
   const [loggedUser, setLoggedUser] = useState('')
-
-  onAuthStateChanged(authData, (currentUser) => {
-    setLoggedUser(currentUser?.email)
-  })
+  const { authUser, authLoading } = useAuth()
 
   const handleSignout = async () => {
     await signOut(auth)
@@ -19,6 +16,10 @@ const Navbar = (props) => {
       '/login'
     );
   }
+
+  useEffect(() => {
+    setLoggedUser(authUser?.email)
+  }, [authUser])
 
 
 return (

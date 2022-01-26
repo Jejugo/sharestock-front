@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { auth } from "../firebase"
 import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
 import Router from "next/router"
 
@@ -11,12 +10,14 @@ const LoginComponent = () => {
       e.preventDefault()
       try {
         const router = Router
+        const auth = getAuth()
         const user = await signInWithEmailAndPassword(auth, email, password)
         if(user)
           router.push('/')
       }
       catch(err){
         alert('Couldnt sign you in: ', err.message)
+        console.error(err)
       }
   }
 

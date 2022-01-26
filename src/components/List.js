@@ -10,7 +10,7 @@ import config from '../configs';
 const { SHARE_API } = config;
 
 const List = (props) => {
-  const { shares, value, goToFundamentus, fixTableHeader } = props
+  const { shares, value, goToFundamentus, fixTableHeader, setWishList} = props
   const [listMode, setListMode] = useState('table')
   const [loading, setLoading] = useState(false)
   const [filteredData, setFilteredData] = useState([])
@@ -62,7 +62,7 @@ const List = (props) => {
       </div>
     </ul>
     {listMode === 'table' && (
-      <Table filteredItems={filteredData} goToFundamentus={goToFundamentus} fixTableHeader={fixTableHeader}></Table>
+      <Table filteredItems={filteredData} goToFundamentus={goToFundamentus} fixTableHeader={fixTableHeader} setWishList={setWishList}></Table>
     )}
     {listMode === 'frames' && (
       <Frames filteredItems={filteredData} goToFundamentus={goToFundamentus}></Frames>

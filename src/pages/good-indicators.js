@@ -7,6 +7,7 @@ import SearchBar from '../components/SearchBar'
 import TableLayout from '../skeleton/TableLayout'
 import config from '../configs'
 import Fonts from '../components/Fonts';
+import Template from '../components/Template'
 
 const { SHARE_API } = config
 
@@ -48,6 +49,7 @@ const GoodIndicators = (props) => {
   }
 
   return (
+    <Template tabTitle={'good-indicators'}>
     <section className='home'>
         <Navbar></Navbar>
         <SearchBar
@@ -77,6 +79,7 @@ const GoodIndicators = (props) => {
           }
         `}</style>
       </section>
+      </Template>
   )
 }
 

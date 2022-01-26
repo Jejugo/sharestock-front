@@ -1,6 +1,7 @@
 import React from "react";
 import App from "next/app";
 import { wrapper } from "../_redux";
+import { AuthUserProvider } from '../context/AuthUserContext';
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -15,7 +16,7 @@ class MyApp extends App {
     const { Component, pageProps, store } = this.props;
 
     return (
-      <React.Fragment>
+      <AuthUserProvider>
         <Component {...pageProps} />
         <style jsx global>
           {`
@@ -31,7 +32,7 @@ class MyApp extends App {
             }
           `}
         </style>
-      </React.Fragment>
+      </AuthUserProvider>
     );
   }
 }

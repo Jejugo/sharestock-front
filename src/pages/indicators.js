@@ -30,8 +30,6 @@ const Definitions = () => {
 
   const handleDef = (e) => {
     const id = parseInt(e.target.getAttribute("name"));
-    console.log('id: ', id)
-    console.log(defList)
     setDefList((previousState) => previousState.map((def) => {
       if(def.id === id){
         console.log('returning: ', { ...def, showDef: !def.showDef })
@@ -46,7 +44,7 @@ const Definitions = () => {
 
 
   return (
-    <Template>
+    <Template tabTitle={'indicators'}>
     <section className="definitions">
       <Navbar></Navbar>
       <SearchBar handleSearchBar={handleSearchBar} value={search} placeholder={"Indicador"}></SearchBar>
