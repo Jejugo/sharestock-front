@@ -1,4 +1,5 @@
-import { createContext, useContext, Context } from "react";
+import { createContext, useContext, Context, useEffect } from "react";
+import Router from 'next/router'
 import useFirebaseAuth from "../hooks/useFirebaseAuth";
 
 const AuthUserContext = createContext({
@@ -8,6 +9,11 @@ const AuthUserContext = createContext({
 
 export function AuthUserProvider({ children }) {
   const { authUser, authLoading } = useFirebaseAuth();
+  useEffect(() => {
+    const router = Router
+    console.log(authUser);
+    //if(!authUser) router.push('/login')
+  }, [authUser])
   return (
     <AuthUserContext.Provider value={{authUser, authLoading}}>
       {children}
