@@ -1,6 +1,29 @@
-const Navbar = (props) => (
-  <>
-  <section className="navbar-container">
+import { useState, useContext, useEffect } from 'react'; 
+import { signOut, onAuthStateChanged, getAuth } from "@firebase/auth";
+import Router from 'next/router'
+import { useAuth } from '../context/AuthUserContext'
+
+const auth = getAuth()
+
+const Navbar = (props) => {
+  const [loggedUser, setLoggedUser] = useState('')
+  const { authUser, authLoading } = useAuth()
+
+  const handleSignout = async () => {
+    await signOut(auth)
+    const router = Router;
+    router.push(
+      '/login'
+    );
+  }
+
+  useEffect(() => {
+    setLoggedUser(authUser?.email)
+  }, [authUser])
+
+
+return (
+  <section className="container">
     <nav className="navbar">
       <ul className="navbar__wrap">
         <li className="navbar__item">
@@ -16,14 +39,31 @@ const Navbar = (props) => (
           <a href='/good-indicators' className="navbar__item_link">Atrativos</a>
         </li>
       </ul>
+      <ul className="navbar__wrap">
+        {
+          loggedUser ? (
+            <>
+            <li className="navbar__item"><a className="navbar__item_link">{loggedUser}</a></li>
+            <li className="navbar__item"><a href="#" className="navbar__item_link" onClick={handleSignout}>Sign out</a></li>
+            </>
+          ) : (
+            <>
+            <li className="navbar__item"><a href="/login" className="navbar__item_link">Login</a></li>
+            <li className="navbar__item"><a href="/signup" className="navbar__item_link">Signup</a></li>
+            </>
+          )
+        }
+      </ul>
     </nav>
-</section>
+
   <style jsx>{`
     .navbar{
       height: 60px;
       background-color: #ddd;
-      margin: 0;
+      padding: 0 5%;
       opacity: 1;
+      display: flex;
+      justify-content: space-between;
     }
 
     .navbar a {
@@ -33,14 +73,15 @@ const Navbar = (props) => (
     .navbar__wrap{
       display: flex;
       list-style: none;
-      justify-content: flex-start;
+      justify-content: space-around;
       align-items: center;
       height: 100%;
       margin: 0;
     }
 
     .navbar__item{
-      flex-basis: 10em;
+      flex-basis: auto;
+      margin: 0 30px 0 0;
       font-size: 20px;
     }
 
@@ -49,7 +90,7 @@ const Navbar = (props) => (
       color: white;
     }
   `}</style>
-  </>
+  </section>
 )
-
+  }
 export default Navbar

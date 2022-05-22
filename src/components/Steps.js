@@ -24,7 +24,7 @@ export default function Steps(props) {
           width: 80%;
           min-height: 50vh;
           max-height: 70vh;
-          overflow-y:scroll;
+          overflow-y: auto;
           padding: 10px 0;
         }
 
