@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Fonts from "../components/Fonts";
 import Template from "../components/Template";
 import Navbar from "../components/Navbar";
+import StrategyForm from "../components/StrategyForm"
 
 export default function strategy() {
     useEffect(() => {
@@ -11,7 +12,7 @@ export default function strategy() {
     return (
         <Template tabTitle={"strategy"}>
             <Navbar></Navbar>
-            <div>Bla</div>
+            <StrategyForm></StrategyForm>
         </Template>
     )
 }
