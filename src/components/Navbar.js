@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'; 
-import { signOut, onAuthStateChanged, getAuth } from "@firebase/auth";
+import { signOut, getAuth } from "@firebase/auth";
 import Router from 'next/router'
 import { useAuth } from '../context/AuthUserContext'
 

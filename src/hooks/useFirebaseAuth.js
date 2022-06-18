@@ -1,10 +1,7 @@
 import initFirebase from '../firebase'
 import { useState, useEffect } from 'react'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getApp } from 'firebase/app'
 
-initFirebase()
-const auth = getAuth()
 
 const formatAuthUser = (user) => ({
   uid: user.uid,
@@ -12,6 +9,7 @@ const formatAuthUser = (user) => ({
 });
 
 export default function useFirebaseAuth() {
+  const auth = getAuth()
   const [authUser, setAuthUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
