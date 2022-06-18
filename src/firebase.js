@@ -18,7 +18,7 @@ const FirebaseCredentials = {
 
 export default function initFirebase() {
   if (!getApps.length) {
-      initializeApp(FirebaseCredentials)
+      const app = initializeApp(FirebaseCredentials)
       // Check that `window` is in scope for the analytics module!
       if (typeof window !== 'undefined') {
           // Enable analytics. https://firebase.google.com/docs/analytics/get-started
@@ -27,5 +27,6 @@ export default function initFirebase() {
           }
       }
       console.log('Firebase was successfully initialized.')
+      return app;
   }
 }

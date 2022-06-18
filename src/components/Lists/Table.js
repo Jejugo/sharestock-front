@@ -1,16 +1,27 @@
 import React, { useContext } from "react";
 import { validator } from "../../validations/indicators";
 import { WishListContext } from '../../context/WishList';
+import { useAuth } from '../../context/AuthUserContext';
+import { getFirestore, updateDoc, setDoc, collection, doc, arrayUnion } from 'firebase/firestore';
 
 const listClass = "list__shares_row_item";
 
 const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
   const { setWishList, wishList } = useContext(WishListContext)
-  const addToWatchList = (e, item) => {
+  const { authUser } = useAuth()
+  const db = getFirestore();
+
+  const addToWatchList = async (e, item) => {
     e.preventDefault()
     setWishList((previousState) => previousState.find(previousItem => previousItem.Papel === item.Papel) 
     ? previousState 
     : [...previousState, item])
+
+    const watchListRef = doc(db, "watchList", authUser.uid);
+  
+    await updateDoc(watchListRef, {
+      shares: arrayUnion(item["Papel"])
+    });
   }
 
   return (

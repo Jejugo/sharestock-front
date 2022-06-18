@@ -2,22 +2,28 @@ import React from "react";
 import App from "next/app";
 import { wrapper } from "../_redux";
 import { AuthUserProvider } from '../context/AuthUserContext';
+import initFirebase from '../firebase'
 
+const app = initFirebase()
 class MyApp extends App {
+  
   static async getInitialProps({ Component, ctx }) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
 
-    return { pageProps };
+    return { pageProps, app };
   }
 
   render() {
-    const { Component, pageProps, store } = this.props;
-
+    const { Component, pageProps, app } = this.props;
+    const props = {
+      ...pageProps,
+      app
+    }
     return (
       <AuthUserProvider>
-        <Component {...pageProps} />
+        <Component {...props} />
         <style jsx global>
           {`
             body,
@@ -37,4 +43,6 @@ class MyApp extends App {
   }
 }
 
+
 export default wrapper.withRedux(MyApp);
+
