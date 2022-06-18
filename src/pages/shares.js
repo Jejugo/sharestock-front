@@ -50,7 +50,6 @@ const Shares = (props) => {
   return (
     <Template tabTitle={'all-shares'}>
       <section className='home'>
-        <Navbar></Navbar>
         <SearchBar
           handleSearchBar={handleSearchBar}
           value={search}

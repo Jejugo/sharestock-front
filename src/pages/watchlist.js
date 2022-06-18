@@ -14,7 +14,6 @@ const WatchList = () => {
   return (
     <Template tabTitle={"watchlist"}>
       <section className="home">
-        <Navbar></Navbar>
         <SearchBar
           handleSearchBar={handleSearchBar}
           value={search}

@@ -6,7 +6,7 @@ const TableLayout = ({ children }) => (
   
       <style jsx>{`
         .layout-container{
-          width: 70%;
+          width: 100%;
           background-color: black;
           margin: 5% auto;
         }

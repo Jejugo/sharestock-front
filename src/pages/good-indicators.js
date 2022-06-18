@@ -51,7 +51,6 @@ const GoodIndicators = (props) => {
   return (
     <Template tabTitle={'good-indicators'}>
     <section className='home'>
-        <Navbar></Navbar>
         <SearchBar
           handleSearchBar={handleSearchBar}
           value={search}

@@ -23,7 +23,7 @@ const Navbar = (props) => {
 
 
 return (
-  <section className="container">
+  <section>
     <nav className="navbar">
       <ul className="navbar__wrap">
         <li className="navbar__item">
