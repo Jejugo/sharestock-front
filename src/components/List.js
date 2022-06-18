@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from './Lists/Table'
 import Frames from './Lists/Frames'
 import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify';
@@ -6,11 +6,12 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import CachedIcon from '@material-ui/icons/Cached';
 import axios from  'axios';
 import config from '../configs';
+import { WishListContext } from '../context/WishList'
 
 const { SHARE_API } = config;
 
 const List = (props) => {
-  const { shares, value, goToFundamentus, fixTableHeader, setWishList} = props
+  const { shares, value, goToFundamentus, fixTableHeader} = props
   const [listMode, setListMode] = useState('table')
   const [loading, setLoading] = useState(false)
   const [filteredData, setFilteredData] = useState([])
@@ -62,7 +63,7 @@ const List = (props) => {
       </div>
     </ul>
     {listMode === 'table' && (
-      <Table filteredItems={filteredData} goToFundamentus={goToFundamentus} fixTableHeader={fixTableHeader} setWishList={setWishList}></Table>
+      <Table filteredItems={filteredData} goToFundamentus={goToFundamentus} fixTableHeader={fixTableHeader}></Table>
     )}
     {listMode === 'frames' && (
       <Frames filteredItems={filteredData} goToFundamentus={goToFundamentus}></Frames>

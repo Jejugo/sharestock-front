@@ -1,16 +1,16 @@
-import React, { Component, useState } from "react";
+import React, { useContext } from "react";
 import { validator } from "../../validations/indicators";
-import { render } from "react-dom";
-import ShareModal from "../ShareModal";
-import { signOut, onAuthStateChanged, getAuth } from "@firebase/auth";
-import { initializeFirebase } from '../../firebase';
+import { WishListContext } from '../../context/WishList';
 
 const listClass = "list__shares_row_item";
 
-const Table = ({ filteredItems, goToFundamentus, fixTableHeader, setWishList }) => {
+const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
+  const { setWishList, wishList } = useContext(WishListContext)
   const addToWatchList = (e, item) => {
     e.preventDefault()
-    setWishList((previousItem) => [...previousItem, item])
+    setWishList((previousState) => previousState.find(previousItem => previousItem.Papel === item.Papel) 
+    ? previousState 
+    : [...previousState, item])
   }
 
   return (

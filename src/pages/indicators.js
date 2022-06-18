@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import TableLayout from "../skeleton/TableLayout";
 import SearchBar from '../components/SearchBar'
 import { definitionsList } from "../const/definitions";
@@ -46,7 +45,6 @@ const Definitions = () => {
   return (
     <Template tabTitle={'indicators'}>
     <section className="definitions">
-      <Navbar></Navbar>
       <SearchBar handleSearchBar={handleSearchBar} value={search} placeholder={"Indicador"}></SearchBar>
       <TableLayout>
         <div className="definitions__list">

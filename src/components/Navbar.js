@@ -23,7 +23,7 @@ const Navbar = (props) => {
 
 
 return (
-  <section className="container">
+  <section>
     <nav className="navbar">
       <ul className="navbar__wrap">
         <li className="navbar__item">
@@ -37,6 +37,9 @@ return (
         </li>
         <li className="navbar__item">
           <a href='/good-indicators' className="navbar__item_link">Atrativos</a>
+        </li>
+        <li className="navbar__item">
+          <a href='/strategy' className="navbar__item_link">Estratégia</a>
         </li>
       </ul>
       <ul className="navbar__wrap">

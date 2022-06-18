@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Navbar from '../components/Navbar';
 import Router from 'next/router';
@@ -9,6 +9,7 @@ import Fonts from '../components/Fonts';
 import config from '../configs';
 import Template from '../components/Template'
 import WishListPopUp from '../components/WishListPopUp'
+import WishListProvider from '../context/WishList';
 
 const { SHARE_API } = config;
 
@@ -16,7 +17,6 @@ const Shares = (props) => {
 
   const [search, setSearch] = useState('')
   const [shares, setShares] = useState([])
-  const [wishList, setWishList] = useState([])
   const [fixTableHeader, setFixTableHeader] = useState(false)
 
   useEffect(() => {
@@ -50,22 +50,21 @@ const Shares = (props) => {
   return (
     <Template tabTitle={'all-shares'}>
       <section className='home'>
-        <Navbar></Navbar>
         <SearchBar
           handleSearchBar={handleSearchBar}
           value={search}
           placeholder={"Ativo"}
         ></SearchBar>
         <TableLayout>
+        <WishListProvider>
           <List
             fixTableHeader={fixTableHeader}
             shares={shares}
             value={search}
             goToFundamentus={goToFundamentus}
-            setNewShares={setShares}
-            setWishList={setWishList}
           ></List>
-          <WishListPopUp wishList={wishList} setWishList={setWishList}></WishListPopUp>
+          <WishListPopUp></WishListPopUp>
+          </WishListProvider>
         </TableLayout>
 
         <style jsx global>{`
