@@ -1,6 +1,5 @@
-import initFirebase from '../firebase'
-import { useState, useEffect } from 'react'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 const formatAuthUser = (user) => ({
@@ -31,11 +30,6 @@ export default function useFirebaseAuth() {
     const unsubscribe = onAuthStateChanged(auth, authStateChanged);
     return () => unsubscribe();
   }, []);
-
-  console.log('returning...', {
-    authUser,
-    loading
-  })
 
   return {
     authUser,

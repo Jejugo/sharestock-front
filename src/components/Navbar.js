@@ -1,9 +1,7 @@
 import { useState, useContext, useEffect } from 'react'; 
-import { signOut, getAuth } from "@firebase/auth";
+import { signOut } from "@firebase/auth";
 import Router from 'next/router'
 import { useAuth } from '../context/AuthUserContext'
-
-const auth = getAuth()
 
 const Navbar = (props) => {
   const [loggedUser, setLoggedUser] = useState('')

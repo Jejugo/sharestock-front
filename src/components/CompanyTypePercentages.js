@@ -1,34 +1,46 @@
-import { Pie } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthUserContext";
+import Firestore from "../firebase/Firestore";
+import {
+  getFirestore,
+  updateDoc,
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function CompanyTypePercentages({ handleShowStrategies }) {
+export default function CompanyTypePercentages({ setShowStrategies }) {
+  const { authUser } = useAuth();
   const [chartState, setChartState] = useState({
     labels: [],
-    datasets: [{
-      label: 'Percent of shares',
-      data: [],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor:[
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1
-    }]
-  })
+    datasets: [
+      {
+        label: "Percent of shares",
+        data: [],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  });
   const [selectForms, setSelectForms] = useState([
     {
       name: "agro",
@@ -37,7 +49,7 @@ export default function CompanyTypePercentages({ handleShowStrategies }) {
     },
   ]);
 
-  const [showChart, setShowChart] = useState(false)
+  const [showChart, setShowChart] = useState(false);
 
   const addNewItem = () => {
     setSelectForms((prevState) => [
@@ -74,48 +86,90 @@ export default function CompanyTypePercentages({ handleShowStrategies }) {
 
   const checkIfPercentagesSum100 = () => {
     const sum = selectForms.reduce((acc, curr) => {
-        return parseInt(curr.value) + acc;
-    }, 0)
+      return parseInt(curr.value) + acc;
+    }, 0);
     return sum === 100;
-  }
+  };
 
-  const calculateAndShowChart = () => {
-    setChartState(prevState => ({
-      ...prevState,
-      labels: selectForms.map(select => select.name),
-      datasets: prevState.datasets.map((dataset, index) => {
-        return {
-          ...prevState.datasets[index],
-          data: selectForms.map(select => select.value)
-        }
+  const calculateAndShowChart = async () => {
+    if (checkIfPercentagesSum100()) {
+      try {
+        const firebaseState = selectForms.reduce((acc, item) => {
+          return {
+            ...acc,
+            [item.name]: item.value,
+          };
+        }, {});
+        await Firestore().addSingleItem({
+          collection: "userStrategyPercentages",
+          id: authUser.uid,
+          item: firebaseState,
+        });
+
+        setChartState((prevState) => ({
+          ...prevState,
+          labels: selectForms.map((select) => select.name),
+          datasets: prevState.datasets.map((dataset, index) => {
+            return {
+              ...prevState.datasets[index],
+              data: selectForms.map((select) => select.value),
+            };
+          }),
+        }));
+        setShowChart(true);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    return;
+  };
+
+  useEffect(async () => {
+    const firestorePercentages = await Firestore().getSingleItem({
+      collection: 'userStrategyPercentages',
+      id: authUser.uid
+    })
+    const cachedPercentageList = Object.keys(firestorePercentages).map(
+      (companyName, index) => ({
+        name: companyName,
+        className: `companyType__item_type_${index}`,
+        value: firestorePercentages[companyName],
       })
-    }))
-    setShowChart(true)
-    handleShowStrategies(true)
-  }
+    );
+
+    setSelectForms(cachedPercentageList);
+  }, []);
 
   return (
     <section className="companyType">
-      {
-        showChart ? (
-          <>
+      {showChart ? (
+        <>
           <section className="companyType__chart">
-            <Pie data={chartState}/>
+            <Pie data={chartState} />
           </section>
-          <button className="companyType__chart_button" onClick={() => setShowChart(false)}>Editar</button>
-          </>
-        ) : (
-          <>
+          <button
+            className="companyType__chart_button"
+            onClick={() => setShowChart(false)}
+          >
+            Editar
+          </button>
+          <button onClick={() => setShowStrategies(true)}> Definir estratégias </button> 
+        </>
+      ) : (
+        <>
           <h1 className="companyType__title">
-          Defina a parcela de investimento nos tipos de negócio:
+            Defina a parcela de investimento nos tipos de negócio:
           </h1>
-          {
-              checkIfPercentagesSum100() === true ? (
-                <p className="companyType__feedback-positive">Os valores somam 100%!</p>       
-              ) : (
-                <p className="companyType__feedback-negative">Os valores tem que somar 100%.</p>      
-              )
-          }
+          {checkIfPercentagesSum100() === true ? (
+            <p className="companyType__feedback-positive">
+              Os valores somam 100%!
+            </p>
+          ) : (
+            <p className="companyType__feedback-negative">
+              Os valores tem que somar 100%.
+            </p>
+          )}
           <ul className="companyType__list">
             {selectForms.length > 0 &&
               selectForms.map((selectForm, index) => (
@@ -140,10 +194,10 @@ export default function CompanyTypePercentages({ handleShowStrategies }) {
           </ul>
           <button onClick={addNewItem}>Adicionar</button>
           <button onClick={calculateAndShowChart}>Salvar</button>
-          </>
-        )
-      }
-      <style>{`
+        </>
+      )}
+      <style>
+        {`
         .companyType{
           text-align: center;
         }

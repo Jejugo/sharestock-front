@@ -49,13 +49,11 @@ const Definitions = () => {
     setDefList((previousState) =>
       previousState.map((def) => {
         if (def.id === id) {
-          console.log("returning: ", { ...def, showDef: !def.showDef });
           return { ...def, showDef: !def.showDef };
         }
         return def;
       })
     );
-    console.log(defList);
   };
 
   return (

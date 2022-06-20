@@ -1,33 +1,47 @@
 import React, { useContext } from "react";
 import { validator } from "../../validations/indicators";
-import { WishListContext } from '../../context/WishList';
-import { useAuth } from '../../context/AuthUserContext';
-import { getFirestore, updateDoc, setDoc, collection, doc, arrayUnion } from 'firebase/firestore';
+import { WishListContext } from "../../context/WishList";
+import { useAuth } from "../../context/AuthUserContext";
+import Firestore from "../../firebase/Firestore";
 
 const listClass = "list__shares_row_item";
 
 const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
-  const { setWishList, wishList } = useContext(WishListContext)
-  const { authUser } = useAuth()
-  const db = getFirestore();
+  const { setWishList, wishList } = useContext(WishListContext);
+  const { authUser } = useAuth();
 
   const addToWatchList = async (e, item) => {
-    e.preventDefault()
-    setWishList((previousState) => previousState.find(previousItem => previousItem.Papel === item.Papel) 
-    ? previousState 
-    : [...previousState, item])
-
-    const watchListRef = doc(db, "watchList", authUser.uid);
-  
-    await updateDoc(watchListRef, {
-      shares: arrayUnion(item["Papel"])
-    });
-  }
+    e.preventDefault();
+    try {
+      setWishList((previousState) =>
+        previousState.find((previousItem) => previousItem === item)
+          ? previousState
+          : [...previousState, item.Papel]
+      );
+      await Firestore().addToArray({
+        collection: "watchlist",
+        id: authUser.uid,
+        itemKey: "shares",
+        item: item.Papel,
+      });
+    } catch (error) {
+      console.error(error);
+      setWishList((previousState) =>
+        previousState.filter((previousItem) => previousItem !== item.Papel)
+      );
+    }
+  };
 
   return (
     <>
       <section id="share-data" className="list__shares">
-        <section className={fixTableHeader ? "list__shares_row--first--fixed" : "list__shares_row--first"}>
+        <section
+          className={
+            fixTableHeader
+              ? "list__shares_row--first--fixed"
+              : "list__shares_row--first"
+          }
+        >
           <div className="list__shares_row_item--first"></div>
           <div className="list__shares_row_item--first">Ação</div>
           <div className="list__shares_row_item--first">Cotação</div>
@@ -48,7 +62,10 @@ const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
               className="list__shares_row"
               key={index}
             >
-              <div className={validator(listClass)} onClick={(e) => addToWatchList(e, item)}>
+              <div
+                className={validator(listClass)}
+                onClick={(e) => addToWatchList(e, item)}
+              >
                 +
               </div>
               <div className={validator(listClass, item, "Papel")}>
@@ -78,7 +95,7 @@ const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
                 {item["Dívida Bruta/Patrim."]}
               </div>
               <div className={validator(listClass, item, "Líq. Corrente")}>
-                {item["Líq. Corrente"] }
+                {item["Líq. Corrente"]}
               </div>
               <div className={validator(listClass, item, "Margem Líquida")}>
                 {item["Margem Líquida"]}
@@ -121,7 +138,7 @@ const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
           }
 
           .list__shares_row--first--fixed {
-            width: 69.9%;
+            width: 80%;
             flex-basis: 20%;
             height: 50px;
             display: flex;
@@ -130,7 +147,7 @@ const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
             position: fixed;
             top: 0;
             background-color: grey;
-            opacity: 0.8
+            opacity: 0.8;
           }
 
           .list__shares_row:hover {
@@ -154,6 +171,6 @@ const Table = ({ filteredItems, goToFundamentus, fixTableHeader }) => {
       </section>
     </>
   );
-}
+};
 
 export default Table;

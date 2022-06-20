@@ -2,7 +2,7 @@ import React from "react";
 import App from "next/app";
 import { wrapper } from "../_redux";
 import { AuthUserProvider } from '../context/AuthUserContext';
-import initFirebase from '../firebase'
+import initFirebase from '../firebase';
 
 const app = initFirebase()
 class MyApp extends App {

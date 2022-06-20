@@ -16,7 +16,7 @@ const FirebaseCredentials = {
   measurementId: "G-F13HGEFG33"
 }
 
-export default function initFirebase() {
+export default function   () {
   if (!getApps.length) {
       const app = initializeApp(FirebaseCredentials)
       // Check that `window` is in scope for the analytics module!

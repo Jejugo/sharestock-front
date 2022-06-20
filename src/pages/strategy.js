@@ -26,16 +26,17 @@ export default function strategy() {
 
   const [showStrategies, setShowStrategies] = useState(false);
 
-  const handleShowStrategies = (show) => setShowStrategies(show);
-
   return (
     <>
       {authUser && (
         <Template tabTitle={"strategy"}>
-          <CompanyTypePercentages
-            handleShowStrategies={handleShowStrategies}
-          ></CompanyTypePercentages>
-          {showStrategies && <StrategyForm></StrategyForm>}
+          { !showStrategies && (
+            <CompanyTypePercentages
+            setShowStrategies={setShowStrategies}
+            ></CompanyTypePercentages>
+            )
+          }
+          {showStrategies && <StrategyForm setShowStrategies={setShowStrategies}></StrategyForm>}
         </Template>
       )}
     </>
