@@ -150,9 +150,9 @@ export default function StrategyForm({ setShowStrategies }) {
 
   return (
     <section className="strategy-form">
-      <p className="strategy-form__back" onClick={() => setShowStrategies(false)}> Definir as parcelas </p>
       {showStockCheckList ? (
         <>
+        <p className="strategy-form__back" onClick={() => setShowStrategies(false)}> Definir as parcelas </p>
         <StockCheckList
           statements={statements}
           handleStatementCheck={handleStatementCheck}
@@ -160,14 +160,17 @@ export default function StrategyForm({ setShowStrategies }) {
           setAssetValue={setAssetValue}
           assetValue={assetValue}
         ></StockCheckList>
-        <button onClick={editStatements}>back</button>
-        <button onClick={storeAssetStatementsAndClean} disabled={!assetValue}>Próximo</button>
-        <button onClick={storeAssetAndCalculate} disabled={!assetValue}>Calcular</button>
+        <div className="strategy-form__buttons">
+          <button className="strategy-form__buttons_btn" onClick={editStatements}>back</button>
+          <button className="strategy-form__buttons_btn" onClick={storeAssetStatementsAndClean} disabled={!assetValue}>Adicionar</button>
+          <button className="strategy-form__buttons_btn" onClick={storeAssetAndCalculate} disabled={!assetValue}>Calcular</button>
+        </div>
         </>
       ) : showSuggestedPercentages ? (
-        <SuggestedPercentages walletResistancePoints={walletResistancePoints}></SuggestedPercentages>
+        <SuggestedPercentages walletResistancePoints={walletResistancePoints} setShowSuggestedPercentages={setShowSuggestedPercentages}></SuggestedPercentages>
       ) : (
         <section>
+          <p className="strategy-form__back" onClick={() => setShowStrategies(false)}> Volte para o início </p>
           <h1 className="strategy-form__title"> Defina sua estratégia </h1>
           <p className="strategy-form__subtitle">
             <i>
@@ -204,7 +207,7 @@ export default function StrategyForm({ setShowStrategies }) {
             {statements.map((statement, index) => (
               <div>
                 <li className="strategy-form__list_item">
-                  <p>{`Afirmação: ${statement.statement}.`}</p>
+                  <p>{`${statement.statement}`}</p>
                   <span className="strategy-form__list_item--remove"onClick={(e) => removeStatement(e, statement, index)}>
                     {" "}
                     X{" "}
@@ -226,6 +229,18 @@ export default function StrategyForm({ setShowStrategies }) {
         position: absolute;
         left: 10px;
         top: 10%;
+      }
+      .strategy-form__buttons{
+        display: flex;
+        justify-content: space-around;
+        width: 60%;
+        margin: 0 auto;
+      }
+      .strategy-form__buttons_btn{
+        padding: 5px 20px;
+        border: none;
+        font-size: 16px;
+        border-radius: 5px;
       }
       .strategy-form__list{
         list-style: none;
