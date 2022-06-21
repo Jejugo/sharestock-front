@@ -45,7 +45,7 @@ const HowToStart = () => {
         <>
         <section className="how-to-start">
           <Navbar />
-          <TextLayout>npm 
+          <TextLayout> 
             <Steps
               steps={steps}
               count={count}

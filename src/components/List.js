@@ -38,16 +38,17 @@ const List = (props) => {
     const { setShares } = props
     e.preventDefault();
     setLoading(true)
-    console.log(`${SHARE_API}/sharesSync`)
     try {
-      const data = await axios.get(`${SHARE_API}/shares`) 
-      console.log('data: ', data)
+      const data = await axios.get(`${SHARE_API}/sharesSync`)
+      console.log(data)
+      setLoading(false)
     } 
     catch(err){
       console.log('error: ', err)
+      setLoading(false)
     }
     // const newShares = await axios.get(`${SHARE_API}/shares`)
-    // setLoading(false)
+    // 
     // setShares(newShares)
   }
 

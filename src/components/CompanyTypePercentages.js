@@ -3,13 +3,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthUserContext";
 import Firestore from "../firebase/Firestore";
-import {
-  getFirestore,
-  updateDoc,
-  setDoc,
-  doc,
-  getDoc,
-} from "firebase/firestore";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -61,6 +54,13 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
       },
     ]);
   };
+
+  const removeItem = (e, name) => {
+    e.preventDefault()
+    console.log(name)
+    console.log(selectForms)
+    setSelectForms(prevState => prevState.filter(item => item.name !== name))
+  }
 
   const handleCompanyType = (e, index) => {
     setSelectForms((prevState) => {
@@ -154,7 +154,7 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
           >
             Editar
           </button>
-          <button onClick={() => setShowStrategies(true)}> Definir estratégias </button> 
+          <button className="companyType__chart_button" onClick={() => setShowStrategies(true)}> Definir estratégias </button> 
         </>
       ) : (
         <>
@@ -173,9 +173,9 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
           <ul className="companyType__list">
             {selectForms.length > 0 &&
               selectForms.map((selectForm, index) => (
-                <li className="companyType__item">
+                <li className="companyType__list_item">
                   <select
-                    className={selectForm.className}
+                    className="companyType__list_item_dropdown"
                     value={selectForm.name}
                     onChange={(e) => handleCompanyType(e, index)}
                   >
@@ -184,11 +184,12 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
                     <option value="alimenticio">Alimenticio</option>
                   </select>
                   <input
-                    className="companyType__item_input"
+                    className="companyType__list_item_input"
                     value={selectForm.value}
                     onChange={(e) => handleCompanyShare(e, index)}
                   ></input>{" "}
                   %
+                  <span className="companyType__list_item--remove" onClick={(e) => removeItem(e, selectForm.name)}> X </span>
                 </li>
               ))}
           </ul>
@@ -198,36 +199,59 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
       )}
       <style>
         {`
+        .companyType__title{
+          font-size: 26px;
+        }
         .companyType{
           text-align: center;
         }
         .companyType__chart{
           width: 30%;
           height: 30%;
-          margin: 0 auto;
+          margin: 5% auto 5% auto;
         }
         .companyType__chart_button{
           margin: 2% 0;
+          padding: 5px 15px;
+          margin: 10px;
         }
         .companyType__list{
             list-style: none;
             padding: 0;
+            position: relative;
         }
+        .companyType__list_item{
+          margin: 5px 0;
+        }
+        .companyType__list_item--remove{
+          position: absolute;
+          right: 0;
+          color: red;
+          cursor: pointer;
+        }
+        .companyType__list_item_dropdown{
+          list-style: none;
+          padding: 5px 15px;
+          margin: 5px 20px;
+          font-size: 16px;
+        }
+        .companyType__list_item_input{
+          width: 30px;
+          padding: 5px;
+          font-size: 16px;
+      }
         .companyType__item_type{
             padding: 10px 20px;
         }
         .companyType__feedback-positive{
             color: green;
+            font-size: 18px;
         }
         .companyType__feedback-negative{
             color: red;
+            font-size: 18px;
         }
             padding: 10px 20px;
-        }
-        .companyType__item_input{
-            width: 30px;
-            padding: 5px;
-            font-size: 12px;
         }
         
       `}

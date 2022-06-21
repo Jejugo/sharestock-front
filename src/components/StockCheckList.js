@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
+import { useAuth } from "../context/AuthUserContext";
+import Firestore from '../firebase/Firestore';
 
 export default function StockCheckList({
   statements,
+  setStatements,
   handleStatementCheck,
   uncheckStatements,
   setAssetValue,
   assetValue,
+  editStatements,
+  storeAssetStatementsAndClean,
+  storeAssetAndCalculate
 }) {
+  const { authUser } = useAuth();
   const [assets, setAssets] = useState([]);
 
-  const changeCompany = (e) => {
-    if (assetValue) {
-      //CHANGE THIS LINE -- NOT UPDATING PROPERLY, ADDING NEW NAME AND NOT REPLACING EXISTING ONE
-      setAssets((prevState) => [
-        ...prevState,
-        { name: assetValue, statements },
-      ]);
-      uncheckStatements();
-    }
+  const changeCompany = async (e) => {
+    uncheckStatements();
     setAssetValue(e.target.value);
   };
+
+  useEffect(async () => {
+    if(assetValue){
+      const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
+      setStatements(data[assetValue])
+    }
+  }, [assetValue])
   return (
     <section className="stock-checklist">
       <h1 className="stock-checklist__title">Escolha o ativo:</h1>
@@ -45,6 +52,11 @@ export default function StockCheckList({
             </li>
           ))}
       </ul>
+      <div className="strategy-form__buttons">
+          <button className="strategy-form__buttons_btn" onClick={editStatements}>back</button>
+          <button className="strategy-form__buttons_btn" onClick={storeAssetStatementsAndClean} disabled={!assetValue}>Adicionar</button>
+          <button className="strategy-form__buttons_btn" onClick={storeAssetAndCalculate} disabled={!assetValue}>Calcular</button>
+        </div>
       <style>{`
         .stock-checklist__title, 
         .stock-checklist__dropdown{
@@ -82,6 +94,47 @@ export default function StockCheckList({
           display: flex;
           align-items: center;
           justify-content: space-between;
+        }
+        .strategy-form__back{
+          position: absolute;
+          left: 10px;
+          top: 10%;
+        }
+        .strategy-form__buttons{
+          display: flex;
+          justify-content: space-around;
+          width: 60%;
+          margin: 0 auto;
+        }
+        .strategy-form__buttons_btn{
+          padding: 5px 20px;
+          border: none;
+          font-size: 16px;
+          border-radius: 5px;
+        }
+        .strategy-form__list{
+          list-style: none;
+          padding: 0;
+        }
+        .strategy-form__list_item{
+          margin: 5px 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .strategy-form__list_item--remove{
+          cursor: pointer;
+        }
+        .strategy-form__button{
+          padding: 5px;
+          margin-right: 5px;
+        }
+        .strategy-form__input{
+          padding: 5px;
+          margin-right: 5px;
+        }
+        .strategy-form__input_statement{
+          width: 300px;
         }
 
       `}</style>

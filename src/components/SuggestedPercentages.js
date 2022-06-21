@@ -61,7 +61,7 @@ export default function SuggestedPercentages({ walletResistancePoints, setShowSu
       ...negativeAssetCalculation,
     }).map(([key, value]) => ({
       name: key,
-      percentage: value,
+      percentage: `${value.toFixed(3)*100}%`,
       points: resistancePoints[key]
     }));
 
