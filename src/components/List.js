@@ -39,7 +39,7 @@ const List = (props) => {
     e.preventDefault();
     setLoading(true)
     try {
-      const data = await axios.get(`${SHARE_API}/sharesSync`)
+      const data = await axios.get(`${SHARE_API}/shares/sync`)
       console.log(data)
       setLoading(false)
     } 

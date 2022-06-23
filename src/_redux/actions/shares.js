@@ -5,7 +5,7 @@ import config from "../../configs";
 const { SHARE_API } = config;
 
 export const fetchShare = () => async (dispatch) => {
-  let shares = await axios(`${SHARE_API}/shares`)
+  let shares = await axios(`${SHARE_API}/shares/indicators`)
   return dispatch({ type: FETCH_SHARE, payload: shares.data })
 };
 

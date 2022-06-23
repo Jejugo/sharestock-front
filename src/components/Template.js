@@ -14,7 +14,8 @@ function Template({ tabTitle, children }) {
       <style>{`
         .container{
           width: 80%;
-          margin: 0 auto;
+          float: right;
+          margin-right: 5%;
         }
       `}</style>
     </div>

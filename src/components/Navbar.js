@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthUserContext'
 
 const Navbar = (props) => {
   const [loggedUser, setLoggedUser] = useState('')
+  const [ isNavbarOpen, setIsNavbarOpen] = useState(true)
   const { authUser, authLoading } = useAuth()
 
   const handleSignout = async () => {
@@ -15,6 +16,10 @@ const Navbar = (props) => {
     );
   }
 
+  const handleNavbarOpen = () => {
+    setIsNavbarOpen(prevState => !prevState)
+  }
+
   useEffect(() => {
     setLoggedUser(authUser?.email)
   }, [authUser])
@@ -22,7 +27,8 @@ const Navbar = (props) => {
 
 return (
   <section>
-    <nav className="navbar">
+    <nav className={isNavbarOpen ? 'navbar' : 'navbar--close'}>
+      <div className="navbar__close" onClick={handleNavbarOpen}>CLOSE</div>
       <ul className="navbar__wrap">
         <li className="navbar__item">
           <a href="/" className="navbar__item_link">Como começar</a>
@@ -59,12 +65,33 @@ return (
 
   <style jsx>{`
     .navbar{
-      height: 60px;
+      position: fixed;
+      height: 100%;
+      left: 0;
+      width: 10%;
+      padding: 20px 0;
       background-color: #ddd;
-      padding: 0 5%;
-      opacity: 1;
       display: flex;
-      justify-content: space-between;
+      align-items: space-between;
+      flex-direction: column;
+      transition: 1s ease;
+    }
+
+    .navbar--close{
+      position: fixed;
+      height: 100%;
+      left: 0;
+      width: 5%;
+      padding: 20px 0;
+      background-color: #ddd;
+      display: flex;
+      align-items: space-between;
+      flex-direction: column;
+      transition: 1s ease;
+    }
+
+    .navbar__close{
+
     }
 
     .navbar a {
@@ -73,8 +100,9 @@ return (
 
     .navbar__wrap{
       display: flex;
+      flex-direction: column;
       list-style: none;
-      justify-content: space-around;
+      align-items: space-around;
       align-items: center;
       height: 100%;
       margin: 0;
@@ -82,7 +110,7 @@ return (
 
     .navbar__item{
       flex-basis: auto;
-      margin: 0 30px 0 0;
+      margin: 0 30px 20px 0;
       font-size: 20px;
     }
 

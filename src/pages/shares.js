@@ -99,7 +99,7 @@ const Shares = (props) => {
 };
 
 export async function getServerSideProps() {
-  let shares = await fetch(`${SHARE_API}/shares`);
+  let shares = await fetch(`${SHARE_API}/shares/indicators`);
   const { items } = await shares.json();
   return {
     props: {
