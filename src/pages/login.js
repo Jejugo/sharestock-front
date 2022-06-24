@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import Navbar from "../components/Navbar"
-import TextLayout from "../skeleton/TextLayout"
+import LendingPageLayout from "../skeleton/LendingPageLayout"
 import Fonts from "../components/Fonts"
 import LoginComponent from "../components/Login"
 
@@ -12,10 +12,9 @@ const Login = () => {
 
     return (
         <section>
-            <Navbar></Navbar>
-            <TextLayout>
+            <LendingPageLayout>
                 <LoginComponent></LoginComponent>
-            </TextLayout>
+            </LendingPageLayout>
         </section>
     )
 }

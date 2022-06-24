@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import fetch from "isomorphic-unfetch";
+import Navbar from "../components/Navbar";
 import Router from "next/router";
-import TableLayout from "../skeleton/TableLayout";
+import List from "../components/List";
 import SearchBar from "../components/SearchBar";
-import { definitionsList } from "../const/definitions";
+import TableLayout from "../skeleton/TableLayout";
 import Fonts from "../components/Fonts";
+import config from "../configs";
 import Template from "../components/Template";
+import WishListPopUp from "../components/WishListPopUp";
+import WishListProvider from "../context/WishList";
 import { useAuth } from "../context/AuthUserContext";
 
-const Definitions = () => {
-  const [defList, setDefList] = useState(definitionsList);
-  const [search, setSearch] = useState("");
+const { SHARE_API } = config;
 
-  const [filteredItems, setFilteredItems] = useState([]);
+const Shares = (props) => {
+  const [search, setSearch] = useState("");
+  const [shares, setShares] = useState([]);
+  const [goodShares, setGoodShares] = useState([]);
+  const [isGoodShares, setIsGoodShares] = useState(false)
+  const [fixTableHeader, setFixTableHeader] = useState(false);
 
   const { authUser } = useAuth();
-
-  const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
 
   const redirectIfUserNotLoggedIn = async () => {
     const router = Router;
@@ -25,162 +29,71 @@ const Definitions = () => {
     if (!authUser) router.push("/login");
   };
 
+  const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
   useEffect(async () => {
     Fonts();
+    const { shares, goodShares } = props;
+    setShares(shares);
+    setGoodShares(goodShares);
+    window.addEventListener("scroll", handleScroll);
     //await redirectIfUserNotLoggedIn();
   }, []);
 
-  useEffect(() => {
-    setFilteredItems(() =>
-      defList.filter(
-        (item) =>
-          item.alias.toUpperCase().includes(search.toUpperCase()) ||
-          item.name.toUpperCase().includes(search.toUpperCase())
-      )
-    );
-  }, [search, defList]);
-
   const handleSearchBar = (e) => {
-    setSearch(() => e.target.value);
+    setSearch(e.target.value);
+    setFixTableHeader(false);
   };
 
-  const handleDef = (e) => {
-    const id = parseInt(e.target.getAttribute("name"));
-    setDefList((previousState) =>
-      previousState.map((def) => {
-        if (def.id === id) {
-          return { ...def, showDef: !def.showDef };
-        }
-        return def;
-      })
-    );
+  const goToFundamentus = (share) => {
+    const router = Router;
+    router.push(`https://statusinvest.com.br/acoes/${share.toLowerCase()}`);
+  };
+
+  const isTableHeaderFixed = (position) => position.top < 0;
+
+  const handleScroll = () => {
+    const elem = document.getElementById("share-data");
+    let position = elem.getBoundingClientRect();
+
+    setFixTableHeader(isTableHeaderFixed(position));
   };
 
   return (
     <>
       {authUser && (
-        <Template tabTitle={"indicators"}>
-          <section className="definitions">
+        <Template tabTitle={"all-shares"}>
+          <section className="home">
             <SearchBar
               handleSearchBar={handleSearchBar}
               value={search}
-              placeholder={"Indicador"}
+              placeholder={"Ativo"}
             ></SearchBar>
             <TableLayout>
-              <div className="definitions__list">
-                {filteredItems.map((def) => {
-                  return !def.showDef ? (
-                    <div
-                      className="definitions__list_item"
-                      name={def.id}
-                      key={def.id}
-                      onMouseEnter={handleDef}
-                    >
-                      {def.alias}
-                    </div>
-                  ) : (
-                    <div
-                      className="definitions__list_item_desc"
-                      name={def.id}
-                      key={def.id}
-                      onMouseLeave={handleDef}
-                    >
-                      <div className="">
-                        <h3>{def.name}</h3>
-                      </div>
-                      {def.definition}
-                    </div>
-                  );
-                })}
-              </div>
+              <WishListProvider>
+                <List
+                  fixTableHeader={fixTableHeader}
+                  shares={isGoodShares ? goodShares : shares}
+                  value={search}
+                  setIsGoodShares={setIsGoodShares}
+                  isGoodShares={isGoodShares}
+                  goToFundamentus={goToFundamentus}
+                ></List>
+                <WishListPopUp></WishListPopUp>
+              </WishListProvider>
             </TableLayout>
 
             <style jsx global>{`
-              .definitions__list {
-                display: flex;
-                flex-wrap: wrap;
-              }
-
-              .definitions__list_item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid white;
-                flex-basis: 45.8%;
-                margin: 1% 1%;
-                padding: 1%;
-                height: 40vh;
-                transition: 0.3s ease-out;
-                font-size: 35px;
-                cursor: pointer;
-              }
-
-              @media (max-width: 1440px) {
-                .definitions__list_item {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  border: 1px solid white;
-                  flex-basis: 45.8%;
-                  margin: 1% 1%;
-                  padding: 1%;
-                  height: 40vh;
-                  transition: 0.3s ease-out;
-                  font-size: 35px;
-                  cursor: pointer;
-                }
-
-                .definitions__list_item_desc {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  border: 1px solid white;
-                  flex-basis: 45.8%;
-                  margin: 1% 1%;
-                  padding: 1%;
-                  height: 40vh;
-                  font-size: 20px;
-                  cursor: pointer;
-                }
-              }
-
-              @media (min-width: 1441px) {
-                .definitions__list_item {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  border: 1px solid white;
-                  flex-basis: 20.8%;
-                  margin: 1% 1%;
-                  padding: 1%;
-                  height: 40vh;
-                  transition: 0.3s ease-out;
-                  font-size: 35px;
-                  cursor: pointer;
-                }
-
-                .definitions__list_item_desc {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  border: 1px solid white;
-                  flex-basis: 20.8%;
-                  margin: 1% 1%;
-                  padding: 1%;
-                  height: 40vh;
-                  font-size: 20px;
-                  cursor: pointer;
-                }
-              }
-
-              .definitions__list_item:hover {
-                background-color: grey;
-                cursor: pointer;
+              body,
+              html {
+                margin: 0px;
+                color: white;
+                background-color: #000000;
+                font-family: "Baloo Bhaina 2", cursive;
+                font-style: normal;
+                font-display: swap;
               }
             `}</style>
           </section>
@@ -190,10 +103,18 @@ const Definitions = () => {
   );
 };
 
-// render() {
-//   const { definitionsList, search } = this.state;
-//   let filteredItems = definitionsList.filter((item) =>
-//   item.alias.toUpperCase().includes(search.toUpperCase()) ||
-//   item.name.toUpperCase().includes(search.toUpperCase()))
-// }
-export default Definitions;
+export async function getServerSideProps() {
+  let shares = await fetch(`${SHARE_API}/shares/indicators`);
+  let goodShares = await fetch(`${SHARE_API}/shares/indicators?optimized=true`);
+  const { items: sharesItems } = await shares.json();
+  const { items: goodSharesItems } = await goodShares.json();
+
+  return {
+    props: {
+      shares: sharesItems,
+      goodShares: goodSharesItems
+    },
+  };
+}
+
+export default Shares;

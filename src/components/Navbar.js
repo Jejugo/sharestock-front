@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'; 
-import { signOut } from "@firebase/auth";
+import { signOut, getAuth } from "@firebase/auth";
 import Router from 'next/router'
 import { useAuth } from '../context/AuthUserContext'
 
@@ -7,6 +7,7 @@ const Navbar = (props) => {
   const [loggedUser, setLoggedUser] = useState('')
   const [ isNavbarOpen, setIsNavbarOpen] = useState(true)
   const { authUser, authLoading } = useAuth()
+  const auth = getAuth()
 
   const handleSignout = async () => {
     await signOut(auth)
@@ -30,27 +31,10 @@ return (
     <nav className={isNavbarOpen ? 'navbar' : 'navbar--close'}>
       <div className="navbar__close" onClick={handleNavbarOpen}>CLOSE</div>
       <ul className="navbar__wrap">
-        <li className="navbar__item">
-          <a href="/" className="navbar__item_link">Como começar</a>
-        </li>
-        <li className="navbar__item">
-          <a href='/indicators' className="navbar__item_link">Indicadores</a>
-        </li>
-        <li className="navbar__item">
-          <a href="/shares" className="navbar__item_link">Ativos</a>
-        </li>
-        <li className="navbar__item">
-          <a href='/good-indicators' className="navbar__item_link">Atrativos</a>
-        </li>
-        <li className="navbar__item">
-          <a href='/strategy' className="navbar__item_link">Estratégia</a>
-        </li>
-      </ul>
-      <ul className="navbar__wrap">
         {
           loggedUser ? (
             <>
-            <li className="navbar__item"><a className="navbar__item_link">{loggedUser}</a></li>
+            <li className="navbar__item"><a className="navbar__item_link">{loggedUser.split('@')[0]}</a></li>
             <li className="navbar__item"><a href="#" className="navbar__item_link" onClick={handleSignout}>Sign out</a></li>
             </>
           ) : (
@@ -61,6 +45,20 @@ return (
           )
         }
       </ul>
+      <ul className="navbar__wrap">
+        <li className="navbar__item">
+          <a href="/" className="navbar__item_link">Dicas</a>
+        </li>
+        <li className="navbar__item">
+          <a href='/definitions' className="navbar__item_link">Definições</a>
+        </li>
+        <li className="navbar__item">
+          <a href="/indicators" className="navbar__item_link">Indicadores</a>
+        </li>
+        <li className="navbar__item">
+          <a href='/strategy' className="navbar__item_link">Estratégia</a>
+        </li>
+      </ul>
     </nav>
 
   <style jsx>{`
@@ -68,11 +66,10 @@ return (
       position: fixed;
       height: 100%;
       left: 0;
-      width: 10%;
+      width: 15%;
       padding: 20px 0;
       background-color: #ddd;
       display: flex;
-      align-items: space-between;
       flex-direction: column;
       transition: 1s ease;
     }
@@ -102,9 +99,6 @@ return (
       display: flex;
       flex-direction: column;
       list-style: none;
-      align-items: space-around;
-      align-items: center;
-      height: 100%;
       margin: 0;
     }
 

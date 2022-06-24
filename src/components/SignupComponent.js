@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { auth } from "../firebase"
 import { createUserWithEmailAndPassword, getAuth } from "@firebase/auth";
+import Router from "next/router"
 
 const SignupComponent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const auth = getAuth()
 
   const handleSubmit = async (e) => {
-      // e.preventDefault()
-      // try{
-      //   const user = await createUserWithEmailAndPassword(auth, email, password)
-      //   if(user)
-      //     router.push('/')
-      // }
-      // catch(err){
-      //   alert("Error: ", err.message)
-      // }
+      e.preventDefault()
+      try{
+        const user = await createUserWithEmailAndPassword(auth, email, password)
+        if(user)
+          Router.push('/')
+      }
+      catch(err){
+        console.error('Error: ', err)
+      }
   }
 
   return (
@@ -35,6 +38,14 @@ const SignupComponent = () => {
           value={password}
           onChange={(e) => setPassword(() => e.target.value)}
           placeholder="Digite sua senha"
+        ></input>
+      </div>
+      <div className="signup__input">
+        <input
+          className="signup__input_value"
+          value={name}
+          onChange={(e) => setName(() => e.target.value)}
+          placeholder="Digite seu Nome"
         ></input>
       </div>
       <button className="submit" type="submit">Registrar</button>
@@ -59,6 +70,7 @@ const SignupComponent = () => {
             width: 50%;
             height: 30px;
             margin: 10px 0;
+            width: 100%;
         }
 
         .signup__input_value {
@@ -69,6 +81,10 @@ const SignupComponent = () => {
 
         .submit{
           margin: 10px 0 0 0;
+          padding: 5px 15px;
+          font-size: 16px;
+          border: 0;
+          border-radius: 5px; 
         }
       `}</style>
     </form>

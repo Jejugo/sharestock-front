@@ -18,12 +18,13 @@ const WishListPopUp = () => {
   }, [wishList]);
 
   useEffect(async () => {
-    const { shares } = await Firestore().getAllItems({
+    const data = await Firestore().getAllItems({
       collection: "watchlist",
       id: authUser.uid,
     });
-
-    setWishList(shares);
+    if(data && data.shares){
+      setWishList(data.shares);
+    }
   }, []);
 
   const removeItem = async (e, item) => {

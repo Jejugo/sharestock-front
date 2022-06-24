@@ -11,7 +11,7 @@ import { WishListContext } from '../context/WishList'
 const { SHARE_API } = config;
 
 const List = (props) => {
-  const { shares, value, goToFundamentus, fixTableHeader} = props
+  const { shares, value, goToFundamentus, fixTableHeader, setIsGoodShares, isGoodShares } = props
   const [listMode, setListMode] = useState('table')
   const [loading, setLoading] = useState(false)
   const [filteredData, setFilteredData] = useState([])
@@ -61,6 +61,7 @@ const List = (props) => {
         <li className="view__item--click" name="table" onClick={(e) => handleView(e)}><FormatAlignJustifyIcon/></li>
         <li className="view__item--click" name="frames" onClick={(e) => handleView(e)}><ViewModuleIcon/></li>
         <li className="view__item--click" name="frames" onClick={syncData}><CachedIcon/></li>
+        <li className="view__item--click" name="frames"><span className="view__item_highlight" onClick={() => setIsGoodShares(prevState => !prevState)}> { isGoodShares ? 'Todos os ativos' : 'Bons Ativos' }</span></li>
       </div>
     </ul>
     {listMode === 'table' && (
@@ -83,6 +84,22 @@ const List = (props) => {
       font-size: 20px;
     }
 
+    .view__item_highlight {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 4px 8px;
+      color: white;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 700;
+      background-color: green;
+      border-radius: 15px;
+      width: 150px;
+      vertical-align: center;
+      text-align: center;
+      
+    }
+
     .view__item--click{
       cursor: pointer;
       flex-basis: 20%;
@@ -91,8 +108,15 @@ const List = (props) => {
       font-size: 20px;
     }
 
+    .view__item--click:last-child{
+      margin-right: 0;
+    }
+
     .visualize__wrapper{
       display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
     }
   `}</style>
   </section>

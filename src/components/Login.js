@@ -59,9 +59,11 @@ const LoginComponent = () => {
         }
 
         .login__input{
-            width: 50%;
+            width: 100%;
             height: 30px;
             margin: 10px 0;
+            outline: none;
+            border: none;
         }
 
         .login__input_value {
@@ -72,6 +74,10 @@ const LoginComponent = () => {
 
         .submit{
           margin: 10px 0 0 0;
+          padding: 5px 15px;
+          font-size: 16px;
+          border: 0;
+          border-radius: 5px; 
         }
       `}</style>
     </form>

@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
-import Navbar from "../components/Navbar"
-import TextLayout from "../skeleton/TextLayout"
 import Fonts from "../components/Fonts"
 import SignupComponent from "../components/SignupComponent"
+import LendingPageLayout from "../skeleton/LendingPageLayout"
 
 const Signup = () => {
 
@@ -12,10 +11,9 @@ const Signup = () => {
 
     return (
         <section>
-            <Navbar></Navbar>
-            <TextLayout>
+            <LendingPageLayout>
                 <SignupComponent></SignupComponent>
-            </TextLayout>
+            </LendingPageLayout>
         </section>
     )
 }
