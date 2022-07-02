@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 
 const NEGATIVE_DEFAULT = 0.01;
 
@@ -79,7 +80,12 @@ export default function SuggestedPercentages({ walletResistancePoints, setShowSu
 
   return (
     <section className="suggested_percentages">
-      <p className="suggested_percentages__back" onClick={() => setShowSuggestedPercentages(false)}> Voltar para </p>
+      <p className="suggested_percentages__back" onClick={() => setShowSuggestedPercentages(false)}>
+        <div className="suggested_percentages__back_wrapper">
+          <ArrowBackIosNewOutlinedIcon fontSize="small"/>
+          <span>Voltar</span>
+        </div>
+      </p>
       <h1 className="suggested_percentages__title">
         Essas são as porcentages recomendadas para sua carteira:
       </h1>
@@ -100,10 +106,15 @@ export default function SuggestedPercentages({ walletResistancePoints, setShowSu
         ))}
       </ul>
       <style>{`
+        .suggested_percentages__back_wrapper{
+          display: flex;
+          align-items: center;
+        }
         .suggested_percentages__back{
-          position: absolute;
-          left: 10px;
+          position: relative;
+          left: -30%;
           top: 10%;
+          cursor: pointer;
         }
         .suggested_percentages__title{
           font-size: 20px;

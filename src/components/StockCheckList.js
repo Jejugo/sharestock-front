@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
 import { useAuth } from "../context/AuthUserContext";
 import Firestore from '../firebase/Firestore';
+import axios from 'axios';
 
 export default function StockCheckList({
   statements,
@@ -12,22 +13,29 @@ export default function StockCheckList({
   assetValue,
   editStatements,
   storeAssetStatementsAndClean,
-  storeAssetAndCalculate
+  storeAssetAndCalculate,
+  shares
 }) {
   const { authUser } = useAuth();
   const [assets, setAssets] = useState([]);
 
   const changeCompany = async (e) => {
-    uncheckStatements();
     setAssetValue(e.target.value);
+    uncheckStatements();
   };
 
   useEffect(async () => {
     if(assetValue){
       const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
-      setStatements(data[assetValue])
+      if(data.hasOwnProperty(assetValue)) setStatements(data[assetValue])
+      else return
     }
   }, [assetValue])
+
+  useEffect(async () => {
+    setAssets(shares)
+  }, [])
+
   return (
     <section className="stock-checklist">
       <h1 className="stock-checklist__title">Escolha o ativo:</h1>
@@ -36,9 +44,11 @@ export default function StockCheckList({
           <option value="" selected disabled>
             Selecione
           </option>
-          <option value="abev3">ABEV3</option>
-          <option value="mglu3">MGLU3</option>
-          <option value="petr4">PETR4</option>
+          {
+            assets.map(asset => (
+              <option value={asset["código_de_neg."].toLowerCase()}>{asset["código_de_neg."]}</option>
+            ))
+          }
         </select>
       </div>
       <ul className="stock-checklist__list">

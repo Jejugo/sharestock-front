@@ -30,7 +30,7 @@ const SearchBar = ({ handleSearchBar, value, placeholder }) => (
         border-radius: 5px;
         outline: none;
         font-size: 20px;
-        width: 30%;
+        width: 50%;
         color: black;
         height: 30px;
       }

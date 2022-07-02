@@ -3,6 +3,7 @@ import App from "next/app";
 import { wrapper } from "../_redux";
 import { AuthUserProvider } from '../context/AuthUserContext';
 import initFirebase from '../firebase';
+import Fonts from "../components/Fonts";
 
 const app = initFirebase()
 class MyApp extends App {
@@ -13,6 +14,10 @@ class MyApp extends App {
       : {};
 
     return { pageProps, app };
+  }
+
+  componentDidMount(){
+    Fonts();
   }
 
   render() {

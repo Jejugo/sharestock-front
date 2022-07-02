@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import fetch from "isomorphic-unfetch";
-import Navbar from "../components/Navbar";
 import Router from "next/router";
 import List from "../components/List";
 import SearchBar from "../components/SearchBar";
 import TableLayout from "../skeleton/TableLayout";
-import Fonts from "../components/Fonts";
 import config from "../configs";
-import Template from "../components/Template";
+import Template from "../skeleton/Template";
 import WishListPopUp from "../components/WishListPopUp";
 import WishListProvider from "../context/WishList";
 import { useAuth } from "../context/AuthUserContext";
 
 const { SHARE_API } = config;
 
-const Shares = (props) => {
+const Indicators = (props) => {
   const [search, setSearch] = useState("");
   const [shares, setShares] = useState([]);
   const [goodShares, setGoodShares] = useState([]);
@@ -34,7 +32,6 @@ const Shares = (props) => {
   };
 
   useEffect(async () => {
-    Fonts();
     const { shares, goodShares } = props;
     setShares(shares);
     setGoodShares(goodShares);
@@ -117,4 +114,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default Shares;
+export default Indicators;

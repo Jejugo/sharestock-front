@@ -1,10 +1,8 @@
 import Template from "../components/Template";
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import Router from 'next/router'
 import TableLayout from "../skeleton/TableLayout";
 import SearchBar from "../components/SearchBar";
-import Fonts from "../components/Fonts";
 import Template from "../components/Template";
 import { useAuth } from '../context/AuthUserContext'
 
@@ -20,11 +18,6 @@ const WatchList = () => {
   const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
-  useEffect(async () => {
-    Fonts();
-    //await redirectIfUserNotLoggedIn();
-  }, []);
 
   return (
     <Template tabTitle={"watchlist"}>

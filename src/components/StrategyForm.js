@@ -3,6 +3,7 @@ import StockCheckList from "./StockCheckList";
 import SuggestedPercentages from "./SuggestedPercentages";
 import { useAuth } from "../context/AuthUserContext";
 import Firestore from '../firebase/Firestore';
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import {
   getFirestore,
   updateDoc,
@@ -12,7 +13,7 @@ import {
 } from "firebase/firestore";
 import StrategyDefinition from "./StrategyDefinition";
 
-export default function StrategyForm({ setShowStrategies }) {
+export default function StrategyForm(props) {
   const db = getFirestore();
   const { authUser } = useAuth();
   const [inputStatement, setInputStatement] = useState("");
@@ -123,6 +124,8 @@ export default function StrategyForm({ setShowStrategies }) {
   };
 
   const uncheckStatements = () => {
+    console.log('unchecking...')
+    console.log(statements)
     setStatements((prevState) =>
       prevState.map((state) => ({ ...state, checked: false }))
     );
@@ -144,6 +147,7 @@ export default function StrategyForm({ setShowStrategies }) {
         checked: false
       }))
 
+      console.log(cachedStrategyStatementsList)
       setStatements(cachedStrategyStatementsList)
     }
 
@@ -164,13 +168,13 @@ export default function StrategyForm({ setShowStrategies }) {
           editStatements={editStatements}
           storeAssetStatementsAndClean={storeAssetStatementsAndClean}
           storeAssetAndCalculate={storeAssetAndCalculate}
+          shares={props.shares}
         ></StockCheckList>
         </>
       ) : showSuggestedPercentages ? (
         <SuggestedPercentages walletResistancePoints={walletResistancePoints} setShowSuggestedPercentages={setShowSuggestedPercentages}></SuggestedPercentages>
       ) : (
         <>
-        <p className="strategy-form__back" onClick={() => setShowStrategies(false)}> Volte para o início </p>
         <StrategyDefinition 
           handleInputStatement={handleInputStatement} 
           inputStatement={inputStatement} 

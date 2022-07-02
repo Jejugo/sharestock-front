@@ -3,8 +3,7 @@ import Router from "next/router";
 import TableLayout from "../skeleton/TableLayout";
 import SearchBar from "../components/SearchBar";
 import { definitionsList } from "../const/definitions";
-import Fonts from "../components/Fonts";
-import Template from "../components/Template";
+import Template from "../skeleton/Template";
 import { useAuth } from "../context/AuthUserContext";
 
 const Definitions = () => {
@@ -24,11 +23,6 @@ const Definitions = () => {
     await sleep(2000);
     if (!authUser) router.push("/login");
   };
-
-  useEffect(async () => {
-    Fonts();
-    //await redirectIfUserNotLoggedIn();
-  }, []);
 
   useEffect(() => {
     setFilteredItems(() =>
@@ -99,6 +93,8 @@ const Definitions = () => {
               .definitions__list {
                 display: flex;
                 flex-wrap: wrap;
+                width: 100%;
+                margin: 0 auto;
               }
 
               .definitions__list_item {

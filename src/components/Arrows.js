@@ -16,7 +16,7 @@ export default function Arrows({ handleCountNext, handleCountPrev }){
         .arrow-wrapper{
             position: absolute;
             top: 20%;
-            width: 60%;
+            width: 43%;
         }
         .arrow {
           display: flex;
@@ -25,14 +25,14 @@ export default function Arrows({ handleCountNext, handleCountPrev }){
         }
 
         .arrow__next {
-            padding: 25% 30px;
+            padding: 25% 5px;
             position: absolute;
             cursor: pointer;
             right: 0;
         }
 
         .arrow__prev {
-            padding: 25% 30px;
+            padding: 25% 5px;
             position: absolute;
             cursor: pointer;
             left: 0;

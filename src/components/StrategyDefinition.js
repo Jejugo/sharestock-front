@@ -1,4 +1,5 @@
 import React from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function StrategyDefinition({
   handleInputStatement,
@@ -33,18 +34,6 @@ export default function StrategyDefinition({
           placeholder="Defina o peso"
           className="strategy-form__input"
         ></input>
-        <button
-          onClick={(e) => addStatement(e)}
-          className="strategy-form__button"
-        >
-          Adicionar
-        </button>
-        <button
-          onClick={(e) => storeStatements(e)}
-          className="strategy-form__button"
-        >
-          Salvar
-        </button>
       </form>
       <ul className="strategy-form__list">
         {statements.map((statement, index) => (
@@ -55,56 +44,72 @@ export default function StrategyDefinition({
                 className="strategy-form__list_item--remove"
                 onClick={(e) => removeStatement(e, statement, index)}
               >
-                {" "}
-                X{" "}
+                <DeleteIcon></DeleteIcon>
               </span>
             </li>
           </div>
         ))}
       </ul>
+      <div style={{justifyContent: 'center', display: 'flex'}}>
+        <button
+            onClick={(e) => addStatement(e)}
+            className="strategy-form__button"
+          >
+            Adicionar
+        </button>
+        <button
+            onClick={(e) => storeStatements(e)}
+            className="strategy-form__button"
+          >
+            Salvar
+        </button>
+      </div>
       <style>{`
-        .strategy-form__back{
-            position: absolute;
-            left: 10px;
-            top: 10%;
-          }
-          .strategy-form__buttons{
-            display: flex;
-            justify-content: space-around;
-            width: 60%;
-            margin: 0 auto;
-          }
-          .strategy-form__buttons_btn{
-            padding: 5px 20px;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-          }
-          .strategy-form__list{
-            list-style: none;
-            padding: 0;
-          }
-          .strategy-form__list_item{
-            margin: 5px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          }
-          .strategy-form__list_item--remove{
-            cursor: pointer;
-          }
-          .strategy-form__button{
-            padding: 5px;
-            margin-right: 5px;
-          }
-          .strategy-form__input{
-            padding: 5px;
-            margin-right: 5px;
-          }
-          .strategy-form__input_statement{
-            width: 300px;
-          }
-          `}</style>
+        .suggested_percentages__back_wrapper{
+          display: flex;
+          align-items: center;
+          position: relative;
+          left: -30%;
+          top: 20px;
+          cursor: pointer;
+        }
+        .strategy-form__buttons{
+          display: flex;
+          justify-content: space-around;
+          width: 60%;
+          margin: 0 auto;
+        }
+        .strategy-form__buttons_btn{
+          padding: 5px 20px;
+          border: none;
+          font-size: 16px;
+          border-radius: 5px;
+        }
+        .strategy-form__list{
+          list-style: none;
+          padding: 0;
+        }
+        .strategy-form__list_item{
+          margin: 5px 0;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .strategy-form__list_item--remove{
+          cursor: pointer;
+        }
+        .strategy-form__button{
+          padding: 5px;
+          margin-right: 5px;
+        }
+        .strategy-form__input{
+          padding: 5px;
+          margin-right: 5px;
+        }
+        .strategy-form__input_statement{
+          width: 300px;
+        }
+      `}</style>
     </section>
   );
 }

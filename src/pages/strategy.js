@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Router from "next/router";
-import Fonts from "../components/Fonts";
-import Template from "../components/Template";
+import Template from "../skeleton/Template";
 import StrategyForm from "../components/StrategyForm";
-import CompanyTypePercentages from "../components/CompanyTypePercentages";
 import { useAuth } from "../context/AuthUserContext";
+import config from "../configs";
 
-export default function strategy() {
+const { SHARE_API } = config;
+
+const Strategy = (props) => {
   const { authUser } = useAuth();
+  const [shares, setShares] = useState([]);
 
   const redirectIfUserNotLoggedIn = async () => {
     const router = Router;
@@ -19,26 +21,32 @@ export default function strategy() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
-  useEffect(async () => {
-    Fonts();
-    //await redirectIfUserNotLoggedIn();
-  }, []);
-
-  const [showStrategies, setShowStrategies] = useState(false);
+  useEffect(() => {
+    const { shares } = props;
+    setShares(shares);
+  })
 
   return (
     <>
       {authUser && (
         <Template tabTitle={"strategy"}>
-          { !showStrategies && (
-            <CompanyTypePercentages
-            setShowStrategies={setShowStrategies}
-            ></CompanyTypePercentages>
-            )
-          }
-          {showStrategies && <StrategyForm setShowStrategies={setShowStrategies}></StrategyForm>}
+          <StrategyForm shares={shares}></StrategyForm>
         </Template>
       )}
     </>
   );
 }
+
+export async function getServerSideProps() {
+  console.log('oi')
+  let shares = await fetch(`${SHARE_API}/shares/all`);
+  const sharesItems = await shares.json();
+
+  return {
+    props: {
+      shares: sharesItems
+    },
+  };
+}
+
+export default Strategy;

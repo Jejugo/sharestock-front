@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Template from "../skeleton/Template";
 import Steps from "../components/Steps";
 import TextLayout from "../skeleton/TextLayout";
 import Fonts from "../components/Fonts";
@@ -40,12 +40,9 @@ const HowToStart = () => {
 
   return (
     <>
-    {
-      authUser && (
-        <>
-        <section className="how-to-start">
-          <Navbar />
-          <TextLayout> 
+    {authUser && (
+            <Template tabTitle={"strategy"}>
+                <TextLayout> 
             <Steps
               steps={steps}
               count={count}
@@ -53,7 +50,8 @@ const HowToStart = () => {
               handleCountPrev={handleCountPrev}
             ></Steps>
           </TextLayout>
-      </section>
+            </Template>
+            )}
       <style jsx global>{`
         body,
         html {
@@ -67,10 +65,7 @@ const HowToStart = () => {
         }
       `}</style>
       </>
-      )
-    }
-    </>
-  );
+      );
 };
 
 export default HowToStart;

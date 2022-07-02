@@ -1,39 +1,13 @@
-import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+
 import React, { useEffect, useState } from "react";
+import Slider from "@mui/material/Slider";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useAuth } from "../context/AuthUserContext";
 import Firestore from "../firebase/Firestore";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-export default function CompanyTypePercentages({ setShowStrategies }) {
+export default function CompanyTypePercentages() {
   const { authUser } = useAuth();
-  const [chartState, setChartState] = useState({
-    labels: [],
-    datasets: [
-      {
-        label: "Percent of shares",
-        data: [],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  });
+
   const [selectForms, setSelectForms] = useState([
     {
       name: "agro",
@@ -41,8 +15,6 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
       value: "",
     },
   ]);
-
-  const [showChart, setShowChart] = useState(false);
 
   const addNewItem = () => {
     setSelectForms((prevState) => [
@@ -56,11 +28,11 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
   };
 
   const removeItem = (e, name) => {
-    e.preventDefault()
-    console.log(name)
-    console.log(selectForms)
-    setSelectForms(prevState => prevState.filter(item => item.name !== name))
-  }
+    e.preventDefault();
+    setSelectForms((prevState) =>
+      prevState.filter((item) => item.name !== name)
+    );
+  };
 
   const handleCompanyType = (e, index) => {
     setSelectForms((prevState) => {
@@ -105,18 +77,6 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
           id: authUser.uid,
           item: firebaseState,
         });
-
-        setChartState((prevState) => ({
-          ...prevState,
-          labels: selectForms.map((select) => select.name),
-          datasets: prevState.datasets.map((dataset, index) => {
-            return {
-              ...prevState.datasets[index],
-              data: selectForms.map((select) => select.value),
-            };
-          }),
-        }));
-        setShowChart(true);
       } catch (error) {
         console.error(error);
       }
@@ -127,9 +87,9 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
 
   useEffect(async () => {
     const firestorePercentages = await Firestore().getSingleItem({
-      collection: 'userStrategyPercentages',
-      id: authUser.uid
-    })
+      collection: "userStrategyPercentages",
+      id: authUser.uid,
+    });
     const cachedPercentageList = Object.keys(firestorePercentages).map(
       (companyName, index) => ({
         name: companyName,
@@ -143,60 +103,69 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
 
   return (
     <section className="companyType">
-      {showChart ? (
-        <>
-          <section className="companyType__chart">
-            <Pie data={chartState} />
-          </section>
-          <button
-            className="companyType__chart_button"
-            onClick={() => setShowChart(false)}
-          >
-            Editar
-          </button>
-          <button className="companyType__chart_button" onClick={() => setShowStrategies(true)}> Definir estratégias </button> 
-        </>
-      ) : (
-        <>
-          <h1 className="companyType__title">
-            Defina a parcela de investimento nos tipos de negócio:
-          </h1>
-          {checkIfPercentagesSum100() === true ? (
-            <p className="companyType__feedback-positive">
-              Os valores somam 100%!
-            </p>
-          ) : (
-            <p className="companyType__feedback-negative">
-              Os valores tem que somar 100%.
-            </p>
-          )}
-          <ul className="companyType__list">
-            {selectForms.length > 0 &&
-              selectForms.map((selectForm, index) => (
-                <li className="companyType__list_item">
-                  <select
-                    className="companyType__list_item_dropdown"
-                    value={selectForm.name}
-                    onChange={(e) => handleCompanyType(e, index)}
-                  >
-                    <option value="agro">Agro</option>
-                    <option value="ti">TI</option>
-                    <option value="alimenticio">Alimenticio</option>
-                  </select>
-                  <input
+      <>
+        <h1 className="companyType__title">
+          Defina a parcela de investimento nos tipos de negócio:
+        </h1>
+        <h6 className="companyType__title">Ações</h6>
+        {checkIfPercentagesSum100() === true ? (
+          <p className="companyType__feedback-positive">
+            Os valores somam 100%!
+          </p>
+        ) : (
+          <p className="companyType__feedback-negative">
+            Os valores tem que somar 100%.
+          </p>
+        )}
+        <ul className="companyType__list">
+          {selectForms.length > 0 &&
+            selectForms.map((selectForm, index) => (
+              <li className="companyType__list_item">
+                <select
+                  className="companyType__list_item_dropdown"
+                  value={selectForm.name}
+                  onChange={(e) => handleCompanyType(e, index)}
+                >
+                  <option value="agro">Agro</option>
+                  <option value="ti">TI</option>
+                  <option value="alimenticio">Alimenticio</option>
+                </select>
+                <Slider
+                  aria-label="Custom marks"
+                  defaultValue={20}
+                  getAriaValueText={""}
+                  step={5}
+                  value={selectForm.value}
+                  onChange={(e) => handleCompanyShare(e, index)}
+                  valueLabelDisplay="auto"
+                  marks={[]}
+                />
+                <span className="companyType__list_item_value">
+                  {selectForm.value}%
+                </span>
+                {/* <input
                     className="companyType__list_item_input"
                     value={selectForm.value}
                     onChange={(e) => handleCompanyShare(e, index)}
-                  ></input>{" "}
-                  %
-                  <span className="companyType__list_item--remove" onClick={(e) => removeItem(e, selectForm.name)}> X </span>
-                </li>
-              ))}
-          </ul>
-          <button onClick={addNewItem}>Adicionar</button>
-          <button onClick={calculateAndShowChart}>Salvar</button>
-        </>
-      )}
+                  ></input>{" "} */}
+
+                <span
+                  className="companyType__list_item--remove"
+                  onClick={(e) => removeItem(e, selectForm.name)}
+                >
+                  <DeleteIcon />
+                </span>
+              </li>
+            ))}
+        </ul>
+        <button className="companyType__btn" onClick={addNewItem}>
+          Adicionar
+        </button>
+        <button className="companyType__btn" onClick={calculateAndShowChart}>
+          Salvar
+        </button>
+      </>
+      }
       <style>
         {`
         .companyType__title{
@@ -204,11 +173,6 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
         }
         .companyType{
           text-align: center;
-        }
-        .companyType__chart{
-          width: 30%;
-          height: 30%;
-          margin: 5% auto 5% auto;
         }
         .companyType__chart_button{
           margin: 2% 0;
@@ -219,14 +183,22 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
             list-style: none;
             padding: 0;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .companyType__list_item{
           margin: 5px 0;
+          display: flex;
+          width: 60%;
+          justify-content: center;
+          align-items: center;
+        }
+        .companyType__list_item_value{
+          margin-left: 20px;
         }
         .companyType__list_item--remove{
-          position: absolute;
-          right: 0;
-          color: red;
+          margin-left: 20px;  
           cursor: pointer;
         }
         .companyType__list_item_dropdown{
@@ -251,7 +223,11 @@ export default function CompanyTypePercentages({ setShowStrategies }) {
             color: red;
             font-size: 18px;
         }
-            padding: 10px 20px;
+        .companyType__btn{
+          padding: 5px 15px;
+          margin: 10px;
+          font-size: 16px;
+          cursor: pointer;
         }
         
       `}
