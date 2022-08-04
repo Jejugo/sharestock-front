@@ -118,18 +118,22 @@ export default function SuggestedPercentages({ walletResistancePoints, setShowSu
         }
         .suggested_percentages__title{
           font-size: 20px;
+          color: white;
         }
         .suggested_percentages__list{
           padding: 0;
           list-style: none;
+          color: white;
         }
         .suggested_percentages__list_item{
           margin: 10px 0px;
           font-size: 18px;
+          color: white;
         }
         .suggested_percentages__list_item--header, .suggested_percentages__list_item--row{
           display: flex;
           justify-content: space-between;
+          color: white;
         }
       `}</style>
     </section>

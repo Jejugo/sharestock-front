@@ -38,7 +38,6 @@ const Strategy = (props) => {
 }
 
 export async function getServerSideProps() {
-  console.log('oi')
   let shares = await fetch(`${SHARE_API}/shares/all`);
   const sharesItems = await shares.json();
 

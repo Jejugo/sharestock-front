@@ -8,6 +8,7 @@ export default function StrategyDefinition({
   inputWeight,
   statements,
   addStatement,
+  removeStatement,
   storeStatements
 }) {
   return (
@@ -34,6 +35,7 @@ export default function StrategyDefinition({
           placeholder="Defina o peso"
           className="strategy-form__input"
         ></input>
+        <button onClick={addStatement}>Adicionar</button>
       </form>
       <ul className="strategy-form__list">
         {statements.map((statement, index) => (
@@ -51,12 +53,6 @@ export default function StrategyDefinition({
         ))}
       </ul>
       <div style={{justifyContent: 'center', display: 'flex'}}>
-        <button
-            onClick={(e) => addStatement(e)}
-            className="strategy-form__button"
-          >
-            Adicionar
-        </button>
         <button
             onClick={(e) => storeStatements(e)}
             className="strategy-form__button"
@@ -99,8 +95,9 @@ export default function StrategyDefinition({
           cursor: pointer;
         }
         .strategy-form__button{
-          padding: 5px;
+          padding: 5px 50px;
           margin-right: 5px;
+          cursor: pointer;
         }
         .strategy-form__input{
           padding: 5px;

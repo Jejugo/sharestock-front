@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
 import { useAuth } from "../context/AuthUserContext";
-import Firestore from '../firebase/Firestore';
-import axios from 'axios';
+import Firestore from "../firebase/Firestore";
+import SuggestedPercentages from "./SuggestedPercentages";
 
 export default function StockCheckList({
   statements,
@@ -11,63 +11,106 @@ export default function StockCheckList({
   uncheckStatements,
   setAssetValue,
   assetValue,
-  editStatements,
-  storeAssetStatementsAndClean,
-  storeAssetAndCalculate,
-  shares
+  storeAssetStatements,
+  setShowAddAsset = null,
 }) {
   const { authUser } = useAuth();
-  const [assets, setAssets] = useState([]);
+  const [walletResistancePoints, setWalletResistancePoints] = useState({});
+  const [showSuggestedPercentages, setShowSuggestedPercentages] = useState(false);
+  const [ loading, setLoading ] = useState(false)
 
   const changeCompany = async (e) => {
     setAssetValue(e.target.value);
     uncheckStatements();
   };
 
-  useEffect(async () => {
-    if(assetValue){
-      const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
-      if(data.hasOwnProperty(assetValue)) setStatements(data[assetValue])
-      else return
-    }
-  }, [assetValue])
+  const storeAssetAndCalculate = async () => {
+    await storeAssetStatements();
+    setLoading(true);
+    const data = await Firestore().getAllItems({
+      collection: "userAssetStatements",
+      id: authUser.uid,
+    });
+    const result = Object.keys(data).reduce(
+      (acc, assetKey) => ({
+        ...acc,
+        [assetKey]: data[assetKey].reduce((acc, statement) => {
+          if (statement.checked) return acc + 1 * statement.weight;
+          if (!statement.checked) return acc + -1 * statement.weight;
+        }, 0),
+      }),
+      {}
+    );
+    setWalletResistancePoints(result);
+    setShowSuggestedPercentages(true);
+  };
 
   useEffect(async () => {
-    setAssets(shares)
-  }, [])
+    if (assetValue) {
+      const data = await Firestore().getAllItems({
+        collection: "userAssetStatements",
+        id: authUser.uid,
+      });
+      if (data.hasOwnProperty(assetValue)) setStatements(data[assetValue]);
+      else return;
+    }
+  }, [assetValue]);
+  
 
   return (
-    <section className="stock-checklist">
-      <h1 className="stock-checklist__title">Escolha o ativo:</h1>
-      <div className="stock-checklist__dropdown_wrapper">
-        <select className="stock-checklist__dropdown" value={assetValue} onChange={changeCompany}>
-          <option value="" selected disabled>
-            Selecione
-          </option>
-          {
-            assets.map(asset => (
-              <option value={asset["código_de_neg."].toLowerCase()}>{asset["código_de_neg."]}</option>
-            ))
-          }
-        </select>
-      </div>
-      <ul className="stock-checklist__list">
-        {statements.length > 0 &&
-          statements.map(({ statement, checked }, index) => (
-            <li className="stock-checklist__list_item">
-              <div className="stock-checklist__list_item--wrapper">
-              <p>{statement}</p>
-              <Switch onChange={(e) => handleStatementCheck(e, index)} checked={checked} disabled={!assetValue}/>
-              </div>
-            </li>
-          ))}
-      </ul>
-      <div className="strategy-form__buttons">
-          <button className="strategy-form__buttons_btn" onClick={editStatements}>back</button>
-          <button className="strategy-form__buttons_btn" onClick={storeAssetStatementsAndClean} disabled={!assetValue}>Adicionar</button>
-          <button className="strategy-form__buttons_btn" onClick={storeAssetAndCalculate} disabled={!assetValue}>Calcular</button>
-        </div>
-      <style>{`
+    <section>
+      {showSuggestedPercentages ? (
+        <SuggestedPercentages walletResistancePoints={walletResistancePoints} setShowSuggestedPercentages={setShowSuggestedPercentages}></SuggestedPercentages>
+      ) : (
+        <section className="stock-checklist">
+          <ul className="stock-checklist__list">
+            {statements.length > 0 &&
+              statements.map(({ statement, checked }, index) => (
+                <li className="stock-checklist__list_item">
+                  <div className="stock-checklist__list_item--wrapper">
+                    <p>{statement}</p>
+                    <Switch
+                      onChange={(e) => handleStatementCheck(e, index)}
+                      checked={checked}
+                      disabled={!assetValue}
+                    />
+                  </div>
+                </li>
+              ))}
+          </ul>
+          <div className="strategy-form__buttons">
+            {setShowAddAsset !== null && (
+              <button
+                className="strategy-form__buttons_btn"
+                onClick={() => setShowAddAsset()}
+              >
+                back
+              </button>
+            )}
+            {setShowAddAsset !== null ? (
+              <button
+                className="strategy-form__buttons_btn"
+                onClick={storeAssetStatements}
+                disabled={!assetValue}
+              >
+                Salvar
+              </button>
+            ) : (
+              <button
+                className="strategy-form__buttons_btn"
+                onClick={storeAssetAndCalculate}
+                disabled={!assetValue}
+              >
+                Calcular
+              </button>
+            )}
+          </div>
+        </section>
+      )}
+       <style>{`
+        p {
+          color: white;
+        }
         .stock-checklist__title, 
         .stock-checklist__dropdown{
           text-align: center;
@@ -148,6 +191,7 @@ export default function StockCheckList({
         }
 
       `}</style>
+
     </section>
   );
 }

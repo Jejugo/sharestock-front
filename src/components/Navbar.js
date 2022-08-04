@@ -6,6 +6,8 @@ import TableChartIcon from "@mui/icons-material/TableChart";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
+import PaidIcon from '@mui/icons-material/Paid';
+
 import Router from "next/router";
 import { useAuth } from "../context/AuthUserContext";
 
@@ -89,6 +91,14 @@ const Navbar = (props) => {
             </a>
           </li>
           <li className="navbar__item">
+            <a href="/invest" className="navbar__item_link">
+              <div className="navbar__item_wrap">
+                <PaidIcon />
+                <h4 className="navbar__item_text">{ isNavbarOpen && 'Aportar' }</h4>
+              </div>
+            </a>
+          </li>
+          <li className="navbar__item">
             <a href="/indicators" className="navbar__item_link">
               <div className="navbar__item_wrap">
                 <TableChartIcon />
@@ -97,7 +107,7 @@ const Navbar = (props) => {
             </a>
           </li>
           <li className="navbar__item">
-            <a href="/strategy" className="navbar__item_link">
+            <a href="/my-assets" className="navbar__item_link">
               <div className="navbar__item_wrap">
                 <FactCheckIcon />
                 <h4 className="navbar__item_text">{ isNavbarOpen && 'Meus Ativos' }</h4>

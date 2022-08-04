@@ -19,12 +19,7 @@ export default function StrategyForm(props) {
   const [inputStatement, setInputStatement] = useState("");
   const [inputWeight, setInputWeight] = useState("");
   const [loading, setLoading] = useState(false);
-  const [walletResistancePoints, setWalletResistancePoints] = useState({});
-  const [showSuggestedPercentages, setShowSuggestedPercentages] = useState(false)
-  const [showStockCheckList, setShowStockCheckList] = useState(false);
 
-  // ASSET STATEMENTS
-  const [assetValue, setAssetValue] = useState("");
   const [statements, setStatements] = useState([]);
 
   const addStatement = (e) => {
@@ -42,6 +37,7 @@ export default function StrategyForm(props) {
       },
     ]);
     setInputWeight('')
+    setInputStatement('')
   };
 
   const removeStatement = async (e, { statement }, index) => {
@@ -58,56 +54,29 @@ export default function StrategyForm(props) {
         id: authUser.uid,
         list: statements
       })
-
-      setShowStockCheckList(true);
+      alert('Salvo')
     }
     catch (err) {
       console.error(err)
     }
   };
 
-  const storeAssetStatementsAndClean = async () => {
-    await storeAssetStatements();
-    setStatements((previousState) => previousState.map(item => ({
-      ...item,
-      checked: false
-    })));
-    setAssetValue('');
-  }
+  // const storeAssetAndCalculate = async () => {
+  //   await storeAssetStatements();
+  //   setLoading(true)
+  //   const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
+  //   const result = Object.keys(data).reduce((acc, assetKey) => ({
+  //     ...acc,
+  //     [assetKey]: data[assetKey].reduce((acc, statement) => {
+  //       if(statement.checked) return acc + (1 * statement.weight)
+  //       if(!statement.checked) return acc + (-1 * statement.weight)
+  //     }, 0)
+  //   }), {})
+  //   setWalletResistancePoints(result)
+  //   setShowStockCheckList(false)
+  //   setShowSuggestedPercentages(true)
+  // }
 
-  const storeAssetAndCalculate = async () => {
-    await storeAssetStatements();
-    setLoading(true)
-    const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
-    const result = Object.keys(data).reduce((acc, assetKey) => ({
-      ...acc,
-      [assetKey]: data[assetKey].reduce((acc, statement) => {
-        if(statement.checked) return acc + (1 * statement.weight)
-        if(!statement.checked) return acc + (-1 * statement.weight)
-      }, 0)
-    }), {})
-    setWalletResistancePoints(result)
-    setShowStockCheckList(false)
-    setShowSuggestedPercentages(true)
-  }
-
-  const storeAssetStatements = async () => {
-    try {
-      await Firestore().addListAsObjectsWithList({
-        collection: "userAssetStatements",
-        id: authUser.uid,
-        list: statements,
-        key: assetValue
-      })
-    }
-    catch (err) {
-      console.error(err)
-    }
-  }
-
-  const editStatements = () => {
-    setShowStockCheckList(false);
-  };
 
   const handleInputStatement = (e) => setInputStatement(e.target.value);
 
@@ -121,14 +90,6 @@ export default function StrategyForm(props) {
         i === index ? { ...state, checked: !state.checked } : state
       ),
     ]);
-  };
-
-  const uncheckStatements = () => {
-    console.log('unchecking...')
-    console.log(statements)
-    setStatements((prevState) =>
-      prevState.map((state) => ({ ...state, checked: false }))
-    );
   };
 
   useEffect(async () => {
@@ -146,35 +107,14 @@ export default function StrategyForm(props) {
         weight: strategyStatements[companyName].weight,
         checked: false
       }))
-
-      console.log(cachedStrategyStatementsList)
       setStatements(cachedStrategyStatementsList)
     }
 
   }, [])
 
+    //<SuggestedPercentages walletResistancePoints={walletResistancePoints} setShowSuggestedPercentages={setShowSuggestedPercentages}></SuggestedPercentages>
   return (
     <section className="strategy-form">
-      {showStockCheckList ? (
-        <>
-        <p className="strategy-form__back" onClick={() => setShowStockCheckList(false)}> Definir as parcelas </p>
-        <StockCheckList
-          statements={statements}
-          setStatements={setStatements}
-          handleStatementCheck={handleStatementCheck}
-          uncheckStatements={uncheckStatements}
-          setAssetValue={setAssetValue}
-          assetValue={assetValue}
-          editStatements={editStatements}
-          storeAssetStatementsAndClean={storeAssetStatementsAndClean}
-          storeAssetAndCalculate={storeAssetAndCalculate}
-          shares={props.shares}
-        ></StockCheckList>
-        </>
-      ) : showSuggestedPercentages ? (
-        <SuggestedPercentages walletResistancePoints={walletResistancePoints} setShowSuggestedPercentages={setShowSuggestedPercentages}></SuggestedPercentages>
-      ) : (
-        <>
         <StrategyDefinition 
           handleInputStatement={handleInputStatement} 
           inputStatement={inputStatement} 
@@ -183,9 +123,8 @@ export default function StrategyForm(props) {
           statements={statements}
           addStatement={addStatement}
           storeStatements={storeStatements}
+          removeStatement={removeStatement}
         ></StrategyDefinition>
-        </>
-      )}
       <style>{`
       .strategy-form{
         margin: auto 23.5%;
