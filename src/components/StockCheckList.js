@@ -2,48 +2,17 @@ import React, { useState, useEffect } from "react";
 import Switch from "react-switch";
 import { useAuth } from "../context/AuthUserContext";
 import Firestore from "../firebase/Firestore";
-import SuggestedPercentages from "./SuggestedPercentages";
 
 export default function StockCheckList({
   statements,
   setStatements,
   handleStatementCheck,
-  uncheckStatements,
-  setAssetValue,
   assetValue,
   storeAssetStatements,
   setShowAddAsset = null,
+  storeAsset
 }) {
   const { authUser } = useAuth();
-  const [walletResistancePoints, setWalletResistancePoints] = useState({});
-  const [showSuggestedPercentages, setShowSuggestedPercentages] = useState(false);
-  const [ loading, setLoading ] = useState(false)
-
-  const changeCompany = async (e) => {
-    setAssetValue(e.target.value);
-    uncheckStatements();
-  };
-
-  const storeAssetAndCalculate = async () => {
-    await storeAssetStatements();
-    setLoading(true);
-    const data = await Firestore().getAllItems({
-      collection: "userAssetStatements",
-      id: authUser.uid,
-    });
-    const result = Object.keys(data).reduce(
-      (acc, assetKey) => ({
-        ...acc,
-        [assetKey]: data[assetKey].reduce((acc, statement) => {
-          if (statement.checked) return acc + 1 * statement.weight;
-          if (!statement.checked) return acc + -1 * statement.weight;
-        }, 0),
-      }),
-      {}
-    );
-    setWalletResistancePoints(result);
-    setShowSuggestedPercentages(true);
-  };
 
   useEffect(async () => {
     if (assetValue) {
@@ -59,9 +28,6 @@ export default function StockCheckList({
 
   return (
     <section>
-      {showSuggestedPercentages ? (
-        <SuggestedPercentages walletResistancePoints={walletResistancePoints} setShowSuggestedPercentages={setShowSuggestedPercentages}></SuggestedPercentages>
-      ) : (
         <section className="stock-checklist">
           <ul className="stock-checklist__list">
             {statements.length > 0 &&
@@ -98,7 +64,7 @@ export default function StockCheckList({
             ) : (
               <button
                 className="strategy-form__buttons_btn"
-                onClick={storeAssetAndCalculate}
+                onClick={storeAsset}
                 disabled={!assetValue}
               >
                 Calcular
@@ -106,7 +72,6 @@ export default function StockCheckList({
             )}
           </div>
         </section>
-      )}
        <style>{`
         p {
           color: white;
@@ -164,6 +129,7 @@ export default function StockCheckList({
           border: none;
           font-size: 16px;
           border-radius: 5px;
+          margin: 20px 0 50px 0;
         }
         .strategy-form__list{
           list-style: none;

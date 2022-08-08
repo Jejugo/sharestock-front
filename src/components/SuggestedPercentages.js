@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 
 const NEGATIVE_DEFAULT = 0.01;
 
-export default function SuggestedPercentages({ walletResistancePoints, setShowSuggestedPercentages }) {
+export default function SuggestedPercentages({
+  walletResistancePoints,
+  setShowSuggestedPercentages,
+  removeAssets
+}) {
   const [walletSuggestedPercentages, setWalletSuggestedPercentages] = useState(
     []
   );
-  const [resistancePointsFormatted, setResistancePointsFormatted] = useState([])
+  const [resistancePointsFormatted, setResistancePointsFormatted] = useState(
+    []
+  );
 
   const calculatePercentages = (resistancePoints) => {
     const positiveAssets = Object.entries(resistancePoints)
@@ -62,47 +68,44 @@ export default function SuggestedPercentages({ walletResistancePoints, setShowSu
       ...negativeAssetCalculation,
     }).map(([key, value]) => ({
       name: key,
-      percentage: `${value.toFixed(3)*100}%`,
-      points: resistancePoints[key]
+      percentage: `${value.toFixed(3) * 100}%`,
+      points: resistancePoints[key],
     }));
 
-    setResistancePointsFormatted(Object.entries(resistancePoints).map(([key, value]) => ({
-      name: key,
-      points: value
-    })));
+    setResistancePointsFormatted(
+      Object.entries(resistancePoints).map(([key, value]) => ({
+        name: key,
+        points: value,
+      }))
+    );
     return percentagesArray;
   };
 
   useEffect(() => {
     const percentagesResult = calculatePercentages(walletResistancePoints);
     setWalletSuggestedPercentages(percentagesResult);
-  }, []);
+  }, [walletResistancePoints]);
 
   return (
     <section className="suggested_percentages">
-      <p className="suggested_percentages__back" onClick={() => setShowSuggestedPercentages(false)}>
-        <div className="suggested_percentages__back_wrapper">
-          <ArrowBackIosNewOutlinedIcon fontSize="small"/>
-          <span>Voltar</span>
-        </div>
-      </p>
       <h1 className="suggested_percentages__title">
-        Essas são as porcentages recomendadas para sua carteira:
+        <i>Essas são as porcentages recomendadas para sua carteira:</i>
       </h1>
       <ul className="suggested_percentages__list">
-        <div className="suggested_percentages__list_item--header">
-          <span>Name</span>
-          <span>Resistencia</span>
-          <span>Sugestão</span>
-        </div>
-        {walletSuggestedPercentages.map(asset => (
-          <li className="suggested_percentages__list_item">
-            <div className="suggested_percentages__list_item--row">
-              <span>{asset.name} </span>
-              <span>{ asset.points }</span>
-              <span> {asset.percentage} </span>
-            </div>
-          </li>
+        <tr className="suggested_percentages__list_item--header">
+          <th>Name</th>
+          <th>Resistencia</th>
+          <th>Sugestão</th>
+          <th>bla</th>
+        </tr>
+        {walletSuggestedPercentages.map((asset) => (
+          <td className="suggested_percentages__list_item--row">
+            <span>{asset.name} </span>
+            <span>{asset.points}</span>
+            <span>{asset.percentage}</span>
+            {/* TODO REMOVE ON CLICK*/}
+            <span onClick={() => removeAssets(asset.name)}>trash</span> 
+          </td>
         ))}
       </ul>
       <style>{`
@@ -117,7 +120,8 @@ export default function SuggestedPercentages({ walletResistancePoints, setShowSu
           cursor: pointer;
         }
         .suggested_percentages__title{
-          font-size: 20px;
+          margin: 15px 0;
+          font-size: 18px;
           color: white;
         }
         .suggested_percentages__list{

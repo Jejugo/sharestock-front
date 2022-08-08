@@ -2,12 +2,31 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import StockCheckList from "./StockCheckList";
 import Firestore from "../firebase/Firestore";
+import AssetsToInvestSideTable from "./AssetsToInvestSideTable";
 import { useAuth } from "../context/AuthUserContext";
 
 export default function InvestComponent({ shares, normalizedShares }) {
   const { authUser } = useAuth();
   const [selectedAsset, setSelectedAsset] = useState("");
   const [statements, setStatements] = useState([]);
+  const [showSuggestedPercentages, setShowSuggestedPercentages] =
+    useState(false);
+  const [walletResistancePoints, setWalletResistancePoints] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [assetsToInvest, setAssetsToInvest] = useState([]);
+
+  const removeAssets = (key) => {
+    setAssetsToInvest((previousState) => {
+      delete previousState[key]
+      return {
+        ...previousState
+      }
+    })
+  }
+
+  const storeAsset = async () => {
+    await storeAssetStatements();
+  };
 
   const handleFilterInput = (value) => {
     setSelectedAsset(value);
@@ -29,11 +48,14 @@ export default function InvestComponent({ shares, normalizedShares }) {
 
   const storeAssetStatements = async () => {
     try {
-      await Firestore().addListAsObjectsWithList({
-        collection: "userAssetStatements",
-        id: authUser.uid,
-        list: statements,
-        key: assetValue,
+      // await Firestore().addListAsObjectsWithList({
+      //   collection: "userAssetStatements",
+      //   id: authUser.uid,
+      //   list: statements,
+      //   key: assetValue,
+      // });
+      await setAssetsToInvest((previousState) => {
+        return { ...previousState, [selectedAsset.value]: statements };
       });
 
       uncheckStatements();
@@ -53,37 +75,80 @@ export default function InvestComponent({ shares, normalizedShares }) {
     setStatements(formattedData);
   }, []);
 
+  useEffect(() => {
+    console.log('ha')
+    setLoading(true);
+    // const data = await Firestore().getAllItems({
+    //   collection: "userAssetStatements",
+    //   id: authUser.uid,
+    // });
+    const data = assetsToInvest;
+    console.log(data)
+    const result = Object.keys(data).reduce(
+      (acc, assetKey) => ({
+        ...acc,
+        [assetKey]: data[assetKey].reduce((acc, statement) => {
+          if (statement.checked) return acc + 1 * statement.weight;
+          if (!statement.checked) return acc + -1 * statement.weight;
+        }, 0),
+      }),
+      {}
+    );
+
+    setWalletResistancePoints(result);
+    setLoading(false);
+  }, [assetsToInvest])
+
   return (
     <section className="invest_component">
       <div className="invest_component__search_bar">
-        {
-            
-        }
-        <Select
-          type="text"
-          options={normalizedShares}
-          placeholder="Ativo"
-          onChange={handleFilterInput}
-          value={selectedAsset}
-        ></Select>
-        <StockCheckList
-          statements={statements}
-          setStatements={setStatements}
-          handleStatementCheck={handleStatementCheck}
-          uncheckStatements={uncheckStatements}
-          setAssetValue={setSelectedAsset}
-          assetValue={selectedAsset.value}
-          storeAssetStatements={storeAssetStatements}
-        ></StockCheckList>
+        <div className="invest_component__view">
+          <section className="invest_component__view_add_asset">
+            <Select
+              type="text"
+              options={normalizedShares}
+              placeholder="Ativo"
+              onChange={handleFilterInput}
+              value={selectedAsset}
+            ></Select>
+            <StockCheckList
+              statements={statements}
+              setStatements={setStatements}
+              handleStatementCheck={handleStatementCheck}
+              uncheckStatements={uncheckStatements}
+              setAssetValue={setSelectedAsset}
+              assetValue={selectedAsset.value}
+              storeAssetStatements={storeAssetStatements}
+              storeAsset={storeAsset}
+            ></StockCheckList>
+          </section>
+          <section className="invest_component__view_overview">
+            <AssetsToInvestSideTable
+              walletResistancePoints={walletResistancePoints}
+              setShowSuggestedPercentages={setShowSuggestedPercentages}
+              removeAssets={removeAssets}
+            ></AssetsToInvestSideTable>
+          </section>
+        </div>
       </div>
       <style jsx>{`
         .invest_component__search_bar {
           display: block;
           padding: 10px 5px;
-          width: 80%;
-          margin: 0 auto;
           font-size: 16px;
           color: black;
+        }
+        .invest_component__view {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+        .invest_component__view_add_asset {
+          flex-basis: 60%;
+        }
+        .invest_component__view_overview {
+          flex-basis: 38%;
+          min-width: 370px;
         }
       `}</style>
     </section>
