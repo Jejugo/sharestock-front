@@ -8,63 +8,69 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+import { useAuth } from "../context/AuthUserContext";
+import Firestore from "../firebase/Firestore";
+import calculateAssetPercentages from '../builders/calculateAssetPercentages';
+
 const columnsMock = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+    { id: 'asset', label: 'Ação', minWidth: 170 },
+    { id: 'recommended', label: 'Recomendado %', minWidth: 100 },
     {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
+      id: 'currentValue',
+      label: 'Valor Atual',
+      minWidth: 100,
       align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
+      format: (value) => `R$${value.toLocaleString('pt-BR')}`,
     },
     {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
+      id: 'grade',
+      label: 'Nota',
+      minWidth: 100,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
-  ];
-  
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
-  
-  const rowsMock = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
+    {
+      id: 'total',
+      label: 'Total %',
+      minWidth: 100,
+      align: 'right',
+      format: (value) => value.toFixed(2),
+    },
+    {
+      id: 'quantity',
+      label: 'Quantidade',
+      minWidth: 100,
+      align: 'right',
+      format: (value) => value,
+    },
   ];
 
 export default function AssetsTable() {
-
+    const { authUser } = useAuth();
     const [rows, setRows] = useState([]);
     const [columns, setColumns] = useState([]);
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
+
+
+  useEffect(async () => {
+    if(authUser){
+      const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
+      const result = Object.keys(data).reduce((acc, assetKey) => ({
+        ...acc,
+        [assetKey]: data[assetKey].reduce((acc, statement) => {
+          if(statement.checked) return acc + (1 * statement.weight)
+          if(!statement.checked) return acc + (-1 * statement.weight)
+        }, 0)
+      }), {})
+
+      console.log(result)
+    }
+    
+    
+  }, [authUser])
+
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -74,9 +80,47 @@ export default function AssetsTable() {
       setPage(0);
     };
 
-    useEffect(() => {
-        setRows(rowsMock)
-        setColumns(columnsMock)
+    useEffect(async () => {
+      if(authUser){
+        const [userAssets, userAssetStatements] = await Promise.all([
+          await Firestore().getAllItems({
+          collection: "userAssets",
+          id: authUser.uid,
+        }), await Firestore().getAllItems({
+          collection: "userAssetStatements",
+          id: authUser.uid,
+        })]);
+
+        if(Object.keys(userAssetStatements).length){
+          const assetPoints = Object.keys(userAssetStatements).reduce((acc, assetKey) => ({
+            ...acc,
+            [assetKey]: userAssetStatements[assetKey].reduce((acc, statement) => {
+              if(statement.checked) return acc + (1 * statement.weight)
+              if(!statement.checked) return acc + (-1 * statement.weight)
+            }, 0)
+          }), {})
+  
+          let assetRecommendedPercentages = calculateAssetPercentages(assetPoints)
+          assetRecommendedPercentages = assetRecommendedPercentages.reduce((acc, curr) => ({...acc, [curr.name]: curr}), {})
+  
+          const totalQuantity = Object.keys(userAssets).map(item => userAssets[item]).reduce((acc, curr) => acc + parseInt(curr.quantity), 0)
+      
+          let tableData = Object.keys(userAssets).map(item => ({
+            asset: userAssets[item]["nome"], 
+            recommended: assetRecommendedPercentages[item].percentage,
+            currentValue: userAssets[item]["quantity"] * userAssets[item]["cotação"], 
+            grade: assetPoints[item], 
+            total: `${((userAssets[item]["quantity"] / totalQuantity)*100).toFixed(2)}%`, 
+            quantity: userAssets[item]["quantity"]
+          }));
+  
+          console.log(tableData)
+  
+          setRows(tableData)
+          setColumns(columnsMock)
+  
+        }
+      }
     }, [])
   
     return (

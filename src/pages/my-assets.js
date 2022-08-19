@@ -4,20 +4,17 @@ import AssetsTable from '../components/AssetsTable';
 import config from "../configs";
 import AddAssets from '../components/AddAssets';
 
+import { useAuth } from "../context/AuthUserContext";
 const { SHARE_API } = config;
 
 const MyAssets = (props) => {
-  const [shares, setShares] = useState([])
+  const { authUser } = useAuth();
   const [showAddAsset, setShowAddAsset] = useState(false)
 
   const handleAddAsset = () => {
     setShowAddAsset((previousState) => !previousState)
   }
-
-  useEffect(() => {
-    const { shares } = props;
-    setShares(shares);
-  })
+  
   return (
     <>
       <Template tabTitle={"My Assets"}>
@@ -26,10 +23,10 @@ const MyAssets = (props) => {
           <button className="my-assets__button" onClick={handleAddAsset}>Adicionar Ativo</button>
         </div>
         {
-          !showAddAsset ? (
-            <AssetsTable shares={shares}></AssetsTable>
+          !showAddAsset && authUser ? (
+            <AssetsTable shares={props.shares} sharesMap={props.sharesMap}></AssetsTable>
           ) : (
-            <AddAssets shares={shares} setShowAddAsset={setShowAddAsset}></AddAssets>
+            <AddAssets shares={props.shares} sharesMap={props.sharesMap} setShowAddAsset={setShowAddAsset}></AddAssets>
           )
         }
         <style>{`
@@ -55,10 +52,16 @@ const MyAssets = (props) => {
   export async function getServerSideProps() {
     let shares = await fetch(`${SHARE_API}/shares/all`);
     const sharesItems = await shares.json();
-  
+    
+    const sharesMap = sharesItems.reduce((acc, curr) => ({
+      ...acc,
+      [curr["código_de_neg."].toLowerCase()]: curr
+    }))
+    
     return {
       props: {
-        shares: sharesItems
+        shares: sharesItems,
+        sharesMap
       },
     };
   }

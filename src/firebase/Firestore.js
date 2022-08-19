@@ -6,7 +6,8 @@ import {
   doc,
   arrayUnion,
   arrayRemove,
-  deleteDoc
+  deleteDoc,
+  deleteField
 } from "firebase/firestore";
 
 export default function initalizeFirestore (){
@@ -46,6 +47,20 @@ export default function initalizeFirestore (){
           shares: arrayRemove(item)
         });
         console.info('Data was successfully updated.')
+      }
+      catch(err){
+        console.error('There was an error when removing data from firebase.')
+        throw err;
+      }
+    },
+
+    deleteFieldFromObject: async function ({ collection, id, field }){
+      try{
+        const docRef = doc(db, collection, id);
+        await updateDoc(docRef, {
+          [field]: deleteField()
+        });
+        console.info('Data was successfully deleted.')
       }
       catch(err){
         console.error('There was an error when removing data from firebase.')
@@ -125,6 +140,7 @@ export default function initalizeFirestore (){
       else await setDoc(docRef, firebaseState);
       
     },
+
     removeObjectKey: async function({ collection, id, item }){
       try {
         const firebaseState = await this.getAllItems({ collection, id })

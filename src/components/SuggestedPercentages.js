@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-
-const NEGATIVE_DEFAULT = 0.01;
+import calculateAssetPercentages from "../builders/calculateAssetPercentages";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function SuggestedPercentages({
   walletResistancePoints,
@@ -15,74 +14,22 @@ export default function SuggestedPercentages({
     []
   );
 
-  const calculatePercentages = (resistancePoints) => {
-    const positiveAssets = Object.entries(resistancePoints)
-      .map(
-        ([key, val]) =>
-          resistancePoints[key] >= 0 && {
-            name: key,
-            points: resistancePoints[key],
-          }
-      )
-      .filter((a) => a);
-
-    const negativeAssets = Object.entries(resistancePoints)
-      .map(([key, val]) => {
-        if (resistancePoints[key] < 0) {
-          return {
-            name: key,
-            points: resistancePoints[key],
-          };
-        }
-      })
-      .filter((a) => a);
-
-    const negativeAssetCalculation =
-      negativeAssets.length &&
-      negativeAssets.reduce(
-        (acc, asset, index) => ({
-          ...acc,
-          [asset.name]: NEGATIVE_DEFAULT,
-        }),
-        {}
-      );
-
-    const valueToTake = (
-      (NEGATIVE_DEFAULT * Object.keys(negativeAssetCalculation).length) /
-      positiveAssets.length
-    ).toFixed(4);
-
-    const positveAssetCalculation = positiveAssets.reduce(
-      (acc, asset) => ({
-        ...acc,
-        [asset.name]:
-          asset.points /
-            positiveAssets.reduce((acc, asset) => acc + asset.points, 0) -
-          valueToTake,
-      }),
-      {}
-    );
-
-    const percentagesArray = Object.entries({
-      ...positveAssetCalculation,
-      ...negativeAssetCalculation,
-    }).map(([key, value]) => ({
+  const formatResistancePoints = (resistancePoints) => 
+    Object.entries(resistancePoints).map(([key, value]) => ({
       name: key,
-      percentage: `${value.toFixed(3) * 100}%`,
-      points: resistancePoints[key],
-    }));
+      points: value,
+    }))
 
-    setResistancePointsFormatted(
-      Object.entries(resistancePoints).map(([key, value]) => ({
-        name: key,
-        points: value,
-      }))
-    );
+  const setPercentages = (resistancePoints) => {
+    const percentagesArray = calculateAssetPercentages(resistancePoints)
+    const formattedResistancePoints = formatResistancePoints(resistancePoints)
+
+    setResistancePointsFormatted(formattedResistancePoints);
     return percentagesArray;
   };
 
   useEffect(() => {
-    const percentagesResult = calculatePercentages(walletResistancePoints);
+    const percentagesResult = setPercentages(walletResistancePoints);
     setWalletSuggestedPercentages(percentagesResult);
   }, [walletResistancePoints]);
 
@@ -96,7 +43,7 @@ export default function SuggestedPercentages({
           <th>Name</th>
           <th>Resistencia</th>
           <th>Sugestão</th>
-          <th>bla</th>
+          <th>trash</th>
         </tr>
         {walletSuggestedPercentages.map((asset) => (
           <td className="suggested_percentages__list_item--row">
@@ -104,7 +51,7 @@ export default function SuggestedPercentages({
             <span>{asset.points}</span>
             <span>{asset.percentage}</span>
             {/* TODO REMOVE ON CLICK*/}
-            <span onClick={() => removeAssets(asset.name)}>trash</span> 
+            <span className="" onClick={() => removeAssets(asset.name)}><DeleteIcon></DeleteIcon></span> 
           </td>
         ))}
       </ul>

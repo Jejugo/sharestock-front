@@ -48,12 +48,6 @@ export default function InvestComponent({ shares, normalizedShares }) {
 
   const storeAssetStatements = async () => {
     try {
-      // await Firestore().addListAsObjectsWithList({
-      //   collection: "userAssetStatements",
-      //   id: authUser.uid,
-      //   list: statements,
-      //   key: assetValue,
-      // });
       await setAssetsToInvest((previousState) => {
         return { ...previousState, [selectedAsset.value]: statements };
       });
@@ -76,14 +70,8 @@ export default function InvestComponent({ shares, normalizedShares }) {
   }, []);
 
   useEffect(() => {
-    console.log('ha')
     setLoading(true);
-    // const data = await Firestore().getAllItems({
-    //   collection: "userAssetStatements",
-    //   id: authUser.uid,
-    // });
     const data = assetsToInvest;
-    console.log(data)
     const result = Object.keys(data).reduce(
       (acc, assetKey) => ({
         ...acc,

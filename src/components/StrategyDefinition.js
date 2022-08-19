@@ -61,6 +61,9 @@ export default function StrategyDefinition({
         </button>
       </div>
       <style>{`
+        .strategy-form__title{
+          font-size: 30px;
+        }
         .suggested_percentages__back_wrapper{
           display: flex;
           align-items: center;

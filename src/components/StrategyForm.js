@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import StockCheckList from "./StockCheckList";
-import SuggestedPercentages from "./SuggestedPercentages";
 import { useAuth } from "../context/AuthUserContext";
 import Firestore from '../firebase/Firestore';
-import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import {
   getFirestore,
   updateDoc,
@@ -41,9 +38,16 @@ export default function StrategyForm(props) {
   };
 
   const removeStatement = async (e, { statement }, index) => {
-    setStatements((prevState) => [
-      ...prevState.filter((item, i) => index !== i),
-    ]);
+    if (confirm('Are you sure you want to save this thing into the database?')) {
+      await Firestore().deleteFieldFromObject({
+        collection: "userStrategyStatements",
+        id: authUser.uid,
+        field: index
+      })
+      setStatements((prevState) => [
+        ...prevState.filter((item, i) => index !== i),
+      ]);
+    }   
   };
 
   const storeStatements = async (e) => {
@@ -60,23 +64,6 @@ export default function StrategyForm(props) {
       console.error(err)
     }
   };
-
-  // const storeAssetAndCalculate = async () => {
-  //   await storeAssetStatements();
-  //   setLoading(true)
-  //   const data = await Firestore().getAllItems({ collection: 'userAssetStatements', id: authUser.uid})
-  //   const result = Object.keys(data).reduce((acc, assetKey) => ({
-  //     ...acc,
-  //     [assetKey]: data[assetKey].reduce((acc, statement) => {
-  //       if(statement.checked) return acc + (1 * statement.weight)
-  //       if(!statement.checked) return acc + (-1 * statement.weight)
-  //     }, 0)
-  //   }), {})
-  //   setWalletResistancePoints(result)
-  //   setShowStockCheckList(false)
-  //   setShowSuggestedPercentages(true)
-  // }
-
 
   const handleInputStatement = (e) => setInputStatement(e.target.value);
 
