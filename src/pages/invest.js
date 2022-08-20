@@ -29,10 +29,9 @@ export default function Invest(props) {
 }
 
 export async function getServerSideProps() {
-    let shares = await fetch(`${SHARE_API}/shares/all`);
-    const sharesItems = await shares.json();
-
-    const normalizeShareItems = sharesItems.map(item => ({value: item["código_de_neg."].toLowerCase(), label: `${item["nome"]} - ${item["código_de_neg."]}` }))
+    let data = await fetch(`${SHARE_API}/shares/all`);
+    const { items: sharesItems } = await data.json();
+    const normalizeShareItems = sharesItems.map(item => ({value: item["Papel"].toLowerCase(), label: `${item["nome"]} - ${item["Papel"]}` }))
   
     return {
       props: {

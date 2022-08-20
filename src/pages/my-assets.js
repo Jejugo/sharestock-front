@@ -50,12 +50,12 @@ const MyAssets = (props) => {
 }
   
   export async function getServerSideProps() {
-    let shares = await fetch(`${SHARE_API}/shares/all`);
-    const sharesItems = await shares.json();
-    
+    let data = await fetch(`${SHARE_API}/shares/all`);
+    const { items: sharesItems } = await data.json();
+  
     const sharesMap = sharesItems.reduce((acc, curr) => ({
       ...acc,
-      [curr["código_de_neg."].toLowerCase()]: curr
+      [curr["Papel"].toLowerCase()]: curr
     }))
     
     return {

@@ -74,14 +74,14 @@ const Navbar = (props) => {
               </div>
             </a>
           </li>
-          <li className="navbar__item">
+          {/* <li className="navbar__item">
             <a href="/goals" className="navbar__item_link">
               <div className="navbar__item_wrap">
                 <FactCheckIcon />
                 <h4 className="navbar__item_text">{ isNavbarOpen && 'Metas' }</h4>
               </div>
             </a>
-          </li>
+          </li> */}
           <li className="navbar__item">
             <a href="/strategy" className="navbar__item_link">
               <div className="navbar__item_wrap">

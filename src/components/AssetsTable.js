@@ -64,8 +64,6 @@ export default function AssetsTable() {
           if(!statement.checked) return acc + (-1 * statement.weight)
         }, 0)
       }), {})
-
-      console.log(result)
     }
     
     
@@ -108,7 +106,7 @@ export default function AssetsTable() {
           let tableData = Object.keys(userAssets).map(item => ({
             asset: userAssets[item]["nome"], 
             recommended: assetRecommendedPercentages[item].percentage,
-            currentValue: userAssets[item]["quantity"] * userAssets[item]["cotação"], 
+            currentValue: userAssets[item]["quantity"] * userAssets[item]["Cotação"], 
             grade: assetPoints[item], 
             total: `${((userAssets[item]["quantity"] / totalQuantity)*100).toFixed(2)}%`, 
             quantity: userAssets[item]["quantity"]

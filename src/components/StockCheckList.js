@@ -16,11 +16,24 @@ export default function StockCheckList({
 
   useEffect(async () => {
     if (assetValue) {
-      const data = await Firestore().getAllItems({
+      const assetStatements = await Firestore().getAllItems({
         collection: "userAssetStatements",
         id: authUser.uid,
       });
-      if (data.hasOwnProperty(assetValue)) setStatements(data[assetValue]);
+
+      if (assetStatements.hasOwnProperty(assetValue)){
+        const sameStatements = []
+        for (let { statement } of statements){
+          for(let assetStatement of assetStatements[assetValue]){
+            if(assetStatement.statement === statement){
+              sameStatements.push(statement)
+            }
+          }
+        }
+        
+        const filter = statements.filter(statement => !sameStatements.includes(statement.statement))
+        setStatements([...assetStatements[assetValue], ...filter]); 
+      }
       else return;
     }
   }, [assetValue]);

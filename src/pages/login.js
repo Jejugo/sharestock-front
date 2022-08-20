@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-import Navbar from "../components/Navbar"
 import LendingPageLayout from "../skeleton/LendingPageLayout"
 import LoginComponent from "../components/Login"
 

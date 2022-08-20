@@ -64,6 +64,7 @@ export default function AddAssets({ shares, setShowAddAsset, sharesMap }) {
       const formattedData = Object.keys(data).map((key) => ({
         ...data[key],
       }));
+      console.log('strategy: ', formattedData)
       setStatements(formattedData);
     }
   }, [authUser]);
@@ -79,8 +80,8 @@ export default function AddAssets({ shares, setShowAddAsset, sharesMap }) {
           Selecione
         </option>
         {assets.map((asset) => (
-          <option value={asset["código_de_neg."].toLowerCase()}>
-            {asset["código_de_neg."]}
+          <option value={asset["Papel"].toLowerCase()}>
+            {asset["Papel"]}
           </option>
         ))}
       </select>
