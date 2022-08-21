@@ -23,7 +23,7 @@ export default function Invest(props) {
          <section className="dashboard">
         {authUser && (
             <Template tabTitle={"dashboard"}>
-                <InvestComponent shares={shares} normalizedShares={normalizedShares}></InvestComponent>
+                <InvestComponent shares={shares} normalizedShares={normalizedShares} sharesMap={sharesMap}></InvestComponent>
             </Template>
         )}
         </section>
@@ -34,11 +34,15 @@ export async function getServerSideProps() {
     let data = await fetch(`${SHARE_API}/shares/all`);
     const { items: sharesItems } = await data.json();
     const normalizeShareItems = sharesItems.map(item => ({value: item["Papel"].toLowerCase(), label: `${item["nome"]} - ${item["Papel"]}` }))
-
+    const sharesMap = sharesItems.reduce((acc, curr) => ({
+      ...acc,
+      [curr["Papel"].toLowerCase()]: curr,
+    }));
     return {
       props: {
         normalizedShares: normalizeShareItems,
-        shares: sharesItems
+        shares: sharesItems,
+        sharesMap
       },
     };
   }

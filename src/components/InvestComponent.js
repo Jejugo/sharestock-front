@@ -15,7 +15,7 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
   const [loading, setLoading] = useState(false);
   const [assetsToInvest, setAssetsToInvest] = useState([]);
   const [ userAssets, setUserAssets ] = useState({})
-  const [ quantity, setQuantity ] = useState("");
+  const [ quantity, setQuantity ] = useState([]);
 
   const removeAssets = (key) => {
     setAssetsToInvest((previousState) => {
@@ -39,29 +39,56 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
   };
 
   const storeAssetStatements = async () => {
+    console.log(assetsToInvest)
+    console.log(quantity)
     try {
-      await Promise.all([
-      await Firestore().addListAsObjectsWithList({
-        collection: "userAssetStatements",
-        id: authUser.uid,
-        list: statements,
-        key: selectedAsset.value,
-      }),
-      await Firestore().addListAsObjects({
-        collection: "userAssets",
-        id: authUser.uid,
-        list: [{
-          ...userAssets[selectedAsset.value],
-          quantity: parseInt(userAssets[selectedAsset.value].quantity) + parseInt(quantity)
-        }],
-        key: selectedAsset.value,
-      }),
-    ]);
-
-    alert('Dados salvos com sucesso.')
-    uncheckStatements();
-    setQuantity("")
-    setSelectedAsset("")
+      for (let asset in assetsToInvest){
+        if(userAssets.hasOwnProperty(asset)){
+          console.log('existe!', asset)
+          await Promise.all([
+            await Firestore().addListAsObjectsWithList({
+              collection: "userAssetStatements",
+              id: authUser.uid,
+              list: assetsToInvest[asset],
+              key: asset,
+            }),
+            await Firestore().addListAsObjects({
+              collection: "userAssets",
+              id: authUser.uid,
+              list: [{
+                ...(userAssets[asset] && userAssets[asset]),
+                quantity: parseInt(userAssets[asset].quantity) + parseInt(quantity[asset])
+              }],
+              key: asset,
+            }),
+          ]);
+        }
+        else {
+          console.log('nao existe', asset)
+          await Promise.all([
+            await Firestore().addListAsObjectsWithList({
+              collection: "userAssetStatements",
+              id: authUser.uid,
+              list: assetsToInvest[asset],
+              key: asset,
+            }),
+            await Firestore().addListAsObjects({
+              collection: "userAssets",
+              id: authUser.uid,
+              list: [{
+                ...sharesMap[asset],
+                quantity: parseInt(quantity[asset])
+              }],
+              key: asset,
+            }),
+          ]);
+        }
+    
+        alert('Dados salvos com sucesso.')
+        uncheckStatements();
+        setQuantity("")
+        setSelectedAsset("")
+      }
     }
     catch(err){
       alert(err.message)
@@ -85,6 +112,13 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
       prevState.map((state) => ({ ...state, checked: false }))
     );
   };
+
+  useEffect(() => {
+    setQuantity(() => normalizedShares.reduce((acc, curr) => ({
+      ...acc,
+      [curr.value]: ''
+    }) ,{}))
+  }, [normalizedShares])
 
   useEffect(async () => {
     const data = await Firestore().getAllItems({
@@ -112,7 +146,6 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
       }),
       {}
     );
-
     setWalletResistancePoints(result);
     setLoading(false);
   }, [assetsToInvest])
@@ -129,7 +162,7 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
               onChange={handleFilterInput}
               value={selectedAsset}
             ></Select>
-            <input className="invest_component__input" placeholder="Quantidade" onChange={(e) => setQuantity(e.target.value)} value={quantity}></input>
+            <input className="invest_component__input" placeholder="Quantidade" onChange={(e) => setQuantity((previousState) => ({...previousState, [selectedAsset.value]: e.target.value}))} value={quantity[selectedAsset.value]}></input>
             <StockCheckList
               statements={statements}
               setStatements={setStatements}
@@ -137,6 +170,7 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
               uncheckStatements={uncheckStatements}
               setAssetValue={setSelectedAsset}
               assetValue={selectedAsset.value}
+              assetsToInvest={assetsToInvest}
             ></StockCheckList>
             <button
               className="invest_component__button"

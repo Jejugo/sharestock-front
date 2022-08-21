@@ -41,6 +41,8 @@ const MyAssets = (props) => {
 
   const storeAssetStatements = async () => {
     try {
+      console.log(props.sharesMap)
+      console.log(props.sharesMap[assetValue])
       await Promise.all([
         await Firestore().addListAsObjectsWithList({
           collection: "userAssetStatements",
@@ -155,9 +157,12 @@ export async function getServerSideProps() {
   const sharesMap = sharesItems.reduce((acc, curr) => ({
     ...acc,
     [curr["Papel"].toLowerCase()]: curr,
-  }));
+  }), {});
 
-  const normalizeShareItems = sharesItems.map(item => ({value: item["Papel"].toLowerCase(), label: `${item["nome"]} - ${item["Papel"]}` }))
+  const normalizeShareItems = sharesItems.map(item => ({
+    value: item["Papel"].toLowerCase(), 
+    label: `${item["nome"]} - ${item["Papel"]}` 
+  }))
 
   return {
     props: {

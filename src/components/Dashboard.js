@@ -94,7 +94,8 @@ export default function DashboardComponent() {
     return (
         <section className="dashboard-wrapper">
             <div className="dashboard-wrapper__walletDistribution"><PieChart/></div>
-            <div className="dashboard-wrapper__walletPercentage"><BarChart/></div>
+            <div className="dashboard-wrapper__walletPercentage"><PieChart/></div>
+            {/* <div className="dashboard-wrapper__walletPercentage"><BarChart/></div> */}
             <div className="dashboard-wrapper__history">
             <TableComponent
               rows={rows}
@@ -118,7 +119,7 @@ export default function DashboardComponent() {
                 grid-row: 1 / 5;
             }
             .dashboard-wrapper__walletPercentage{
-                grid-column: 3 / 6;
+                grid-column: 4 / 6;
                 grid-row: 1 / 5;
             }
             .dashboard-wrapper__history{

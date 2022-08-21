@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import sharesReducer from './shares';
+// import { combineReducers } from 'redux';
+// import sharesReducer from './shares';
 
-const rootReducer = combineReducers({
-  shares: sharesReducer,
-});
+// const rootReducer = combineReducers({
+//   shares: sharesReducer,
+// });
 
-export default rootReducer
+// export default rootReducer

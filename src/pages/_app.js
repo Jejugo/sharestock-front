@@ -48,6 +48,6 @@ class MyApp extends App {
   }
 }
 
-
-export default wrapper.withRedux(MyApp);
+export default MyApp;
+//export default wrapper.withRedux(MyApp);
 

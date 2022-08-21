@@ -8,23 +8,24 @@ export default function StockCheckList({
   setStatements,
   handleStatementCheck,
   assetValue,
+  assetsToInvest = null,
 }) {
   const { authUser } = useAuth();
 
   const filterAssetStatements = (assetStatements) => {
-    const statementsArray = statements.map(statement => statement.statement);
-    const weightArray = statements.map(statement => statement.weight);
+    const statementsArray = statements.map((statement) => statement.statement);
+    const weightArray = statements.map((statement) => statement.weight);
     const filteredAssets1 = assetStatements.map((statement, index) => {
-      if(statementsArray.includes(statement.statement)){
+      if (statementsArray.includes(statement.statement)) {
         return {
           ...statement,
-          weight: weightArray[index]
-        }
+          weight: weightArray[index],
+        };
       }
-      return null
-    })
-    return filteredAssets1.filter(a => a);
-  }
+      return null;
+    });
+    return filteredAssets1.filter((a) => a);
+  };
 
   useEffect(async () => {
     if (assetValue) {
@@ -32,46 +33,76 @@ export default function StockCheckList({
         collection: "userAssetStatements",
         id: authUser.uid,
       });
-
-      if (assetStatements.hasOwnProperty(assetValue)){
-        const sameStatements = []
-        const assetsStatementsFiltered = filterAssetStatements(assetStatements[assetValue])
-        for (let { statement } of statements){
-          for(let assetStatement of assetsStatementsFiltered){
-            if(assetStatement.statement === statement){
-              sameStatements.push(statement)
+      let strategyStatements = await Firestore().getAllItems({
+        collection: "userStrategyStatements",
+        id: authUser.uid,
+      });
+      strategyStatements = Object.keys(strategyStatements).map(
+        (key) => strategyStatements[key]
+      );
+      const sameStatements = [];
+      let assetsStatementsFiltered = [];
+      console.log(assetsToInvest);
+      if (assetsToInvest && assetsToInvest.hasOwnProperty(assetValue)) {
+        assetsStatementsFiltered = filterAssetStatements(
+          assetsToInvest[assetValue]
+        );
+        for (let { statement } of statements) {
+          for (let assetStatement of assetsStatementsFiltered) {
+            if (assetStatement.statement === statement) {
+              sameStatements.push(statement);
             }
           }
         }
-        
-        const filteredStatements = statements.filter(statement => !sameStatements.includes(statement.statement))
-        setStatements([...assetsStatementsFiltered, ...filteredStatements]); 
+
+        const filteredStatements = statements.filter(
+          (statement) => !sameStatements.includes(statement.statement)
+        );
+        console.log([...assetsStatementsFiltered, ...filteredStatements]);
+        setStatements([...assetsStatementsFiltered, ...filteredStatements]);
+      } else if (assetStatements.hasOwnProperty(assetValue)) {
+        assetsStatementsFiltered = filterAssetStatements(
+          assetStatements[assetValue]
+        );
+        for (let { statement } of statements) {
+          for (let assetStatement of assetsStatementsFiltered) {
+            if (assetStatement.statement === statement) {
+              sameStatements.push(statement);
+            }
+          }
+        }
+
+        const filteredStatements = statements.filter(
+          (statement) => !sameStatements.includes(statement.statement)
+        );
+        console.log([...assetsStatementsFiltered, ...filteredStatements]);
+        setStatements([...assetsStatementsFiltered, ...filteredStatements]);
+      } else {
+        setStatements([...strategyStatements]);
       }
-      else return;
     }
   }, [assetValue]);
-  
 
   return (
     <section>
-        <section className="stock-checklist">
-          <ul className="stock-checklist__list">
-            {statements.length > 0 &&
-              statements.map(({ statement, checked }, index) => (
-                <li className="stock-checklist__list_item">
-                  <div className="stock-checklist__list_item--wrapper">
-                    <p>{statement}</p>
-                    <Switch
-                      onChange={(e) => handleStatementCheck(e, index)}
-                      checked={checked}
-                      disabled={!assetValue}
-                    />
-                  </div>
-                </li>
-              ))}
-          </ul>
-        </section>
-       <style>{`
+      <section className="stock-checklist">
+        <ul className="stock-checklist__list">
+          {statements.length > 0 &&
+            statements.map(({ statement, checked }, index) => (
+              <li className="stock-checklist__list_item">
+                <div className="stock-checklist__list_item--wrapper">
+                  <p>{statement}</p>
+                  <Switch
+                    onChange={(e) => handleStatementCheck(e, index)}
+                    checked={checked}
+                    disabled={!assetValue}
+                  />
+                </div>
+              </li>
+            ))}
+        </ul>
+      </section>
+      <style>{`
         p {
           color: white;
         }
@@ -156,7 +187,6 @@ export default function StockCheckList({
         }
 
       `}</style>
-
     </section>
   );
 }
