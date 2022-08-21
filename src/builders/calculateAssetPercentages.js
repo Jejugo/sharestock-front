@@ -53,13 +53,12 @@ export default (resistancePoints) => {
     ...negativeAssetCalculation,
   }).map(([key, value]) => ({
     name: key,
-    percentage: `${(value * 100).toFixed(2)}%`,
+    percentage: `${value >= 0 && value < 0.01 ? (0.01 * 100).toFixed(2) : (value * 100).toFixed(2)}%`,
     points: resistancePoints[key],
   })).sort((a, b) => {
     let textA = a.name.toUpperCase();
     let textB = b.name.toUpperCase();
     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
   })
-
   return percentagesArray
 };

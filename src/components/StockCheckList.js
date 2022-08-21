@@ -8,11 +8,23 @@ export default function StockCheckList({
   setStatements,
   handleStatementCheck,
   assetValue,
-  storeAssetStatements,
-  setShowAddAsset = null,
-  storeAsset
 }) {
   const { authUser } = useAuth();
+
+  const filterAssetStatements = (assetStatements) => {
+    const statementsArray = statements.map(statement => statement.statement);
+    const weightArray = statements.map(statement => statement.weight);
+    const filteredAssets1 = assetStatements.map((statement, index) => {
+      if(statementsArray.includes(statement.statement)){
+        return {
+          ...statement,
+          weight: weightArray[index]
+        }
+      }
+      return null
+    })
+    return filteredAssets1.filter(a => a);
+  }
 
   useEffect(async () => {
     if (assetValue) {
@@ -23,16 +35,17 @@ export default function StockCheckList({
 
       if (assetStatements.hasOwnProperty(assetValue)){
         const sameStatements = []
+        const assetsStatementsFiltered = filterAssetStatements(assetStatements[assetValue])
         for (let { statement } of statements){
-          for(let assetStatement of assetStatements[assetValue]){
+          for(let assetStatement of assetsStatementsFiltered){
             if(assetStatement.statement === statement){
               sameStatements.push(statement)
             }
           }
         }
         
-        const filter = statements.filter(statement => !sameStatements.includes(statement.statement))
-        setStatements([...assetStatements[assetValue], ...filter]); 
+        const filteredStatements = statements.filter(statement => !sameStatements.includes(statement.statement))
+        setStatements([...assetsStatementsFiltered, ...filteredStatements]); 
       }
       else return;
     }
@@ -57,33 +70,6 @@ export default function StockCheckList({
                 </li>
               ))}
           </ul>
-          <div className="strategy-form__buttons">
-            {setShowAddAsset !== null && (
-              <button
-                className="strategy-form__buttons_btn"
-                onClick={() => setShowAddAsset()}
-              >
-                back
-              </button>
-            )}
-            {setShowAddAsset !== null ? (
-              <button
-                className="strategy-form__buttons_btn"
-                onClick={storeAssetStatements}
-                disabled={!assetValue}
-              >
-                Salvar
-              </button>
-            ) : (
-              <button
-                className="strategy-form__buttons_btn"
-                onClick={storeAsset}
-                disabled={!assetValue}
-              >
-                Calcular
-              </button>
-            )}
-          </div>
         </section>
        <style>{`
         p {
@@ -116,7 +102,7 @@ export default function StockCheckList({
 
         .stock-checklist__list_item{
           margin: 20px 0;
-          background-color: grey;
+          background-color: #1E1E1E;
           padding: 2px 10px;
           border-radius: 5px;
         }

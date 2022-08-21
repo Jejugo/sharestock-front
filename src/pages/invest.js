@@ -9,12 +9,14 @@ const { SHARE_API } = config;
 export default function Invest(props) {
     const { authUser } = useAuth();
     const [shares, setShares] = useState([]);
+    const [sharesMap, setSharesMap] = useState([]);
     const [normalizedShares, setNormalizedShares] = useState([]);
 
   useEffect(() => {
-    const { normalizedShares, shares } = props;
+    const { normalizedShares, shares, sharesMap } = props;
     setNormalizedShares(normalizedShares);
     setShares(shares)
+    setSharesMap(sharesMap)
   })
 
     return (
@@ -32,7 +34,7 @@ export async function getServerSideProps() {
     let data = await fetch(`${SHARE_API}/shares/all`);
     const { items: sharesItems } = await data.json();
     const normalizeShareItems = sharesItems.map(item => ({value: item["Papel"].toLowerCase(), label: `${item["nome"]} - ${item["Papel"]}` }))
-  
+
     return {
       props: {
         normalizedShares: normalizeShareItems,

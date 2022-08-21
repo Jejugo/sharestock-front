@@ -5,7 +5,7 @@ import Firestore from "../firebase/Firestore";
 import AssetsToInvestSideTable from "./AssetsToInvestSideTable";
 import { useAuth } from "../context/AuthUserContext";
 
-export default function InvestComponent({ shares, normalizedShares }) {
+export default function InvestComponent({ shares, sharesMap, normalizedShares }) {
   const { authUser } = useAuth();
   const [selectedAsset, setSelectedAsset] = useState("");
   const [statements, setStatements] = useState([]);
@@ -14,6 +14,8 @@ export default function InvestComponent({ shares, normalizedShares }) {
   const [walletResistancePoints, setWalletResistancePoints] = useState({});
   const [loading, setLoading] = useState(false);
   const [assetsToInvest, setAssetsToInvest] = useState([]);
+  const [ userAssets, setUserAssets ] = useState({})
+  const [ quantity, setQuantity ] = useState("");
 
   const removeAssets = (key) => {
     setAssetsToInvest((previousState) => {
@@ -24,9 +26,47 @@ export default function InvestComponent({ shares, normalizedShares }) {
     })
   }
 
-  const storeAsset = async () => {
-    await storeAssetStatements();
+  const saveAssetStatementsToState = async () => {
+    try {
+      await setAssetsToInvest((previousState) => {
+        return { ...previousState, [selectedAsset.value]: statements };
+      });
+
+      uncheckStatements();
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  const storeAssetStatements = async () => {
+    try {
+      await Promise.all([
+      await Firestore().addListAsObjectsWithList({
+        collection: "userAssetStatements",
+        id: authUser.uid,
+        list: statements,
+        key: selectedAsset.value,
+      }),
+      await Firestore().addListAsObjects({
+        collection: "userAssets",
+        id: authUser.uid,
+        list: [{
+          ...userAssets[selectedAsset.value],
+          quantity: parseInt(userAssets[selectedAsset.value].quantity) + parseInt(quantity)
+        }],
+        key: selectedAsset.value,
+      }),
+    ]);
+
+    alert('Dados salvos com sucesso.')
+    uncheckStatements();
+    setQuantity("")
+    setSelectedAsset("")
+    }
+    catch(err){
+      alert(err.message)
+    }
+  }
 
   const handleFilterInput = (value) => {
     setSelectedAsset(value);
@@ -46,27 +86,17 @@ export default function InvestComponent({ shares, normalizedShares }) {
     );
   };
 
-  const storeAssetStatements = async () => {
-    try {
-      await setAssetsToInvest((previousState) => {
-        return { ...previousState, [selectedAsset.value]: statements };
-      });
-
-      uncheckStatements();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(async () => {
     const data = await Firestore().getAllItems({
       collection: "userStrategyStatements",
       id: authUser.uid,
     });
+    const allUserAssets = await Firestore().getAllItems({ collection: 'userAssets', id: authUser.uid})
     const formattedData = Object.keys(data).map((key) => ({
       ...data[key],
     }));
     setStatements(formattedData);
+    setUserAssets(allUserAssets)
   }, []);
 
   useEffect(() => {
@@ -99,6 +129,7 @@ export default function InvestComponent({ shares, normalizedShares }) {
               onChange={handleFilterInput}
               value={selectedAsset}
             ></Select>
+            <input className="invest_component__input" placeholder="Quantidade" onChange={(e) => setQuantity(e.target.value)} value={quantity}></input>
             <StockCheckList
               statements={statements}
               setStatements={setStatements}
@@ -106,9 +137,17 @@ export default function InvestComponent({ shares, normalizedShares }) {
               uncheckStatements={uncheckStatements}
               setAssetValue={setSelectedAsset}
               assetValue={selectedAsset.value}
-              storeAssetStatements={storeAssetStatements}
-              storeAsset={storeAsset}
             ></StockCheckList>
+            <button
+              className="invest_component__button"
+              onClick={saveAssetStatementsToState}
+            > Calcular
+            </button>
+            <button
+              className="invest_component__button"
+              onClick={storeAssetStatements}
+            > Salvar
+            </button>
           </section>
           <section className="invest_component__view_overview">
             <AssetsToInvestSideTable
@@ -137,6 +176,25 @@ export default function InvestComponent({ shares, normalizedShares }) {
         .invest_component__view_overview {
           flex-basis: 38%;
           min-width: 370px;
+        }
+        .invest_component__input{
+          display: block;
+          padding: 10px;
+          width: 96%;
+          margin: 10px 0px;
+          border: none;
+          border-radius: 2px;
+        }
+        .invest_component__button{
+          width: 100%;
+          padding: 20px 0px;
+          background-color: #FFCD00;
+          cursor: pointer;
+          border: none;
+          border-radius: 5px;
+        }
+        .invest_component__button:nth-of-type(2){
+          margin: 20px 0px;
         }
       `}</style>
     </section>
