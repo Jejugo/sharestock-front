@@ -41,8 +41,6 @@ const MyAssets = (props) => {
 
   const storeAssetStatements = async () => {
     try {
-      console.log(props.sharesMap)
-      console.log(props.sharesMap[assetValue])
       await Promise.all([
         await Firestore().addListAsObjectsWithList({
           collection: "userAssetStatements",
@@ -153,7 +151,6 @@ const MyAssets = (props) => {
 export async function getServerSideProps() {
   let data = await fetch(`${SHARE_API}/shares/all`);
   const { items: sharesItems } = await data.json();
-
   const sharesMap = sharesItems.reduce((acc, curr) => ({
     ...acc,
     [curr["Papel"].toLowerCase()]: curr,

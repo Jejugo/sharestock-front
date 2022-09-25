@@ -13,7 +13,7 @@ const LoginComponent = () => {
         const auth = getAuth()
         const user = await signInWithEmailAndPassword(auth, email, password)
         if(user)
-          router.push('/')
+          router.push('/dashboard')
       }
       catch(err){
         alert('Couldnt sign you in: ', err.message)
@@ -30,6 +30,7 @@ const LoginComponent = () => {
           value={email}
           onChange={(e) => setEmail(() => e.target.value)}
           placeholder="Digite seu email"
+          type="email"
         ></input>
       </div>
       <div className="login__input">
@@ -38,6 +39,7 @@ const LoginComponent = () => {
           value={password}
           onChange={(e) => setPassword(() => e.target.value)}
           placeholder="Digite sua senha"
+          type="password"
         ></input>
       </div>
       <button className="submit" type="submit">Enviar</button>

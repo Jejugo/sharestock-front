@@ -42,7 +42,6 @@ export default function StockCheckList({
       );
       const sameStatements = [];
       let assetsStatementsFiltered = [];
-      console.log(assetsToInvest);
       if (assetsToInvest && assetsToInvest.hasOwnProperty(assetValue)) {
         assetsStatementsFiltered = filterAssetStatements(
           assetsToInvest[assetValue]
@@ -58,7 +57,6 @@ export default function StockCheckList({
         const filteredStatements = statements.filter(
           (statement) => !sameStatements.includes(statement.statement)
         );
-        console.log([...assetsStatementsFiltered, ...filteredStatements]);
         setStatements([...assetsStatementsFiltered, ...filteredStatements]);
       } else if (assetStatements.hasOwnProperty(assetValue)) {
         assetsStatementsFiltered = filterAssetStatements(
@@ -75,7 +73,6 @@ export default function StockCheckList({
         const filteredStatements = statements.filter(
           (statement) => !sameStatements.includes(statement.statement)
         );
-        console.log([...assetsStatementsFiltered, ...filteredStatements]);
         setStatements([...assetsStatementsFiltered, ...filteredStatements]);
       } else {
         setStatements([...strategyStatements]);

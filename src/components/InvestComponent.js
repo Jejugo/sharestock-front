@@ -39,12 +39,9 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
   };
 
   const storeAssetStatements = async () => {
-    console.log(assetsToInvest)
-    console.log(quantity)
     try {
       for (let asset in assetsToInvest){
         if(userAssets.hasOwnProperty(asset)){
-          console.log('existe!', asset)
           await Promise.all([
             await Firestore().addListAsObjectsWithList({
               collection: "userAssetStatements",
@@ -64,7 +61,6 @@ export default function InvestComponent({ shares, sharesMap, normalizedShares })
           ]);
         }
         else {
-          console.log('nao existe', asset)
           await Promise.all([
             await Firestore().addListAsObjectsWithList({
               collection: "userAssetStatements",
