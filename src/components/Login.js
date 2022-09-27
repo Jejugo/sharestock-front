@@ -1,49 +1,49 @@
-import { useState } from "react";
-import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
-import Router from "next/router"
+import { useState } from 'react';
+import { signInWithEmailAndPassword, getAuth } from '@firebase/auth';
+import Router from 'next/router';
 
 const LoginComponent = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
-      e.preventDefault()
-      try {
-        const router = Router
-        const auth = getAuth()
-        const user = await signInWithEmailAndPassword(auth, email, password)
-        if(user)
-          router.push('/dashboard')
-      }
-      catch(err){
-        alert('Couldnt sign you in: ', err.message)
-        console.error(err)
-      }
-  }
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			const router = Router;
+			const auth = getAuth();
+			const user = await signInWithEmailAndPassword(auth, email, password);
+			if(user)
+				router.push('/dashboard');
+		}
+		catch(err){
+			alert('Couldnt sign you in: ', err.message);
+			console.error(err);
+		}
+	};
 
-  return (
-    <form className="login" onSubmit={handleSubmit}>
-      <h1 className="login__title">Login</h1>
-      <div className="login__input">
-        <input
-          className="login__input_value"
-          value={email}
-          onChange={(e) => setEmail(() => e.target.value)}
-          placeholder="Digite seu email"
-          type="email"
-        ></input>
-      </div>
-      <div className="login__input">
-        <input
-          className="login__input_value"
-          value={password}
-          onChange={(e) => setPassword(() => e.target.value)}
-          placeholder="Digite sua senha"
-          type="password"
-        ></input>
-      </div>
-      <button className="submit" type="submit">Enviar</button>
-      <style jsx global>{`
+	return (
+		<form className="login" onSubmit={handleSubmit}>
+			<h1 className="login__title">Login</h1>
+			<div className="login__input">
+				<input
+					className="login__input_value"
+					value={email}
+					onChange={(e) => setEmail(() => e.target.value)}
+					placeholder="Digite seu email"
+					type="email"
+				></input>
+			</div>
+			<div className="login__input">
+				<input
+					className="login__input_value"
+					value={password}
+					onChange={(e) => setPassword(() => e.target.value)}
+					placeholder="Digite sua senha"
+					type="password"
+				></input>
+			</div>
+			<button className="submit" type="submit">Enviar</button>
+			<style jsx global>{`
         .login__title{
           text-align: center;
           font-size: 30px;
@@ -82,8 +82,8 @@ const LoginComponent = () => {
           border-radius: 5px; 
         }
       `}</style>
-    </form>
-  );
+		</form>
+	);
 };
 
 export default LoginComponent;

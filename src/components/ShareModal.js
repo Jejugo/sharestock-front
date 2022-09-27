@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 
 export default function ShareModal({ data, hideModal }) {
-  return (
-    <>
-      <div className="modal">
-        <div className="close" onClick={hideModal}>
-          {" "}
-          X{" "}
-        </div>
-        <section className="modal__container">
-          <div className="modal__share_container">
-            <h1 className="modal__share">{data["Papel"]}</h1>
-          </div>
-          <h3 className="modal__share_calc">Cálculo de Evaluation</h3>
-        </section>
-      </div>
-      <style jsx>{`
+	return (
+		<>
+			<div className="modal">
+				<div className="close" onClick={hideModal}>
+					{' '}
+          X{' '}
+				</div>
+				<section className="modal__container">
+					<div className="modal__share_container">
+						<h1 className="modal__share">{data['Papel']}</h1>
+					</div>
+					<h3 className="modal__share_calc">Cálculo de Evaluation</h3>
+				</section>
+			</div>
+			<style jsx>{`
         .modal {
           opacity: 1;
           height: 50%;
@@ -61,6 +61,6 @@ export default function ShareModal({ data, hideModal }) {
           margin: 30px;
         }
       `}</style>
-    </>
-  );
+		</>
+	);
 }

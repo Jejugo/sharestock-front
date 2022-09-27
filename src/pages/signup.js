@@ -1,15 +1,15 @@
-import SignupComponent from "../components/SignupComponent"
-import LendingPageLayout from "../skeleton/LendingPageLayout"
+import SignupComponent from '../components/SignupComponent';
+import LendingPageLayout from '../skeleton/LendingPageLayout';
 
 const Signup = () => {
 
-    return (
-        <section>
-            <LendingPageLayout>
-                <SignupComponent></SignupComponent>
-            </LendingPageLayout>
-        </section>
-    )
-}
+	return (
+		<section>
+			<LendingPageLayout>
+				<SignupComponent></SignupComponent>
+			</LendingPageLayout>
+		</section>
+	);
+};
 
-export default Signup
+export default Signup;

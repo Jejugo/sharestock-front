@@ -1,61 +1,61 @@
-import React, { useState, useEffect } from "react";
-import calculateAssetPercentages from "../builders/calculateAssetPercentages";
+import React, { useState, useEffect } from 'react';
+import calculateAssetPercentages from '../builders/calculateAssetPercentages';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function SuggestedPercentages({
-  walletResistancePoints,
-  setShowSuggestedPercentages,
-  removeAssets
+	walletResistancePoints,
+	setShowSuggestedPercentages,
+	removeAssets
 }) {
-  const [walletSuggestedPercentages, setWalletSuggestedPercentages] = useState(
-    []
-  );
-  const [resistancePointsFormatted, setResistancePointsFormatted] = useState(
-    []
-  );
+	const [walletSuggestedPercentages, setWalletSuggestedPercentages] = useState(
+		[]
+	);
+	const [resistancePointsFormatted, setResistancePointsFormatted] = useState(
+		[]
+	);
 
-  const formatResistancePoints = (resistancePoints) => 
-    Object.entries(resistancePoints).map(([key, value]) => ({
-      name: key,
-      points: value,
-    }))
+	const formatResistancePoints = (resistancePoints) => 
+		Object.entries(resistancePoints).map(([key, value]) => ({
+			name: key,
+			points: value,
+		}));
 
-  const setPercentages = (resistancePoints) => {
-    const percentagesArray = calculateAssetPercentages(resistancePoints)
-    const formattedResistancePoints = formatResistancePoints(resistancePoints)
+	const setPercentages = (resistancePoints) => {
+		const percentagesArray = calculateAssetPercentages(resistancePoints);
+		const formattedResistancePoints = formatResistancePoints(resistancePoints);
 
-    setResistancePointsFormatted(formattedResistancePoints);
-    return percentagesArray;
-  };
+		setResistancePointsFormatted(formattedResistancePoints);
+		return percentagesArray;
+	};
 
-  useEffect(() => {
-    const percentagesResult = setPercentages(walletResistancePoints);
-    setWalletSuggestedPercentages(percentagesResult);
-  }, [walletResistancePoints]);
+	useEffect(() => {
+		const percentagesResult = setPercentages(walletResistancePoints);
+		setWalletSuggestedPercentages(percentagesResult);
+	}, [walletResistancePoints]);
 
-  return (
-    <section className="suggested_percentages">
-      <h1 className="suggested_percentages__title">
-        <i>Essas são as porcentages recomendadas para sua carteira:</i>
-      </h1>
-      <ul className="suggested_percentages__list">
-        <tr className="suggested_percentages__list_item--header">
-          <th>Name</th>
-          <th>Resistencia</th>
-          <th>Sugestão</th>
-          <th>trash</th>
-        </tr>
-        {walletSuggestedPercentages.map((asset) => (
-          <td className="suggested_percentages__list_item--row">
-            <span>{asset.name} </span>
-            <span>{asset.points}</span>
-            <span>{asset.percentage}</span>
-            {/* TODO REMOVE ON CLICK*/}
-            <span className="" onClick={() => removeAssets(asset.name)}><DeleteIcon></DeleteIcon></span> 
-          </td>
-        ))}
-      </ul>
-      <style>{`
+	return (
+		<section className="suggested_percentages">
+			<h1 className="suggested_percentages__title">
+				<i>Essas são as porcentages recomendadas para sua carteira:</i>
+			</h1>
+			<ul className="suggested_percentages__list">
+				<tr className="suggested_percentages__list_item--header">
+					<th>Name</th>
+					<th>Resistencia</th>
+					<th>Sugestão</th>
+					<th>trash</th>
+				</tr>
+				{walletSuggestedPercentages.map((asset) => (
+					<td className="suggested_percentages__list_item--row">
+						<span>{asset.name} </span>
+						<span>{asset.points}</span>
+						<span>{asset.percentage}</span>
+						{/* TODO REMOVE ON CLICK*/}
+						<span className="" onClick={() => removeAssets(asset.name)}><DeleteIcon></DeleteIcon></span> 
+					</td>
+				))}
+			</ul>
+			<style>{`
         .suggested_percentages__back_wrapper{
           display: flex;
           align-items: center;
@@ -87,6 +87,6 @@ export default function SuggestedPercentages({
           color: white;
         }
       `}</style>
-    </section>
-  );
+		</section>
+	);
 }

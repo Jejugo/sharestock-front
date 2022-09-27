@@ -1,71 +1,41 @@
-import React, { useEffect, useState } from "react";
-import Template from "../skeleton/Template";
-import Steps from "../components/Steps";
-import TextLayout from "../skeleton/TextLayout";
-import Fonts from "../components/Fonts";
-import Router from 'next/router'
-import { useAuth } from '../context/AuthUserContext'
+import React, { useEffect, useState } from 'react';
+import Template from '../skeleton/Template/Template';
+import Steps from '../components/Steps/Steps';
+import TextLayout from '../skeleton/TextLayout/TextLayout';
+import Fonts from '../components/Fonts';
 
-import { stockShareAnalysis } from "../const/definitions";
+import { stockShareAnalysis } from '../const/definitions';
 
 const HowToStart = () => {
-  const [steps, setSteps] = useState(stockShareAnalysis);
+  const [steps] = useState(stockShareAnalysis);
   const [count, setCount] = useState(0);
-
-  const { authUser } = useAuth()
-
-  const sleep = (ms) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  const redirectIfUserNotLoggedIn = async () => {
-    const router = Router;
-    await sleep(2000)
-    if(!authUser) router.push('/login')
-  }
 
   useEffect(async () => {
     Fonts();
-    // await redirectIfUserNotLoggedIn();
   }, []);
 
   const handleCountNext = () => {
-    if (count < steps.length - 1)
-      setCount((previousState) => previousState + 1);
+    if (count < steps.length - 1) setCount(previousState => previousState + 1);
   };
 
   const handleCountPrev = () => {
-    if (count > 0) setCount((previousState) => previousState - 1);
+    if (count > 0) setCount(previousState => previousState - 1);
   };
 
   return (
     <>
-    {authUser && (
-            <Template tabTitle={"strategy"}>
-                <TextLayout> 
-            <Steps
-              steps={steps}
-              count={count}
-              handleCountNext={handleCountNext}
-              handleCountPrev={handleCountPrev}
-            ></Steps>
-          </TextLayout>
-            </Template>
-            )}
-      <style jsx global>{`
-        body,
-        html {
-          margin: 0px;
-          color: #eee;
-          background-color: #000000;
-          font-family: "Baloo Bhaina 2", cursive;
-          font-style: normal;
-          font-display: swap;
-          line-height: 22pt;
-        }
-      `}</style>
-      </>
-      );
+      <Template tabTitle={'strategy'}>
+        <TextLayout>
+          <Steps
+            steps={steps}
+            count={count}
+            handleCountNext={handleCountNext}
+            handleCountPrev={handleCountPrev}
+          ></Steps>
+        </TextLayout>
+      </Template>
+    </>
+  );
 };
 
 export default HowToStart;

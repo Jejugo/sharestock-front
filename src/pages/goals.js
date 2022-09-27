@@ -1,18 +1,13 @@
-import React from 'react'
-import { useAuth } from "../context/AuthUserContext";
-import CompanyTypePercentages from "../components/CompanyTypePercentages";
-import Template from "../skeleton/Template";
+import React from 'react';
+import CompanyTypePercentages from '../components/CompanyTypePercentages';
+import Template from '../skeleton/Template/Template';
 
 export default function Goals() {
-    const { authUser } = useAuth();
-    return (
-        <section>
-            {authUser && (
-            <Template tabTitle={"strategy"}>
-                <CompanyTypePercentages
-                ></CompanyTypePercentages>
-            </Template>
-            )}
-        </section>
-    )
+  return (
+    <section>
+      <Template tabTitle={'strategy'}>
+        <CompanyTypePercentages></CompanyTypePercentages>
+      </Template>
+    </section>
+  );
 }

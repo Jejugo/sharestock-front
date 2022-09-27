@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext } from "react";
-import { WishListContext } from "../context/WishList";
-import { useAuth } from "../context/AuthUserContext";
-import Firestore from "../firebase/Firestore";
+import { useEffect, useState, useContext } from 'react';
+import { WishListContext } from '../context/WishList';
+import { useAuth } from '../context/AuthUserContext';
+import Firestore from '../firebase/Firestore';
 
 const WishListPopUp = () => {
   const [visible, setVisible] = useState(false);
@@ -9,9 +9,10 @@ const WishListPopUp = () => {
   const { authUser } = useAuth();
 
   useEffect(() => {
+    let timeout;
     if (wishList.length) {
       setVisible(true);
-      const timeout = setTimeout(() => setVisible(false), 3000);
+      timeout = setTimeout(() => setVisible(false), 3000);
     } else setVisible(false);
 
     return () => clearTimeout(timeout);
@@ -19,10 +20,10 @@ const WishListPopUp = () => {
 
   useEffect(async () => {
     const data = await Firestore().getAllItems({
-      collection: "watchlist",
+      collection: 'watchlist',
       id: authUser.uid,
     });
-    if(data && data.shares){
+    if (data && data.shares) {
       setWishList(data.shares);
     }
   }, []);
@@ -30,37 +31,38 @@ const WishListPopUp = () => {
   const removeItem = async (e, item) => {
     e.preventDefault();
     try {
-      setWishList((previousState) =>
-        previousState.filter((previousItem) => previousItem !== item)
+      setWishList(previousState =>
+        previousState.filter(previousItem => previousItem !== item),
       );
       await Firestore().removeFromArray({
-        collection: "watchlist",
+        collection: 'watchlist',
         id: authUser.uid,
         item,
       });
     } catch (err) {
       console.error(err);
-      setWishList((previousState) => [...previousState, item]);
+      setWishList(previousState => [...previousState, item]);
     }
   };
 
   return (
     <>
-      <ul className={visible ? "wishListPopUp" : "wishListPopUp--hidden"}>
+      <ul className={visible ? 'wishListPopUp' : 'wishListPopUp--hidden'}>
         <li className="wishListPopUp__text wishListPopUp__dropdownTitle">
-          {" "}
-          Wish List{" "}
+          {' '}
+          Wish List{' '}
         </li>
-        {wishList && wishList.map((wishItem) => (
-          <div>
-            <li onClick={(e) => removeItem(e, wishItem)}>
-              <p className="wishListPopUp__text wishListPopUp__text_item">
-                {wishItem}
-                <span> - </span>
-              </p>
-            </li>
-          </div>
-        ))}
+        {wishList &&
+          wishList.map(wishItem => (
+            <div>
+              <li onClick={e => removeItem(e, wishItem)}>
+                <p className="wishListPopUp__text wishListPopUp__text_item">
+                  {wishItem}
+                  <span> - </span>
+                </p>
+              </li>
+            </div>
+          ))}
       </ul>
       {!visible && (
         <button onClick={() => setVisible(true)} className="btn__showWishList">
