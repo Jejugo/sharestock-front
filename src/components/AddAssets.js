@@ -5,7 +5,6 @@ import Select from 'react-select';
 export default function AddAssets({
 	setShowAddAsset,
 	assetValue,
-	assets,
 	changeCompany,
 	setQuantity,
 	quantity,
@@ -15,11 +14,11 @@ export default function AddAssets({
 	uncheckStatements,
 	setAssetValue,
 	storeAssetStatements,
-	inputItems
+	inputItems,
 }) {
 	return (
 		<section className="add-assets">
-			<div style={{color: 'black'}}>
+			<div style={{ color: 'black' }}>
 				<Select
 					type="text"
 					options={inputItems}
@@ -31,7 +30,7 @@ export default function AddAssets({
 			<input
 				className="add-assets__input"
 				placeholder="Quantidade"
-				onChange={(e) => setQuantity(e.target.value)}
+				onChange={e => setQuantity(e.target.value)}
 				value={quantity}
 			></input>
 			<StockCheckList

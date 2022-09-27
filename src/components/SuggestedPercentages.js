@@ -4,23 +4,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function SuggestedPercentages({
 	walletResistancePoints,
-	setShowSuggestedPercentages,
-	removeAssets
+	removeAssets,
 }) {
 	const [walletSuggestedPercentages, setWalletSuggestedPercentages] = useState(
-		[]
+		[],
 	);
-	const [resistancePointsFormatted, setResistancePointsFormatted] = useState(
-		[]
-	);
+	const [, setResistancePointsFormatted] = useState([]);
 
-	const formatResistancePoints = (resistancePoints) => 
+	const formatResistancePoints = resistancePoints =>
 		Object.entries(resistancePoints).map(([key, value]) => ({
 			name: key,
 			points: value,
 		}));
 
-	const setPercentages = (resistancePoints) => {
+	const setPercentages = resistancePoints => {
 		const percentagesArray = calculateAssetPercentages(resistancePoints);
 		const formattedResistancePoints = formatResistancePoints(resistancePoints);
 
@@ -45,13 +42,15 @@ export default function SuggestedPercentages({
 					<th>Sugestão</th>
 					<th>trash</th>
 				</tr>
-				{walletSuggestedPercentages.map((asset) => (
-					<td className="suggested_percentages__list_item--row">
+				{walletSuggestedPercentages.map((asset, index) => (
+					<td className="suggested_percentages__list_item--row" key={index}>
 						<span>{asset.name} </span>
 						<span>{asset.points}</span>
 						<span>{asset.percentage}</span>
 						{/* TODO REMOVE ON CLICK*/}
-						<span className="" onClick={() => removeAssets(asset.name)}><DeleteIcon></DeleteIcon></span> 
+						<span className="" onClick={() => removeAssets(asset.name)}>
+							<DeleteIcon></DeleteIcon>
+						</span>
 					</td>
 				))}
 			</ul>

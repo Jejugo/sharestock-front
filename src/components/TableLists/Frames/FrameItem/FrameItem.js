@@ -1,29 +1,30 @@
+import React from 'react';
+
 function FrameItem({ item, index, goToFundamentus, validator, listClass }) {
-  return (
-    <div
-      className="list__shares_item"
-      onClick={() => goToFundamentus(item['Papel'])}
-      key={index}
-    >
-      <h1 className="share__title">{item['Papel']}</h1>
-      <h3 className="share__price">{item['Cotação']}</h3>
-      <p className={validator(listClass, item, 'Cresc.5anos')}>
+	return (
+		<div
+			className="list__shares_item"
+			onClick={() => goToFundamentus(item['Papel'])}
+		>
+			<h1 className="share__title">{item['Papel']}</h1>
+			<h3 className="share__price">{item['Cotação']}</h3>
+			<p className={validator(listClass, item, 'Cresc.5anos')}>
         Cresc5anos: {item['Cresc.5anos']}
-      </p>
-      <p className={validator(listClass, item, 'Dividend Yield')}>
+			</p>
+			<p className={validator(listClass, item, 'Dividend Yield')}>
         Dividend Y.: {item['Dividend Yield']}
-      </p>
-      <p className={validator(listClass, item, 'Dividend Yield')}>
+			</p>
+			<p className={validator(listClass, item, 'Dividend Yield')}>
         Liq Corrente: {item['Dividend Yield']}
-      </p>
-      <p className={validator(listClass, item, 'Dívida Bruta/Patrim.')}>
+			</p>
+			<p className={validator(listClass, item, 'Dívida Bruta/Patrim.')}>
         Dívida/PL: {item['Dívida Bruta/Patrim.']}
-      </p>
-      <p className={validator(listClass, item, 'Margem Líquida')}>
+			</p>
+			<p className={validator(listClass, item, 'Margem Líquida')}>
         Margem Líq: {item['Margem Líquida']}
-      </p>
-      <p className={validator(listClass, item, 'ROE')}>ROE: {item['ROE']}</p>
-      <style jsx>{`
+			</p>
+			<p className={validator(listClass, item, 'ROE')}>ROE: {item['ROE']}</p>
+			<style jsx>{`
         .list__shares_item {
           display: flex;
           flex-direction: column;
@@ -67,8 +68,8 @@ function FrameItem({ item, index, goToFundamentus, validator, listClass }) {
           color: rgb(167, 60, 60);
         }
       `}</style>
-    </div>
-  );
+		</div>
+	);
 }
 
 export default FrameItem;

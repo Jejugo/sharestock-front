@@ -8,7 +8,7 @@ export const RowHeader = styled.div`
   align-items: center;
 
   ${props =>
-    props.fixTableHeader &&
+		props.fixTableHeader &&
     `
     width: inheit;
     position: sticky;

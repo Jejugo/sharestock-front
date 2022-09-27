@@ -1,3 +1,4 @@
+import React from 'react';
 import LendingPageLayout from '../skeleton/LendingPageLayout';
 import LoginComponent from '../components/Login';
 

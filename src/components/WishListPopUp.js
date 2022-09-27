@@ -1,75 +1,75 @@
-import { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { WishListContext } from '../context/WishList';
 import { useAuth } from '../context/AuthUserContext';
 import Firestore from '../firebase/Firestore';
 
 const WishListPopUp = () => {
-  const [visible, setVisible] = useState(false);
-  const { wishList, setWishList } = useContext(WishListContext);
-  const { authUser } = useAuth();
+	const [visible, setVisible] = useState(false);
+	const { wishList, setWishList } = useContext(WishListContext);
+	const { authUser } = useAuth();
 
-  useEffect(() => {
-    let timeout;
-    if (wishList.length) {
-      setVisible(true);
-      timeout = setTimeout(() => setVisible(false), 3000);
-    } else setVisible(false);
+	useEffect(() => {
+		let timeout;
+		if (wishList.length) {
+			setVisible(true);
+			timeout = setTimeout(() => setVisible(false), 3000);
+		} else setVisible(false);
 
-    return () => clearTimeout(timeout);
-  }, [wishList]);
+		return () => clearTimeout(timeout);
+	}, [wishList]);
 
-  useEffect(async () => {
-    const data = await Firestore().getAllItems({
-      collection: 'watchlist',
-      id: authUser.uid,
-    });
-    if (data && data.shares) {
-      setWishList(data.shares);
-    }
-  }, []);
+	useEffect(async () => {
+		const data = await Firestore().getAllItems({
+			collection: 'watchlist',
+			id: authUser.uid,
+		});
+		if (data && data.shares) {
+			setWishList(data.shares);
+		}
+	}, []);
 
-  const removeItem = async (e, item) => {
-    e.preventDefault();
-    try {
-      setWishList(previousState =>
-        previousState.filter(previousItem => previousItem !== item),
-      );
-      await Firestore().removeFromArray({
-        collection: 'watchlist',
-        id: authUser.uid,
-        item,
-      });
-    } catch (err) {
-      console.error(err);
-      setWishList(previousState => [...previousState, item]);
-    }
-  };
+	const removeItem = async (e, item) => {
+		e.preventDefault();
+		try {
+			setWishList(previousState =>
+				previousState.filter(previousItem => previousItem !== item),
+			);
+			await Firestore().removeFromArray({
+				collection: 'watchlist',
+				id: authUser.uid,
+				item,
+			});
+		} catch (err) {
+			console.error(err);
+			setWishList(previousState => [...previousState, item]);
+		}
+	};
 
-  return (
-    <>
-      <ul className={visible ? 'wishListPopUp' : 'wishListPopUp--hidden'}>
-        <li className="wishListPopUp__text wishListPopUp__dropdownTitle">
-          {' '}
+	return (
+		<>
+			<ul className={visible ? 'wishListPopUp' : 'wishListPopUp--hidden'}>
+				<li className="wishListPopUp__text wishListPopUp__dropdownTitle">
+					{' '}
           Wish List{' '}
-        </li>
-        {wishList &&
+				</li>
+				{wishList &&
           wishList.map(wishItem => (
-            <div>
-              <li onClick={e => removeItem(e, wishItem)}>
-                <p className="wishListPopUp__text wishListPopUp__text_item">
-                  {wishItem}
-                  <span> - </span>
-                </p>
-              </li>
-            </div>
+          	<div>
+          		<li onClick={e => removeItem(e, wishItem)}>
+          			<p className="wishListPopUp__text wishListPopUp__text_item">
+          				{wishItem}
+          				<span> - </span>
+          			</p>
+          		</li>
+          	</div>
           ))}
-      </ul>
-      {!visible && (
-        <button onClick={() => setVisible(true)} className="btn__showWishList">
+			</ul>
+			{!visible && (
+				<button onClick={() => setVisible(true)} className="btn__showWishList">
           Show Wish List
-        </button>
-      )}
-      <style jsx global>{`
+				</button>
+			)}
+			<style jsx global>{`
         .wishListPopUp {
           position: fixed;
           bottom: 0;
@@ -109,8 +109,8 @@ const WishListPopUp = () => {
           width: 200px;
         }
       `}</style>
-    </>
-  );
+		</>
+	);
 };
 
 export default WishListPopUp;

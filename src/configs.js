@@ -1,3 +1,3 @@
-module.exports = {
-	SHARE_API: 'http://localhost:5000'
+export default {
+	SHARE_API: 'http://localhost:5000',
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signOut, getAuth } from '@firebase/auth';
 import navbarConfig from '../../const/navbarConfig';
 import * as S from './styles';
@@ -65,9 +65,9 @@ const Navbar = ({ isNavbarOpen, setIsNavbarOpen }) => {
 					)}
 				</S.NavbarItemList>
 				<S.NavbarItemList>
-					{navbarConfig.map(item => (
-						<S.NavbarItem>
-							<a href={item.href}>
+					{navbarConfig.map((item, index) => (
+						<S.NavbarItem key={index}>
+							<a href={item.href} key={index}>
 								<S.NavbarItemWrap>
 									<item.icon />
 									<h4>{isNavbarOpen && item.text}</h4>

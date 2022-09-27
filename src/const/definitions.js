@@ -69,7 +69,7 @@ const definitionsList = [
 		name: 'Divída Líquida / EBITDA',
 		definition:
       'Ela dá ao investidor a noção de quanto tempo levaria (anos) para uma empresa pagar a sua dívida, caso a Dívida Líquida e o EBITDA se mantenha constantes. E também, indica o grau de endividamento da companhia, sendo quanto menor o múltiplo, mais saudável e sustentável se encontra a relação da dívida com o EBITDA',
-		showDef: false
+		showDef: false,
 	},
 	{
 		id: 10,
@@ -85,14 +85,14 @@ const definitionsList = [
 		name: 'Margem Bruta',
 		definition:
       'Retorna o valor de quanto a empresa está gerando resultado diante de sua atividade',
-		showDef: false
+		showDef: false,
 	},
 	{
 		id: 12,
 		alias: 'Marg. Líq.',
 		name: 'Margem Líquida',
 		definition: 'Mede a fração de cada real que resultou em lucro líquido',
-		showDef: false
+		showDef: false,
 	},
 	{
 		id: 13,
@@ -119,7 +119,8 @@ const stockShareAnalysis = [
 		title: 'Análise Macroeconômica',
 		description:
       'Indicadores macroeconômicos são muito importantes para avaliar as premissas de uma análise fundamentalista. É importante identificar quais setores no Brasil mais crescem e quais as perspectivas a longo prazo de cada um deles.',
-		explanation: '<a href=\'https://www.ibge.gov.br/estatisticas/economicas/servicos/9028-pesquisa-anual-de-servicos.html?=&t=series-historicas\' target=\'_blank\' style=\'color: yellow\'> Clique aqui para mais informações </a>'
+		explanation:
+      '<a href=\'https://www.ibge.gov.br/estatisticas/economicas/servicos/9028-pesquisa-anual-de-servicos.html?=&t=series-historicas\' target=\'_blank\' style=\'color: yellow\'> Clique aqui para mais informações </a>',
 	},
 	{
 		id: 2,
@@ -127,7 +128,8 @@ const stockShareAnalysis = [
 		title: 'Análise Qualitativa',
 		description:
       'Encontre uma empresa/ativo que você vê considera promissor e/ou que você admira e se identifica. Após isso faça uma pesquisa sobre a Goverança/Gerência dessa empresa.',
-		explanation: '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A governança corporativa é essencial para que os interesses entre todos os envolvidos no negócios, incluindo gestores, sócios e acionistas majoritários e minoritários sejam ajustados. Benefícios da Governança Corporativa: <b>Aperfeiçoamento da Gestão</b>, <b>Melhores resultados</b>, </b>Melhora a imagem do negócio, <b>Desperta o interesse de novos investidores</b>, <b>Atrai e conserva talentos</b>, <b>Coordena conflitos e interesses</b> e <b>Evita Fraudes</b><br><br>Seus princípios são: <ol><li>Transparência</li><li>Equidade</li><li>Accountability</li><li>Responsabilidade Corporativa</li></ol><br>A classificação de empresas são feitas baseadas em 5 Níveis vistos com <b>bons olhos</b>: <br><ol><li>Novo Mercado</li><li>Nível 2</li><li>Nível 1</li><li>Bovespa Mais</li><li>Bovespa Mais Nível 2</li></ol><br>Além desses Níveis também existem indíces capazes de mostrar ainda mais:<br><ol><li>Índice de Governança Corporativa Diferenciada (IGCX)</li><li>Índice de ações com Tag Along diferenciado(ITAG)</li><li>Índice de Governança Corporativa Trade (IGCT)</li><li>Índice de Governança Corporativa - Novo Mercado (IGC-NM)</li></ol></p>'
+		explanation:
+      '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A governança corporativa é essencial para que os interesses entre todos os envolvidos no negócios, incluindo gestores, sócios e acionistas majoritários e minoritários sejam ajustados. Benefícios da Governança Corporativa: <b>Aperfeiçoamento da Gestão</b>, <b>Melhores resultados</b>, </b>Melhora a imagem do negócio, <b>Desperta o interesse de novos investidores</b>, <b>Atrai e conserva talentos</b>, <b>Coordena conflitos e interesses</b> e <b>Evita Fraudes</b><br><br>Seus princípios são: <ol><li>Transparência</li><li>Equidade</li><li>Accountability</li><li>Responsabilidade Corporativa</li></ol><br>A classificação de empresas são feitas baseadas em 5 Níveis vistos com <b>bons olhos</b>: <br><ol><li>Novo Mercado</li><li>Nível 2</li><li>Nível 1</li><li>Bovespa Mais</li><li>Bovespa Mais Nível 2</li></ol><br>Além desses Níveis também existem indíces capazes de mostrar ainda mais:<br><ol><li>Índice de Governança Corporativa Diferenciada (IGCX)</li><li>Índice de ações com Tag Along diferenciado(ITAG)</li><li>Índice de Governança Corporativa Trade (IGCT)</li><li>Índice de Governança Corporativa - Novo Mercado (IGC-NM)</li></ol></p>',
 	},
 	{
 		id: 3,
@@ -145,8 +147,7 @@ const stockShareAnalysis = [
 	},
 ];
 
-
-module.exports = {
+export default {
 	definitionsList,
-	stockShareAnalysis
+	stockShareAnalysis,
 };

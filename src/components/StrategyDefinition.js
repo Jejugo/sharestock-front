@@ -9,7 +9,7 @@ export default function StrategyDefinition({
 	statements,
 	addStatement,
 	removeStatement,
-	storeStatements
+	storeStatements,
 }) {
 	return (
 		<section>
@@ -39,12 +39,12 @@ export default function StrategyDefinition({
 			</form>
 			<ul className="strategy-form__list">
 				{statements.map((statement, index) => (
-					<div>
+					<div key={index}>
 						<li className="strategy-form__list_item">
 							<p>{`${statement.statement}`}</p>
 							<span
 								className="strategy-form__list_item--remove"
-								onClick={(e) => removeStatement(e, statement, index)}
+								onClick={e => removeStatement(e, statement, index)}
 							>
 								<DeleteIcon></DeleteIcon>
 							</span>
@@ -52,12 +52,12 @@ export default function StrategyDefinition({
 					</div>
 				))}
 			</ul>
-			<div style={{justifyContent: 'center', display: 'flex'}}>
+			<div style={{ justifyContent: 'center', display: 'flex' }}>
 				<button
-					onClick={(e) => storeStatements(e)}
+					onClick={e => storeStatements(e)}
 					className="strategy-form__button"
 				>
-            Salvar
+          Salvar
 				</button>
 			</div>
 			<style>{`

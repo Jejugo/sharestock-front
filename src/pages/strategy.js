@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Router from 'next/router';
 import Template from '../skeleton/Template/Template';
 import StrategyForm from '../components/StrategyForm';
-import { useAuth } from '../context/AuthUserContext';
 import config from '../configs';
 
 const { SHARE_API } = config;
 
-const Strategy = (props) => {
-	const { authUser } = useAuth();
+const Strategy = props => {
 	const [shares, setShares] = useState([]);
-
-	const redirectIfUserNotLoggedIn = async () => {
-		const router = Router;
-		await sleep(2000);
-		if (!authUser) router.push('/login');
-	};
-
-	const sleep = (ms) => {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	};
 
 	useEffect(() => {
 		const { shares } = props;
@@ -27,13 +14,9 @@ const Strategy = (props) => {
 	});
 
 	return (
-		<>
-			{authUser && (
-				<Template tabTitle={'strategy'}>
-					<StrategyForm shares={shares}></StrategyForm>
-				</Template>
-			)}
-		</>
+		<Template tabTitle={'strategy'}>
+			<StrategyForm shares={shares}></StrategyForm>
+		</Template>
 	);
 };
 
@@ -43,7 +26,7 @@ export async function getServerSideProps() {
 
 	return {
 		props: {
-			shares: sharesItems
+			shares: sharesItems,
 		},
 	};
 }

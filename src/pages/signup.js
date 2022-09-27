@@ -1,8 +1,8 @@
+import React from 'react';
 import SignupComponent from '../components/SignupComponent';
 import LendingPageLayout from '../skeleton/LendingPageLayout';
 
 const Signup = () => {
-
 	return (
 		<section>
 			<LendingPageLayout>

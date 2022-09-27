@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-export default function useWalletResistancePoints (){
-
+export default function useWalletResistancePoints() {
 	const [walletResistancePoints, setWalletResistancePoints] = useState({});
 
 	const storeAssetStatements = async () => {
@@ -12,7 +11,7 @@ export default function useWalletResistancePoints (){
 				list: statements,
 				key: assetValue,
 			});
-    
+
 			uncheckStatements();
 		} catch (err) {
 			console.error(err);
@@ -33,7 +32,7 @@ export default function useWalletResistancePoints (){
 					if (!statement.checked) return acc + -1 * statement.weight;
 				}, 0),
 			}),
-			{}
+			{},
 		);
 		setWalletResistancePoints(result);
 		setShowSuggestedPercentages(true);
@@ -41,7 +40,6 @@ export default function useWalletResistancePoints (){
 
 	return {
 		storeAssetAndCalculate,
-		walletResistancePoints
+		walletResistancePoints,
 	};
-    
 }

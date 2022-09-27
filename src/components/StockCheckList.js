@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Switch from 'react-switch';
 import { useAuth } from '../context/AuthUserContext';
 import Firestore from '../firebase/Firestore';
@@ -12,9 +12,9 @@ export default function StockCheckList({
 }) {
 	const { authUser } = useAuth();
 
-	const filterAssetStatements = (assetStatements) => {
-		const statementsArray = statements.map((statement) => statement.statement);
-		const weightArray = statements.map((statement) => statement.weight);
+	const filterAssetStatements = assetStatements => {
+		const statementsArray = statements.map(statement => statement.statement);
+		const weightArray = statements.map(statement => statement.weight);
 		const filteredAssets1 = assetStatements.map((statement, index) => {
 			if (statementsArray.includes(statement.statement)) {
 				return {
@@ -24,7 +24,7 @@ export default function StockCheckList({
 			}
 			return null;
 		});
-		return filteredAssets1.filter((a) => a);
+		return filteredAssets1.filter(a => a);
 	};
 
 	useEffect(async () => {
@@ -38,13 +38,13 @@ export default function StockCheckList({
 				id: authUser.uid,
 			});
 			strategyStatements = Object.keys(strategyStatements).map(
-				(key) => strategyStatements[key]
+				key => strategyStatements[key],
 			);
 			const sameStatements = [];
 			let assetsStatementsFiltered = [];
 			if (assetsToInvest && assetsToInvest.hasOwnProperty(assetValue)) {
 				assetsStatementsFiltered = filterAssetStatements(
-					assetsToInvest[assetValue]
+					assetsToInvest[assetValue],
 				);
 				for (let { statement } of statements) {
 					for (let assetStatement of assetsStatementsFiltered) {
@@ -55,12 +55,12 @@ export default function StockCheckList({
 				}
 
 				const filteredStatements = statements.filter(
-					(statement) => !sameStatements.includes(statement.statement)
+					statement => !sameStatements.includes(statement.statement),
 				);
 				setStatements([...assetsStatementsFiltered, ...filteredStatements]);
 			} else if (assetStatements.hasOwnProperty(assetValue)) {
 				assetsStatementsFiltered = filterAssetStatements(
-					assetStatements[assetValue]
+					assetStatements[assetValue],
 				);
 				for (let { statement } of statements) {
 					for (let assetStatement of assetsStatementsFiltered) {
@@ -71,7 +71,7 @@ export default function StockCheckList({
 				}
 
 				const filteredStatements = statements.filter(
-					(statement) => !sameStatements.includes(statement.statement)
+					statement => !sameStatements.includes(statement.statement),
 				);
 				setStatements([...assetsStatementsFiltered, ...filteredStatements]);
 			} else {
@@ -90,7 +90,7 @@ export default function StockCheckList({
             		<div className="stock-checklist__list_item--wrapper">
             			<p>{statement}</p>
             			<Switch
-            				onChange={(e) => handleStatementCheck(e, index)}
+            				onChange={e => handleStatementCheck(e, index)}
             				checked={checked}
             				disabled={!assetValue}
             			/>
