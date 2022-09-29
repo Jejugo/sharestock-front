@@ -1,61 +1,32 @@
 import React from 'react';
+import * as S from './styles';
 
-function FrameItem({ item, index, goToFundamentus, validator, listClass }) {
-	return (
-		<div
-			className="list__shares_item"
-			onClick={() => goToFundamentus(item['Papel'])}
-		>
-			<h1 className="share__title">{item['Papel']}</h1>
-			<h3 className="share__price">{item['Cotação']}</h3>
-			<p className={validator(listClass, item, 'Cresc.5anos')}>
+function FrameItem({ item, goToFundamentus, indicatorsValidator }) {
+  return (
+    <S.FrameItem onClick={() => goToFundamentus(item['Papel'])}>
+      <S.FrameTitle className="share__title">{item['Papel']}</S.FrameTitle>
+      <S.FramePrice className="share__price">{item['Cotação']}</S.FramePrice>
+      <S.FrameIndicator status={indicatorsValidator(item, 'Cresc.5anos')}>
         Cresc5anos: {item['Cresc.5anos']}
-			</p>
-			<p className={validator(listClass, item, 'Dividend Yield')}>
+      </S.FrameIndicator>
+      <S.FrameIndicator status={indicatorsValidator(item, 'Dividend Yield')}>
         Dividend Y.: {item['Dividend Yield']}
-			</p>
-			<p className={validator(listClass, item, 'Dividend Yield')}>
+      </S.FrameIndicator>
+      <S.FrameIndicator status={indicatorsValidator(item, 'Dividend Yield')}>
         Liq Corrente: {item['Dividend Yield']}
-			</p>
-			<p className={validator(listClass, item, 'Dívida Bruta/Patrim.')}>
+      </S.FrameIndicator>
+      <S.FrameIndicator
+        status={indicatorsValidator(item, 'Dívida Bruta/Patrim.')}
+      >
         Dívida/PL: {item['Dívida Bruta/Patrim.']}
-			</p>
-			<p className={validator(listClass, item, 'Margem Líquida')}>
+      </S.FrameIndicator>
+      <S.FrameIndicator status={indicatorsValidator(item, 'Margem Líquida')}>
         Margem Líq: {item['Margem Líquida']}
-			</p>
-			<p className={validator(listClass, item, 'ROE')}>ROE: {item['ROE']}</p>
-			<style jsx>{`
-        .list__shares_item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          border: 1px solid white;
-          flex-basis: 15.5%;
-          margin: 1% 1%;
-          padding: 1%;
-          height: 250px;
-          transition: 0.3s ease-out;
-        }
-
-        .list__shares_item:hover {
-          background-color: grey;
-          cursor: pointer;
-        }
-
-        .share__title {
-          font-size: 25px;
-          margin: 0;
-        }
-
-        .share__price {
-          font-size: 20px;
-        }
-
-        .share__desc {
-          margin: 2px;
-          line-height: 12pt;
-        }
-
+      </S.FrameIndicator>
+      <S.FrameIndicator status={indicatorsValidator(item, 'ROE')}>
+        ROE: {item['ROE']}
+      </S.FrameIndicator>
+      <style jsx>{`
         .good {
           color: rgb(94, 194, 94);
         }
@@ -68,8 +39,8 @@ function FrameItem({ item, index, goToFundamentus, validator, listClass }) {
           color: rgb(167, 60, 60);
         }
       `}</style>
-		</div>
-	);
+    </S.FrameItem>
+  );
 }
 
 export default FrameItem;

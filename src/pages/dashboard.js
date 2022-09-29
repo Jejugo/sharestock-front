@@ -1,6 +1,6 @@
 import React from 'react';
 import Template from '../skeleton/Template/Template';
-import DashboardComponent from '../components/Dashboard';
+import DashboardComponent from '../components/Dashboard/Dashboard';
 import Title from '../components/Title/Title';
 
 export default function Dashboard() {

@@ -17,7 +17,7 @@ export const SearchBarInput = styled.input`
   border-radius: 5px;
   outline: none;
   font-size: 20px;
-  width: 50%;
+  width: 20%;
   color: black;
   height: 30px;
 

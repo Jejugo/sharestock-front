@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PieChart from '../charts/PieChart';
+import Firestore from '../../firebase/Firestore';
+import calculateAssetPercentages from '../../builders/calculateAssetPercentages';
+import TableComponent from '../TableComponent';
+import * as S from './styles.js';
 
-import { useAuth } from '../context/AuthUserContext';
-import Firestore from '../firebase/Firestore';
-import calculateAssetPercentages from '../builders/calculateAssetPercentages';
-import TableComponent from './TableComponent';
+import { useAuth } from '../../context/AuthUserContext';
 
 const columnsMock = [
   { id: 'asset', label: 'Ação', minWidth: 170 },
@@ -38,13 +40,14 @@ const columnsMock = [
   },
 ];
 
-export default function AssetsTableContainer() {
+export default function DashboardComponent() {
   const { authUser } = useAuth();
+
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   useEffect(async () => {
     if (authUser) {
@@ -105,13 +108,25 @@ export default function AssetsTableContainer() {
   }, []);
 
   return (
-    <TableComponent
-      rows={rows}
-      columns={columns}
-      page={page}
-      rowsPerPage={rowsPerPage}
-      setPage={setPage}
-      setRowsPerPage={setRowsPerPage}
-    ></TableComponent>
+    <>
+      <S.DashboardWrapper>
+        <S.PieChartWrapper>
+          <PieChart />
+        </S.PieChartWrapper>
+        <S.PieChartWrapper>
+          <PieChart />
+        </S.PieChartWrapper>
+      </S.DashboardWrapper>
+      <S.WalletAssets>
+        <TableComponent
+          rows={rows}
+          columns={columns}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          setPage={setPage}
+          setRowsPerPage={setRowsPerPage}
+        ></TableComponent>
+      </S.WalletAssets>
+    </>
   );
 }
