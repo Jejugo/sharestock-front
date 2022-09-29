@@ -1,39 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
-import AssetsTableContainer from '../AssetsTableContainer';
+import AssetsTableContainer from '../AssetTableContainer/AssetsTableContainer';
 import AddAssets from '../AddAssets/AddAssets';
 
 import * as S from './styles';
 
-export default function MyAssetsComponent({ shareList, normalizedShares, sharesMap }) {
+export default function MyAssetsComponent({
+  shareList,
+  normalizedShares,
+  sharesMap,
+}) {
   const [showAddAsset, setShowAddAsset] = useState(false);
 
   return (
     <S.MyAssets>
-      <S.MyAssetsHeader>
-        <h1>Meus Ativos</h1>
-        <div>
-          {showAddAsset && (
-            <S.AddAssetBtn
-              onClick={() => setShowAddAsset(previousState => !previousState)}
-            >
-              Voltar
-            </S.AddAssetBtn>
-          )}
-          <S.AddAssetBtn
-            className="my-assets__button"
-            onClick={() =>
-              !showAddAsset
-                ? setShowAddAsset(previousState => !previousState)
-                : storeAssetStatements
-            }
-          >
-            {!showAddAsset ? 'Adicionar Ativo' : 'Salvar'}
-          </S.AddAssetBtn>
-        </div>
-      </S.MyAssetsHeader>
       {!showAddAsset ? (
-        <AssetsTableContainer></AssetsTableContainer>
+        <AssetsTableContainer
+          setShowAddAsset={setShowAddAsset}
+        ></AssetsTableContainer>
       ) : (
         <AddAssets
           setShowAddAsset={setShowAddAsset}

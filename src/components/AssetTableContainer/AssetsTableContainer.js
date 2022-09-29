@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { useAuth } from '../context/AuthUserContext';
-import Firestore from '../firebase/Firestore';
-import calculateAssetPercentages from '../builders/calculateAssetPercentages';
-import TableComponent from './TableComponent';
+import { useAuth } from '../../context/AuthUserContext';
+import Firestore from '../../firebase/Firestore';
+import calculateAssetPercentages from '../../builders/calculateAssetPercentages';
+import TableComponent from '../TableComponent';
+import * as S from './styles.js';
 
 const columnsMock = [
   { id: 'asset', label: 'Ação', minWidth: 170 },
@@ -38,7 +39,7 @@ const columnsMock = [
   },
 ];
 
-export default function AssetsTableContainer() {
+export default function AssetsTableContainer({ setShowAddAsset }) {
   const { authUser } = useAuth();
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
@@ -105,13 +106,23 @@ export default function AssetsTableContainer() {
   }, []);
 
   return (
-    <TableComponent
-      rows={rows}
-      columns={columns}
-      page={page}
-      rowsPerPage={rowsPerPage}
-      setPage={setPage}
-      setRowsPerPage={setRowsPerPage}
-    ></TableComponent>
+    <>
+      <S.TableTopActions>
+        <h1>Meus Ativos</h1>
+        <S.AddAssetBtn
+          onClick={() => setShowAddAsset(previousState => !previousState)}
+        >
+          Adicionar Ativo
+        </S.AddAssetBtn>
+      </S.TableTopActions>
+      <TableComponent
+        rows={rows}
+        columns={columns}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        setPage={setPage}
+        setRowsPerPage={setRowsPerPage}
+      ></TableComponent>
+    </>
   );
 }

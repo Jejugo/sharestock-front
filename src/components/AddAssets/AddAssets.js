@@ -44,29 +44,37 @@ export default function AddAssets({
     setAssetValue(value);
   };
 
+  const isEveryCheckFalse = statements =>
+    statements.every(({ checked }) => !checked);
+
   const storeAssetStatements = async () => {
     try {
-      await Promise.all([
-        await Firestore().addListAsObjectsWithList({
-          collection: 'userAssetStatements',
-          id: authUser.uid,
-          list: statements,
-          key: assetValue,
-        }),
-        await Firestore().addListAsObjects({
-          collection: 'userAssets',
-          id: authUser.uid,
-          list: [
-            {
-              ...sharesMap[assetValue],
-              quantity: parseInt(quantity),
-            },
-          ],
-          key: assetValue,
-        }),
-      ]);
+      if (!isEveryCheckFalse(statements)) {
+        await Promise.all([
+          await Firestore().addListAsObjectsWithList({
+            collection: 'userAssetStatements',
+            id: authUser.uid,
+            list: statements,
+            key: assetValue,
+          }),
+          await Firestore().addListAsObjects({
+            collection: 'userAssets',
+            id: authUser.uid,
+            list: [
+              {
+                ...sharesMap[assetValue],
+                quantity: parseInt(quantity),
+              },
+            ],
+            key: assetValue,
+          }),
+        ]);
 
-      clearState();
+        clearState();
+        alert('Dados salvos com sucesso.');
+      } else {
+        alert('Você precisa selecionar pelo menos um item.');
+      }
     } catch (err) {
       console.error(err);
     }
@@ -87,6 +95,19 @@ export default function AddAssets({
 
   return (
     <section>
+      <S.TopActions>
+        <S.AddAssetBtn
+          className="my-assets__button"
+          onClick={storeAssetStatements}
+        >
+          Salvar
+        </S.AddAssetBtn>
+        <S.AddAssetBtn
+          onClick={() => setShowAddAsset(previousState => !previousState)}
+        >
+          Voltar
+        </S.AddAssetBtn>
+      </S.TopActions>
       <div style={{ color: 'black' }}>
         <Select
           type="text"

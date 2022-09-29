@@ -9,16 +9,8 @@ export const AddAssetBtn = styled.button`
   margin-left: 20px;
 `;
 
-export const AddCompanyInput = styled.input`
-  display: block;
-  padding: 10px;
-  margin: 20px 0px;
-  border: none;
-  border-radius: 2px;
-`;
-
-export const TopActions = styled.div`
+export const TableTopActions = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 20px;
 `;
