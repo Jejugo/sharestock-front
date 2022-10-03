@@ -6,7 +6,7 @@ import { useAuth } from '../../../context/AuthUserContext';
 import Firestore from '../../../firebase/Firestore';
 import * as S from './styles.js';
 
-const Table = ({ filteredItems, fixTableHeader }) => {
+const Rows = ({ filteredItems, fixTableHeader }) => {
   const { setWishList } = useContext(WishListContext);
   const { authUser } = useAuth();
 
@@ -62,4 +62,4 @@ const Table = ({ filteredItems, fixTableHeader }) => {
   );
 };
 
-export default Table;
+export default Rows;

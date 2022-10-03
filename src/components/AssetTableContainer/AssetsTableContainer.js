@@ -6,7 +6,7 @@ import calculateAssetPercentages from '../../builders/calculateAssetPercentages'
 import TableComponent from '../TableComponent';
 import * as S from './styles.js';
 
-const columnsMock = [
+const columnsNames = [
   { id: 'asset', label: 'Ação', minWidth: 170 },
   { id: 'recommended', label: 'Recomendado %', minWidth: 100 },
   {
@@ -100,7 +100,7 @@ export default function AssetsTableContainer({ setShowAddAsset }) {
         }));
 
         setRows(tableData);
-        setColumns(columnsMock);
+        setColumns(columnsNames);
       }
     }
   }, []);
