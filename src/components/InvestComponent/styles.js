@@ -59,20 +59,32 @@ export const StockCheckBtnWrapper = styled.div`
 `;
 
 export const ScoreView = styled.div`
-  height: 60px;
+  height: 50px;
   background-color: red;
   width: 100%;
   display: flex;
+  border-radius: 5px;
+  margin: 50px 0px;
 `;
 
 export const Points = styled.div`
   background-color: ${props => props.color};
   height: 100%;
   width: 100%;
+  padding: 10px 0px;
+
+  &:nth-child(1) {
+    border-radius: 2px 0px 0px 2px;
+  }
+
+  &:nth-child(3) {
+    border-radius: 0px 2px 2px 0px;
+  }
 `;
 
 export const PointsText = styled.p`
   text-align: center;
   font-weight: 600;
   font-size: 20px;
+  margin: 0;
 `;

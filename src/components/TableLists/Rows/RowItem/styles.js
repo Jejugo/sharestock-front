@@ -9,7 +9,7 @@ export const Row = styled.div`
   &:hover {
     background-color: grey;
     cursor: pointer;
-    z-index: 2;
+    z-index: 1;
   }
 `;
 

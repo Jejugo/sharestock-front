@@ -8,13 +8,14 @@ export const RowHeader = styled.div`
   align-items: center;
 
   ${props =>
-		props.fixTableHeader &&
+    props.fixTableHeader &&
     `
     width: inheit;
     position: sticky;
     top: 0;
     background-color: grey;
     opacity: 0.8;
+    z-index: 2;
   `}
 `;
 

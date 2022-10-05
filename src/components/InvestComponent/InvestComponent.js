@@ -22,8 +22,10 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
   const [quantity, setQuantity] = useState([]);
 
   // Suggestions State
-  const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const titleRef = useRef(null);
+  const [positiveScore, setPositiveScore] = useState(0);
+  const [negativeScore, setNegativeScore] = useState(0);
 
   // Snackbar state
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -54,17 +56,14 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
 
   const snackbarClose = () => setShowSnackbar(false);
 
-  const saveAssetStatementsToState = async () => {
+  const addNextAsset = async () => {
     try {
-      await setAssetsToInvest(previousState => {
-        return { ...previousState, [selectedAsset.value]: statements };
-      });
-
       setSnackbarMessage(`Added ${selectedAsset.value} to the calculation...`);
       setShowSnackbar(true);
-
       uncheckStatements();
       setSelectedAsset('');
+      setPositiveScore(0);
+      setNegativeScore(0);
     } catch (err) {
       console.error(err);
     }
@@ -135,11 +134,25 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
 
   const handleStatementCheck = (e, index) => {
     setStatements(prevState => [
-      ...prevState.map((state, i) =>
-        i === index ? { ...state, checked: !state.checked } : state,
-      ),
+      ...prevState.map((state, i) => {
+        if (i === index) {
+          return { ...state, checked: !state.checked };
+        } else return state;
+      }),
     ]);
   };
+
+  useEffect(() => {
+    if (statements.length) {
+      setPositiveScore(0);
+      setNegativeScore(0);
+      statements.forEach(statement => {
+        statement.checked
+          ? setPositiveScore(prevState => prevState + 1 * statement.weight)
+          : setNegativeScore(prevState => prevState - 1 * statement.weight);
+      });
+    }
+  }, [statements]);
 
   const uncheckStatements = () => {
     setStatements(prevState =>
@@ -159,6 +172,23 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
     );
   }, [normalizedShares]);
 
+  const calculatePoints = assetsToInvest =>
+    Object.keys(assetsToInvest).reduce(
+      (acc, assetKey) => ({
+        ...acc,
+        [assetKey]: assetsToInvest[assetKey].reduce((acc, statement) => {
+          if (statement.checked) {
+            const score = acc + 1 * statement.weight;
+            return score;
+          } else if (!statement.checked) {
+            const score = acc + -1 * statement.weight;
+            return score;
+          }
+        }, 0),
+      }),
+      {},
+    );
+
   useEffect(async () => {
     const data = await Firestore().getAllItems({
       collection: 'userStrategyStatements',
@@ -177,19 +207,19 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
 
   useEffect(() => {
     setLoading(true);
-    const result = Object.keys(assetsToInvest).reduce(
-      (acc, assetKey) => ({
-        ...acc,
-        [assetKey]: assetsToInvest[assetKey].reduce((acc, statement) => {
-          if (statement.checked) return acc + 1 * statement.weight;
-          if (!statement.checked) return acc + -1 * statement.weight;
-        }, 0),
-      }),
-      {},
-    );
+    const result = calculatePoints(assetsToInvest);
     setWalletResistancePoints(result);
     setLoading(false);
   }, [assetsToInvest]);
+
+  useEffect(() => {
+    
+    if (statements.length && selectedAsset) {
+      setAssetsToInvest(previousState => {
+        return { ...previousState, [selectedAsset.value]: statements };
+      });
+    }
+  }, [JSON.stringify(statements)]);
 
   return (
     <S.InvestComponent>
@@ -218,7 +248,6 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
                 ></Select>
               </S.DropdownStyle>
               <S.StockListQuantityInput
-                className="invest_component__input"
                 placeholder="Quantidade"
                 onChange={e =>
                   setQuantity(previousState => ({
@@ -231,13 +260,16 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
             </S.InputWrapper>
             <S.ScoreView>
               <S.Points color="green">
-                <S.PointsText>Pontos positivos: </S.PointsText>
+                <S.PointsText>Pontos positivos:</S.PointsText>
+                <S.PointsText>{positiveScore}</S.PointsText>
               </S.Points>
               <S.Points color="red">
-                <S.PointsText>Pontos negativos: </S.PointsText>
+                <S.PointsText>Pontos negativos:</S.PointsText>
+                <S.PointsText>{negativeScore}</S.PointsText>
               </S.Points>
               <S.Points color="orange">
-                <S.PointsText>Pontos totais: </S.PointsText>
+                <S.PointsText>Resistência:</S.PointsText>
+                <S.PointsText>{positiveScore + negativeScore}</S.PointsText>
               </S.Points>
             </S.ScoreView>
             <StockCheckList
@@ -251,21 +283,18 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
             ></StockCheckList>
             <S.StockCheckBtnWrapper>
               <S.StockCheckAddBtn
-                className="invest_component__button"
-                onClick={saveAssetStatementsToState}
+                onClick={addNextAsset}
                 disabled={!selectedAsset}
               >
                 Adicionar mais ativos
               </S.StockCheckAddBtn>
               <S.StockCheckAddBtn
-                className="invest_component__button"
                 onClick={() => handleCalculate()}
-                disabled={!selectedAsset}
+                disabled={!Object.keys(assetsToInvest).length}
               >
                 Calcular
               </S.StockCheckAddBtn>
               <S.StockCheckAddBtn
-                className="invest_component__button"
                 onClick={storeAssetStatements}
                 disabled={!Object.keys(assetsToInvest).length}
               >
@@ -274,7 +303,7 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
             </S.StockCheckBtnWrapper>
           </S.StockListAdd>
           {showSuggestions && (
-            <section className="invest_component__view_overview">
+            <section>
               <SuggestedPercentages
                 walletResistancePoints={walletResistancePoints}
                 removeAssets={removeAssets}

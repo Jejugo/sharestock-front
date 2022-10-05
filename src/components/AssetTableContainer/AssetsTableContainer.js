@@ -86,18 +86,20 @@ export default function AssetsTableContainer({ setShowAddAsset }) {
           .map(item => userAssets[item])
           .reduce((acc, curr) => acc + parseInt(curr.quantity), 0);
 
-        let tableData = Object.keys(userAssets).map(item => ({
-          asset: userAssets[item]['nome'],
-          recommended: assetRecommendedPercentages[item].percentage,
-          currentValue:
-            userAssets[item]['quantity'] * userAssets[item]['Cotação'],
-          grade: assetPoints[item],
-          total: `${(
-            (userAssets[item]['quantity'] / totalQuantity) *
-            100
-          ).toFixed(2)}%`,
-          quantity: userAssets[item]['quantity'],
-        }));
+        let tableData = Object.keys(userAssets)
+          .map(item => ({
+            asset: userAssets[item]['nome'],
+            recommended: assetRecommendedPercentages[item].percentage,
+            currentValue:
+              userAssets[item]['quantity'] * userAssets[item]['Cotação'],
+            grade: assetPoints[item],
+            total: `${(
+              (userAssets[item]['quantity'] / totalQuantity) *
+              100
+            ).toFixed(2)}%`,
+            quantity: userAssets[item]['quantity'],
+          }))
+          .sort((a, b) => (a.asset < b.asset ? -1 : a.asset > b.asset ? 1 : 0)); //alphabetically
 
         setRows(tableData);
         setColumns(columnsNames);
