@@ -1,3 +1,3 @@
 export default {
-	SHARE_API: 'http://localhost:5000',
+  SHARE_API: 'http://localhost:5000',
 };

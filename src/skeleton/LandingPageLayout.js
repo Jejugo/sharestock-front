@@ -1,15 +1,13 @@
 import React from 'react';
 
-export default function LendingPageLayout({ children }) {
-	return (
-		<section className="lendingPage">
-			<section className="lendingPage__banner">
-				<h1 className="lendingPage__banner_title">Sharestock App</h1>
-			</section>
-			<section className="lendingPage__content">
-				{ children }
-			</section>
-			<style>{`
+export default function LandingPageLayout({ children }) {
+  return (
+    <section className="lendingPage">
+      <section className="lendingPage__banner">
+        <h1 className="lendingPage__banner_title">Sharestock App</h1>
+      </section>
+      <section className="lendingPage__content">{children}</section>
+      <style>{`
                 .lendingPage{
                     display:flex;
                 }
@@ -32,6 +30,6 @@ export default function LendingPageLayout({ children }) {
                     width: 40vw;
                 }
             `}</style>
-		</section>
-	);
+    </section>
+  );
 }

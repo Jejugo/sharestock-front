@@ -15,8 +15,8 @@ const MyAssets = props => {
       <Template tabTitle={'My Assets'}>
         <MyAssetsComponent
           shareList={props.shareList}
-          normalizedShares={props.normalizedShares}
-					sharesMap={props.sharesMap}
+          dropdownShares={props.sharesDropdown}
+          sharesMap={props.sharesMap}
         />
       </Template>
     </>
@@ -34,7 +34,7 @@ export async function getServerSideProps() {
     props: {
       shareList,
       sharesMap,
-      normalizedShares: normalizeShareItems,
+      sharesDropdown: normalizeShareItems,
     },
   };
 }

@@ -42,13 +42,6 @@ export const StockCheckAddBtn = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 5px;
-
-  &:nth-of-type(2) {
-    margin-left: 20px;
-  }
-  &:nth-of-type(3) {
-    margin-left: 20px;
-  }
 `;
 
 export const StockCheckBtnWrapper = styled.div`
@@ -59,12 +52,15 @@ export const StockCheckBtnWrapper = styled.div`
 `;
 
 export const ScoreView = styled.div`
-  height: 50px;
+  height: 40px;
   background-color: red;
   width: 100%;
   display: flex;
   border-radius: 5px;
   margin: 50px 0px;
+  position: sticky;
+  top: 0;
+  z-index: 0;
 `;
 
 export const Points = styled.div`

@@ -7,7 +7,7 @@ import * as S from './styles';
 
 export default function MyAssetsComponent({
   shareList,
-  normalizedShares,
+  dropdownShares,
   sharesMap,
 }) {
   const [showAddAsset, setShowAddAsset] = useState(false);
@@ -22,7 +22,7 @@ export default function MyAssetsComponent({
         <AddAssets
           setShowAddAsset={setShowAddAsset}
           shareList={shareList}
-          normalizedShares={normalizedShares}
+          dropdownShares={dropdownShares}
           sharesMap={sharesMap}
         ></AddAssets>
       )}

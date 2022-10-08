@@ -11,7 +11,7 @@ import { useAuth } from '../../context/AuthUserContext';
 
 import * as S from './styles';
 
-export default function InvestComponent({ sharesMap, normalizedShares }) {
+export default function InvestComponent({ sharesMap, dropdownShares }) {
   const { authUser } = useAuth();
   const [selectedAsset, setSelectedAsset] = useState('');
   const [statements, setStatements] = useState([]);
@@ -19,7 +19,7 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
   const [loading, setLoading] = useState(false);
   const [assetsToInvest, setAssetsToInvest] = useState({});
   const [userAssets, setUserAssets] = useState({});
-  const [quantity, setQuantity] = useState([]);
+  const [quantities, setQuantities] = useState({});
 
   // Suggestions State
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -56,14 +56,32 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
 
   const snackbarClose = () => setShowSnackbar(false);
 
+  const resetAssets = () => {
+    setAssetsToInvest({});
+    setQuantities(prevState =>
+      Object.keys(prevState).reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr]: '',
+        }),
+        {},
+      ),
+    );
+    setShowSuggestions(false);
+  };
+
+  const resetState = () => {
+    uncheckStatements();
+    setSelectedAsset('');
+    setPositiveScore(0);
+    setNegativeScore(0);
+  };
+
   const addNextAsset = async () => {
     try {
       setSnackbarMessage(`Added ${selectedAsset.value} to the calculation...`);
       setShowSnackbar(true);
-      uncheckStatements();
-      setSelectedAsset('');
-      setPositiveScore(0);
-      setNegativeScore(0);
+      resetState();
     } catch (err) {
       console.error(err);
     }
@@ -73,6 +91,17 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
     try {
       for (let asset in assetsToInvest) {
         if (userAssets.hasOwnProperty(asset)) {
+          const quantity = Boolean(
+            userAssets[asset] && userAssets[asset].quantity,
+          )
+            ? parseInt(userAssets[asset].quantity) + parseInt(quantities[asset])
+            : parseInt(quantities[asset]);
+
+          if (!quantity) {
+            alert('No quantity found');
+            return;
+          }
+
           await Promise.all([
             await Firestore().addListAsObjectsWithList({
               collection: 'userAssetStatements',
@@ -86,17 +115,20 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
               list: [
                 {
                   ...(userAssets[asset] && userAssets[asset]),
-                  quantity:
-                    userAssets[asset] && userAssets[asset].quantity
-                      ? parseInt(userAssets[asset].quantity) +
-                        parseInt(quantity[asset])
-                      : parseInt(quantity[asset]),
+                  quantity,
                 },
               ],
               key: asset,
             }),
           ]);
         } else {
+          console.log('else');
+          console.log(quantities);
+          const quantity = parseInt(quantities[asset]);
+          if (!quantity) {
+            alert('No quantity found');
+            return;
+          }
           await Promise.all([
             await Firestore().addListAsObjectsWithList({
               collection: 'userAssetStatements',
@@ -110,20 +142,19 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
               list: [
                 {
                   ...sharesMap[asset],
-                  quantity: parseInt(quantity[asset]),
+                  quantity: parseInt(quantities[asset]),
                 },
               ],
               key: asset,
             }),
           ]);
         }
-
-        alert('Dados salvos com sucesso.');
-        uncheckStatements();
-        setQuantity('');
-        setSelectedAsset('');
       }
+      alert('Dados salvos com sucesso.');
+      uncheckStatements();
+      setSelectedAsset('');
     } catch (err) {
+      console.error(err.stack);
       alert(err.message);
     }
   };
@@ -161,8 +192,8 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
   };
 
   useEffect(() => {
-    setQuantity(() =>
-      normalizedShares.reduce(
+    setQuantities(() =>
+      dropdownShares.reduce(
         (acc, curr) => ({
           ...acc,
           [curr.value]: '',
@@ -170,7 +201,7 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
         {},
       ),
     );
-  }, [normalizedShares]);
+  }, [dropdownShares]);
 
   const calculatePoints = assetsToInvest =>
     Object.keys(assetsToInvest).reduce(
@@ -190,19 +221,21 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
     );
 
   useEffect(async () => {
-    const data = await Firestore().getAllItems({
-      collection: 'userStrategyStatements',
-      id: authUser.uid,
-    });
-    const allUserAssets = await Firestore().getAllItems({
-      collection: 'userAssets',
-      id: authUser.uid,
-    });
-    const formattedData = Object.keys(data).map(key => ({
-      ...data[key],
-    }));
-    setStatements(formattedData);
-    setUserAssets(allUserAssets);
+    if (!userAssets.length) {
+      const data = await Firestore().getAllItems({
+        collection: 'userStrategyStatements',
+        id: authUser.uid,
+      });
+      const allUserAssets = await Firestore().getAllItems({
+        collection: 'userAssets',
+        id: authUser.uid,
+      });
+      const formattedData = Object.keys(data).map(key => ({
+        ...data[key],
+      }));
+      setStatements(formattedData);
+      setUserAssets(allUserAssets);
+    }
   }, []);
 
   useEffect(() => {
@@ -213,7 +246,6 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
   }, [assetsToInvest]);
 
   useEffect(() => {
-    
     if (statements.length && selectedAsset) {
       setAssetsToInvest(previousState => {
         return { ...previousState, [selectedAsset.value]: statements };
@@ -241,7 +273,7 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
               <S.DropdownStyle>
                 <Select
                   type="text"
-                  options={normalizedShares}
+                  options={dropdownShares}
                   placeholder="Ativo"
                   onChange={handleFilterInput}
                   value={selectedAsset}
@@ -250,12 +282,12 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
               <S.StockListQuantityInput
                 placeholder="Quantidade"
                 onChange={e =>
-                  setQuantity(previousState => ({
+                  setQuantities(previousState => ({
                     ...previousState,
                     [selectedAsset.value]: e.target.value,
                   }))
                 }
-                value={quantity[selectedAsset.value] || ''}
+                value={quantities[selectedAsset.value] || ''}
               ></S.StockListQuantityInput>
             </S.InputWrapper>
             <S.ScoreView>
@@ -286,13 +318,19 @@ export default function InvestComponent({ sharesMap, normalizedShares }) {
                 onClick={addNextAsset}
                 disabled={!selectedAsset}
               >
-                Adicionar mais ativos
+                Adicionar
               </S.StockCheckAddBtn>
               <S.StockCheckAddBtn
                 onClick={() => handleCalculate()}
                 disabled={!Object.keys(assetsToInvest).length}
               >
                 Calcular
+              </S.StockCheckAddBtn>
+              <S.StockCheckAddBtn
+                onClick={resetAssets}
+                disabled={!Object.keys(assetsToInvest).length}
+              >
+                Resetar
               </S.StockCheckAddBtn>
               <S.StockCheckAddBtn
                 onClick={storeAssetStatements}

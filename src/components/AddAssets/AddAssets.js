@@ -10,7 +10,7 @@ import { convertObjectToArray } from '../../builders/arrays';
 export default function AddAssets({
   setShowAddAsset,
   shareList,
-  normalizedShares,
+  dropdownShares,
   sharesMap,
 }) {
   const { authUser } = useAuth();
@@ -83,7 +83,7 @@ export default function AddAssets({
   useEffect(async () => {
     if (authUser) {
       setAssets(shareList);
-      setDropdownItems(normalizedShares);
+      setDropdownItems(dropdownShares);
       const data = await Firestore().getAllItems({
         collection: 'userStrategyStatements',
         id: authUser.uid,

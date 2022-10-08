@@ -11,14 +11,13 @@ import {
 const { SHARE_API } = config;
 
 export default function Invest(props) {
-  const { authUser } = useAuth();
   const [shares, setShares] = useState([]);
   const [sharesMap, setSharesMap] = useState([]);
-  const [normalizedShares, setNormalizedShares] = useState([]);
+  const [dropdownShares, setDropdownShares] = useState([]);
 
   useEffect(() => {
-    const { normalizedShares, shares, sharesMap } = props;
-    setNormalizedShares(normalizedShares);
+    const { sharesDropdown, shares, sharesMap } = props;
+    setDropdownShares(sharesDropdown);
     setShares(shares);
     setSharesMap(sharesMap);
   });
@@ -28,7 +27,7 @@ export default function Invest(props) {
       <Template tabTitle={'dashboard'}>
         <InvestComponent
           shares={shares}
-          normalizedShares={normalizedShares}
+          dropdownShares={dropdownShares}
           sharesMap={sharesMap}
         ></InvestComponent>
       </Template>
@@ -43,7 +42,7 @@ export async function getServerSideProps() {
   const sharesMap = convertArrayToObject(shareList, 'Papel');
   return {
     props: {
-      normalizedShares: normalizeShareItems,
+      sharesDropdown: normalizeShareItems,
       shareList,
       sharesMap,
     },

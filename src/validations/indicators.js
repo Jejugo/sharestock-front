@@ -43,3 +43,5 @@ const indicatorsValidator = (row, value) => {
 };
 
 export default indicatorsValidator;
+
+

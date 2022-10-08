@@ -22,7 +22,6 @@ const Indicators = props => {
     const { shares, goodShares } = props;
     setShares(shares);
     setGoodShares(goodShares);
-    console.log('scrolling...');
     window.addEventListener('scroll', handleScroll);
   }, []);
 
