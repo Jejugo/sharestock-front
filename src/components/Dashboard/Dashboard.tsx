@@ -1,40 +1,16 @@
 import React from 'react'
 import PieChartComponent from '../charts/PieChart/PieChart'
 import TableComponent from '../AssetTable/AssetTable'
-import { IStockSector } from './interfaces'
+
 import { Tooltip } from 'recharts'
+import CustomTooltip from 'components/charts/PieChart/CustomTooltip/CustomTooltip'
 import * as S from './styles'
 
 import useAssetTableData from 'hooks/useAssetTableData'
 import Title from '@components/Title/Title'
-import { Payload } from 'recharts/types/component/DefaultTooltipContent'
+
 import useRowsData from './hooks/useRowsData'
 
-function CustomTooltip({
-  payload,
-  assetSectors
-}: {
-  payload: Payload<number, string>[]
-  assetSectors: IStockSector[]
-}) {
-  return (
-    <S.ToolTip>
-      <S.TooltipTitle>
-        {`${((payload[0]?.value ?? 0) * 100).toFixed(2)}%`}
-      </S.TooltipTitle>
-      <S.TooltipList>
-        {payload[0]?.name
-          ? assetSectors?.map((sector: IStockSector, index: number) => {
-              if (sector.sector === payload[0]?.name) {
-                return <li key={index}>{sector.name}</li>
-              }
-              return null
-            })
-          : null}
-      </S.TooltipList>
-    </S.ToolTip>
-  )
-}
 interface IArrayToObject<T> {
   [key: string]: T
 }
@@ -48,21 +24,22 @@ export default function DashboardComponent({ sharesMap }: IDashboardComponent) {
   const { rows, columns } = useAssetTableData()
   const { assetSectors, pieChartData } = useRowsData({ sharesMap })
 
-  const handleFormatter = (data: any) => {
-    return `${(data * 100).toString()}%`
-  }
-
   return (
     <S.DashboardComponentWrapper>
       <Title text="Olá, Jeff"></Title>
       <S.DashboardWrapper>
         <S.PieChartWrapper>
-          <PieChartComponent data={pieChartData}>
+          <PieChartComponent
+            data={pieChartData}
+            size={{ width: 1200, height: 500 }}
+          >
             <Tooltip
               isAnimationActive={true}
               animationDuration={2}
               animationEasing="ease"
-              formatter={handleFormatter}
+              formatter={(data: string) =>
+                `${(parseInt(data) * 100).toString()}%`
+              }
               // @ts-ignore
               content={<CustomTooltip assetSectors={assetSectors} />}
             />

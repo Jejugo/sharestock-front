@@ -7,7 +7,7 @@ import {
 } from 'firebase/utils'
 import calculateAssetPoints from 'builders/calculateAssetPoints'
 import { convertArrayToObject, convertObjectKeysToList } from 'builders/arrays'
-import { buildAssetTableData } from 'builders/assetTable'
+import { buildAssetTableData } from '@builders/assets'
 import { useAuth } from '@context/AuthUserContext'
 import calculateAssetPercentages, {
   AssetPercentage

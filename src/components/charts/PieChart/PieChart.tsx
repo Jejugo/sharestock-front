@@ -20,10 +20,14 @@ const COLORS = [
 
 interface IPieChart {
   data: IPieData[]
-  children: React.ReactNode
+  children?: React.ReactNode
+  size: {
+    height: number
+    width: number
+  }
 }
 
-const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
+const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
   const handlePieClick = (data: any) => {
     console.log('clicked', data)
   }
@@ -33,7 +37,7 @@ const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
   return (
     <>
       {data.length ? (
-        <ResponsiveContainer width={1200} height={500}>
+        <ResponsiveContainer width={size.width} height={size.height}>
           <PieChart width={600} height={600}>
             <Pie
               onClick={handlePieClick}

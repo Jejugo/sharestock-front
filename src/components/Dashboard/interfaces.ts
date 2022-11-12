@@ -6,13 +6,13 @@ export interface RecommendedPercentages {
   }
 }
 
-export interface IStockSector {
+export interface IPieData {
   name: string
-  sector: string
   value: number
 }
 
-export interface IPieData {
+export interface IStockSector {
   name: string
+  sector: string
   value: number
 }
