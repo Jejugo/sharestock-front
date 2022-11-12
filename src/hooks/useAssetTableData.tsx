@@ -12,7 +12,7 @@ import { useAuth } from '@context/AuthUserContext'
 import calculateAssetPercentages, {
   AssetPercentage
 } from '@builders/calculateAssetPercentages'
-import { RecommendedPercentages } from '@components/Dashboard/interface'
+import { RecommendedPercentages } from '@components/Dashboard/interfaces'
 import { ITableColumn, ITableRow } from '@components/AssetTable/interfaces'
 
 export default function useAssetTableData() {

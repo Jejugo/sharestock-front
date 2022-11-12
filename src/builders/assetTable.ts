@@ -1,5 +1,5 @@
 import { ITableRow } from '@components/AssetTable/interfaces'
-import { RecommendedPercentages } from '@components/Dashboard/interface'
+import { RecommendedPercentages } from '@components/Dashboard/interfaces'
 
 const stockScore = (userAsset: IStockItem): number => {
   let points = 0

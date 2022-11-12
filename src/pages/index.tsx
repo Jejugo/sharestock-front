@@ -11,17 +11,13 @@ interface IArrayToObject<T> {
 }
 interface IDashboard {
   sharesMap: IArrayToObject<IStockItem>
-  sharesList: IStockItem[]
 }
 
-export default function Dashboard({ sharesMap, sharesList }: IDashboard) {
+export default function Dashboard({ sharesMap }: IDashboard) {
   return (
     <section className="dashboard">
       <Template tabTitle={'dashboard'}>
-        <DashboardComponent
-          sharesMap={sharesMap}
-          sharesList={sharesList}
-        ></DashboardComponent>
+        <DashboardComponent sharesMap={sharesMap}></DashboardComponent>
       </Template>
     </section>
   )
