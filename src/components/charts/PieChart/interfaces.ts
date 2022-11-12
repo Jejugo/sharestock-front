@@ -1,5 +1,4 @@
-export interface IStockSector {
+export interface IPieData {
   name: string
-  sector: string
   value: number
 }

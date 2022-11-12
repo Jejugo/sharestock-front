@@ -1,9 +1,11 @@
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Cell, Pie, PieChart, Tooltip } from 'recharts'
+import CustomTooltip from 'components/charts/PieChart/CustomTooltip/CustomTooltip'
+import { Tooltip } from 'recharts'
 
 import * as S from '../styles'
 import { useFormContext } from 'react-hook-form'
+import PieChartComponent from '@components/charts/PieChart/PieChart'
 
 interface IAssetType {
   value: string
@@ -94,26 +96,18 @@ export default function StocksPercentages({ sectors }: IStockPercentage) {
     <section>
       <S.PercentageWrapper>
         <S.ChartComponent>
-          <PieChart width={600} height={600}>
-            <Pie
-              dataKey="value"
-              data={stockValues}
-              cx="50%"
-              cy="50%"
-              outerRadius={150}
-              style={{ fontWeight: '600' }}
-              label
-            >
-              <Tooltip />
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {stockValues.map((_: any, index: number) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
+          <PieChartComponent
+            size={{ width: 600, height: 600 }}
+            data={stockValues}
+          >
+            <Tooltip
+              isAnimationActive={true}
+              animationDuration={2}
+              animationEasing="ease"
+              formatter={(data: string) => `${data}%`}
+              // @ts-ignore
+            />
+          </PieChartComponent>
         </S.ChartComponent>
         <S.Percentages>
           <S.PercentageList>

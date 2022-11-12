@@ -53,5 +53,12 @@ export const convertObjectKeysToList = <T extends RandomObject<T>>(obj: T) =>
     }
   }, {})
 
-export const sortArrayAlphabetically = (arr: any[], key: string) =>
-  arr.sort((a, b) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0))
+interface ArrayAlphabetically {
+  [key: string]: any
+}
+
+export const sortArrayAlphabetically = <T extends ArrayAlphabetically>(
+  arr: T[],
+  key: string
+): T[] =>
+  arr.sort((a: T, b: T) => (a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0))

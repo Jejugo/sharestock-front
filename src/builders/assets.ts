@@ -1,5 +1,15 @@
 import { ITableRow } from '@components/AssetTable/interfaces'
-import { RecommendedPercentages } from '@components/Dashboard/interface'
+import { RecommendedPercentages } from '@components/Dashboard/interfaces'
+
+export interface IAssetSectors {
+  name: string
+  sector: string
+  value: number
+}
+
+export interface IValueBySector {
+  [key: string]: number
+}
 
 const stockScore = (userAsset: IStockItem): number => {
   let points = 0
@@ -62,3 +72,47 @@ export const buildAssetTableData = ({
   ).toFixed(2)}%`,
   quantity: parseInt(userAssets[item]['quantity'])
 })
+
+interface IArrayToObject<T> {
+  [key: string]: T
+}
+
+type sharesMap = IArrayToObject<IStockItem>
+
+export const walletSectors = (
+  rows: ITableRow[],
+  sharesMap: sharesMap
+): IAssetSectors[] =>
+  rows.map((row) => {
+    const sector = sharesMap[row.symbol].segmento_bovespa
+    return {
+      name: row.symbol,
+      sector,
+      value: row.currentValue
+    }
+  })
+
+export const getTotalValueBySector = (
+  walletSectors: IAssetSectors[]
+): IValueBySector =>
+  walletSectors.reduce(
+    (
+      acc: { [key: string]: number },
+      wallet: { name: string; sector: string; value: number }
+    ) => ({
+      ...acc,
+      [wallet.sector]: parseFloat(
+        (acc[wallet.sector] + wallet.value).toFixed(3)
+      )
+    }),
+    walletSectors.reduce(
+      (
+        acc: { [key: string]: number },
+        curr: { name: string; sector: string; value: number }
+      ) => ({
+        ...acc,
+        [curr.sector]: 0
+      }),
+      {}
+    )
+  )

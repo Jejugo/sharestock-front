@@ -7,12 +7,12 @@ import {
 } from 'firebase/utils'
 import calculateAssetPoints from 'builders/calculateAssetPoints'
 import { convertArrayToObject, convertObjectKeysToList } from 'builders/arrays'
-import { buildAssetTableData } from 'builders/assetTable'
+import { buildAssetTableData } from '@builders/assets'
 import { useAuth } from '@context/AuthUserContext'
 import calculateAssetPercentages, {
   AssetPercentage
 } from '@builders/calculateAssetPercentages'
-import { RecommendedPercentages } from '@components/Dashboard/interface'
+import { RecommendedPercentages } from '@components/Dashboard/interfaces'
 import { ITableColumn, ITableRow } from '@components/AssetTable/interfaces'
 
 export default function useAssetTableData() {
