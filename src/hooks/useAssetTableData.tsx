@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { columnsNames } from '@const/assetsTable'
+import { columnsNames } from 'const/assetsTable'
 import {
   calculateTotalUserAssetsValue,
   getAllUserAssets,
   getUserAssetStatements
 } from 'firebase/utils'
 import calculateAssetPoints from 'builders/calculateAssetPoints'
-import { convertArrayToObject, convertObjectKeysToList } from 'builders/arrays'
-import { buildAssetTableData } from '@builders/assets'
-import { useAuth } from '@context/AuthUserContext'
+import { convertArrayToObject } from 'builders/arrays'
+import { buildAssetTableData } from 'builders/assets'
+import { useAuth } from 'context/AuthUserContext'
 import calculateAssetPercentages, {
   AssetPercentage
-} from '@builders/calculateAssetPercentages'
-import { RecommendedPercentages } from '@components/Dashboard/interfaces'
-import { ITableColumn, ITableRow } from '@components/AssetTable/interfaces'
+} from 'builders/calculateAssetPercentages'
+import { RecommendedPercentages } from 'features/dashboard/Dashboard/interfaces'
+import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
 
 export default function useAssetTableData() {
   const { authUser } = useAuth()

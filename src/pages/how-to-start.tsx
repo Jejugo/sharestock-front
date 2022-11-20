@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import Template from '../skeleton/Template/Template'
+import Template from '../layout/Template/Template'
 import Steps from '../components/Steps/Steps'
-import TextLayout from '../skeleton/TextLayout/TextLayout'
+import TextLayout from '../layout/TextLayout/TextLayout'
 import Fonts from '../components/Fonts'
 
-import { StockShareAnalysis, stockShareAnalysis } from '../const/definitions'
+import { stockShareAnalysis as steps } from '../const/definitions'
 
 const HowToStart = () => {
-  const [steps] = useState<StockShareAnalysis[]>(stockShareAnalysis)
   const [count, setCount] = useState<number>(0)
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const HowToStart = () => {
 
   return (
     <>
-      <Template tabTitle={'strategy'}>
+      <Template tabTitle="strategy">
         <TextLayout>
           <Steps
             steps={steps}

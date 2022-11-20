@@ -1,5 +1,5 @@
 export {}
-// import { useAuth } from '@context/AuthUserContext';
+// import { useAuth } from 'context/AuthUserContext';
 // import Firestore from 'firebase/Firestore';
 // import { useState } from 'react';
 

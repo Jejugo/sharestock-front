@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Button, Modal, Typography } from '@material-ui/core'
-import SettingsIndicatorItem from '@components/SettingsIndicatorItem/SettingsIndicatorItem'
-import { useForm } from "react-hook-form";
+import React from 'react'
+import { Box, Modal, Typography } from '@material-ui/core'
+import SettingsIndicatorItem from 'components/SettingsIndicatorItem/SettingsIndicatorItem'
+import { useForm } from 'react-hook-form'
 
 import * as S from './styles'
 
@@ -19,7 +19,6 @@ const style = {
   p: 4
 }
 
-
 interface ISettingsModal {
   showModalSettings: boolean
   setShowModalSettings: React.Dispatch<React.SetStateAction<boolean>>
@@ -34,11 +33,11 @@ export function SettingsModal({
   showModalSettings,
   setShowModalSettings
 }: ISettingsModal) {
-  const formData = useForm();
+  const formData = useForm()
 
   const onSubmit = (data: any) => {
     console.log(data)
-  };
+  }
 
   return (
     <Modal open={showModalSettings} onClose={() => setShowModalSettings(false)}>
@@ -48,18 +47,31 @@ export function SettingsModal({
         </Typography>
         <S.ModalContent>
           <form onSubmit={formData.handleSubmit(onSubmit)}>
-          <SettingsIndicatorItem title={'P/L'} formData={formData}/>
-          <SettingsIndicatorItem title={'P/VP'} formData={formData}/>
-          <SettingsIndicatorItem title={'Cresc. 5 Anos'} formData={formData} />
-          <SettingsIndicatorItem title={'Dividend Yield'} formData={formData} />
-          <SettingsIndicatorItem title={'Dívida Bruta/Patrimônio'} formData={formData} />
-          <SettingsIndicatorItem title={'Liquidez Corrente'} formData={formData} />
-          <SettingsIndicatorItem title={'Margem Líquida'} formData={formData} />
-          <SettingsIndicatorItem title={'ROE'} formData={formData}/>
-          <S.ModalBtn>
-            Salvar
-          </S.ModalBtn>
-        </form>
+            <SettingsIndicatorItem title={'P/L'} formData={formData} />
+            <SettingsIndicatorItem title={'P/VP'} formData={formData} />
+            <SettingsIndicatorItem
+              title={'Cresc. 5 Anos'}
+              formData={formData}
+            />
+            <SettingsIndicatorItem
+              title={'Dividend Yield'}
+              formData={formData}
+            />
+            <SettingsIndicatorItem
+              title={'Dívida Bruta/Patrimônio'}
+              formData={formData}
+            />
+            <SettingsIndicatorItem
+              title={'Liquidez Corrente'}
+              formData={formData}
+            />
+            <SettingsIndicatorItem
+              title={'Margem Líquida'}
+              formData={formData}
+            />
+            <SettingsIndicatorItem title={'ROE'} formData={formData} />
+            <S.ModalBtn>Salvar</S.ModalBtn>
+          </form>
         </S.ModalContent>
       </Box>
     </Modal>
@@ -67,4 +79,3 @@ export function SettingsModal({
 }
 
 export default SettingsModal
-  

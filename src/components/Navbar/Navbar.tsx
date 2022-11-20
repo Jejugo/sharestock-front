@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { signOut, getAuth } from '@firebase/auth'
-import navbarConfig from '@const/navbarConfig'
+import navbarConfig, { INavbarItem } from 'const/navbarConfig'
 import * as S from './styles'
 import Router from 'next/router'
-import { useAuth } from '@context/AuthUserContext'
+import { useAuth } from 'context/AuthUserContext'
 import CloseIcon from '@mui/icons-material/Close'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
@@ -69,7 +69,7 @@ const Navbar = ({ isNavbarOpen, setIsNavbarOpen }: INavbar) => {
           )}
         </S.NavbarItemList>
         <S.NavbarItemList>
-          {navbarConfig.map((item, index) => (
+          {navbarConfig.map((item: INavbarItem, index: number) => (
             <S.NavbarItem key={index}>
               <a href={item.href} key={index}>
                 <S.NavbarItemWrap>

@@ -1,8 +1,8 @@
 import React from 'react'
-import Template from '../skeleton/Template/Template'
-import DashboardComponent from '../components/Dashboard/Dashboard'
-import { convertArrayToObject } from '@builders/arrays'
-import config from '../configs'
+import Template from 'layout/Template/Template'
+import DashboardComponent from 'features/dashboard/Dashboard/Dashboard'
+import { convertArrayToObject } from 'builders/arrays'
+import config from 'configs'
 
 const { SHARE_API } = config
 
@@ -15,11 +15,9 @@ interface IDashboard {
 
 export default function Dashboard({ sharesMap }: IDashboard) {
   return (
-    <section className="dashboard">
-      <Template tabTitle={'dashboard'}>
-        <DashboardComponent sharesMap={sharesMap}></DashboardComponent>
-      </Template>
-    </section>
+    <Template tabTitle="dashboard">
+      <DashboardComponent sharesMap={sharesMap}></DashboardComponent>
+    </Template>
   )
 }
 

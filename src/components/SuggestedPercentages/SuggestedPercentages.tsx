@@ -1,10 +1,10 @@
-import React, { useState, useEffect, RefObject, SetStateAction } from 'react'
+import React, { useState, useEffect, SetStateAction } from 'react'
 import calculateAssetPercentages from '../../builders/calculateAssetPercentages'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 import * as S from './styles'
 import { ISuggestedAssetsPercentage } from './interfaces'
-import { IAssetQuantities } from '../InvestComponent/interfaces'
+import { IAssetQuantities } from 'features/invest/InvestComponent/interfaces'
 
 interface PercentagesArray {
   name: string

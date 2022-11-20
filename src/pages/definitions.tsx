@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import TableLayout from '../skeleton/TableLayout/TableLayout'
+import TableLayout from '../layout/TableLayout/TableLayout'
 import SearchBar from '../components/SearchBar/SearchBar'
 import { definitionsList, Definitions } from '../const/definitions'
-import Template from '../skeleton/Template/Template'
-import DefinitionList from '../components/DefinitionList/DefinitionList'
+import Template from '../layout/Template/Template'
+import DefinitionList from '../features/definitions/DefinitionList/DefinitionList'
 
 const Definitions = () => {
   const [defList, setDefList] = useState<Definitions[]>(definitionsList)
@@ -36,7 +36,7 @@ const Definitions = () => {
       <Template tabTitle={'indicators'}>
         <section>
           <SearchBar
-            handleSearchBar={handleSearch}
+            setSearchText={handleSearch}
             value={search}
             placeholder={'Indicador'}
           ></SearchBar>

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { WishListProviderProps } from './interface'
 
 interface IWishListContext {
@@ -8,10 +8,12 @@ interface IWishListContext {
 
 const initialState: IWishListContext = {
   wishList: [],
-  setWishList: () => {}
+  setWishList: () => undefined
 }
 
 export const WishListContext = createContext(initialState)
+
+export const useWishList = () => useContext(WishListContext)
 
 const WishListProvider = ({ children }: WishListProviderProps) => {
   const [wishList, setWishList] = useState<string[]>([])

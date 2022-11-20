@@ -1,8 +1,8 @@
 import React from 'react'
-import Template from '../skeleton/Template/Template'
-import config from '../configs'
+import Template from 'layout/Template/Template'
+import config from 'configs'
 
-import MyAssetsComponent from '../components/MyAssets/MyAssetsComponent'
+import MyAssetsComponent from 'features/my-assets/MyAssets/MyAssetsComponent'
 import {
   convertArrayToObject,
   normalizeArrayToDropdown
@@ -20,14 +20,12 @@ interface IMyAssets {
 
 const MyAssets = ({ dropdownShares, sharesMap }: IMyAssets) => {
   return (
-    <>
-      <Template tabTitle={'My Assets'}>
-        <MyAssetsComponent
-          dropdownShares={dropdownShares}
-          sharesMap={sharesMap}
-        />
-      </Template>
-    </>
+    <Template tabTitle="My Assets">
+      <MyAssetsComponent
+        dropdownShares={dropdownShares}
+        sharesMap={sharesMap}
+      />
+    </Template>
   )
 }
 

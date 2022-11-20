@@ -1,6 +1,6 @@
 import React from 'react'
-import CompanyTypePercentages from '../components/InvestmentPercentages/InvestmentPercentages'
-import Template from '../skeleton/Template/Template'
+import CompanyTypePercentages from 'features/goals/InvestmentPercentages/InvestmentPercentages'
+import Template from '../layout/Template/Template'
 import config from '../configs'
 
 const { SHARE_API } = config
@@ -10,11 +10,9 @@ interface IGoals {
 
 export default function Goals({ shareList }: IGoals) {
   return (
-    <section>
-      <Template tabTitle={'strategy'}>
-        <CompanyTypePercentages shareList={shareList}></CompanyTypePercentages>
-      </Template>
-    </section>
+    <Template tabTitle="strategy">
+      <CompanyTypePercentages shareList={shareList}></CompanyTypePercentages>
+    </Template>
   )
 }
 export async function getServerSideProps() {

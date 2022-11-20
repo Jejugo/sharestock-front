@@ -1,4 +1,4 @@
-import indicatorsValidator from '@validations/indicators'
+import indicatorsValidator from 'validations/indicators'
 import React from 'react'
 import * as S from './styles'
 

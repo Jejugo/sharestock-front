@@ -1,6 +1,6 @@
 import React from 'react'
-import Template from '../skeleton/Template/Template'
-import InvestComponent from '../components/InvestComponent/InvestComponent'
+import Template from '../layout/Template/Template'
+import InvestComponent from 'features/invest/InvestComponent/InvestComponent'
 import config from '../configs'
 import {
   convertArrayToObject,
@@ -25,14 +25,12 @@ interface IInvest {
 
 export default function Invest({ dropdownShares, sharesMap }: IInvest) {
   return (
-    <section className="dashboard">
-      <Template tabTitle={'dashboard'}>
-        <InvestComponent
-          dropdownShares={dropdownShares}
-          sharesMap={sharesMap}
-        ></InvestComponent>
-      </Template>
-    </section>
+    <Template tabTitle="dashboard">
+      <InvestComponent
+        dropdownShares={dropdownShares}
+        sharesMap={sharesMap}
+      ></InvestComponent>
+    </Template>
   )
 }
 

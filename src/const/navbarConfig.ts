@@ -5,6 +5,16 @@ import FactCheckIcon from '@mui/icons-material/FactCheck'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined'
 import PaidIcon from '@mui/icons-material/Paid'
+import { OverridableComponent } from '@material-ui/core/OverridableComponent'
+import { SvgIconTypeMap } from '@material-ui/core'
+
+export interface INavbarItem {
+  icon: OverridableComponent<SvgIconTypeMap<any, 'svg'>> & {
+    muiName: string
+  }
+  text: string
+  href: string
+}
 
 export default [
   {

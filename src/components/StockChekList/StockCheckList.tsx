@@ -1,15 +1,14 @@
-import { IAssetsToInvest } from '@components/InvestComponent/interfaces'
 import {
   getUserStrategyStatements,
   strategyStatementsToArray,
   getUserAssetStatements
 } from 'firebase/utils'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Switch from 'react-switch'
-import { useAuth } from '@context/AuthUserContext'
+import { useAuth } from 'context/AuthUserContext'
 import Firestore from 'firebase/Firestore'
 import * as S from './styles'
-import { convertObjectToArray, sortArrayAlphabetically } from 'builders/arrays'
+import { sortArrayAlphabetically } from 'builders/arrays'
 
 interface IStockCheckList {
   assetValue: string

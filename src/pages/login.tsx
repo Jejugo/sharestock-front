@@ -1,14 +1,12 @@
 import React from 'react'
-import LendingPageLayout from '@skeleton/LandingPageLayout'
-import LoginComponent from '../components/Login'
+import LandingPageLayout from 'layout/LandingPageLayout'
+import LoginComponent from '../features/login/Login'
 
 const Login = () => {
   return (
-    <section>
-      <LendingPageLayout>
-        <LoginComponent></LoginComponent>
-      </LendingPageLayout>
-    </section>
+    <LandingPageLayout>
+      <LoginComponent></LoginComponent>
+    </LandingPageLayout>
   )
 }
 

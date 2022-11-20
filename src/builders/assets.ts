@@ -1,5 +1,5 @@
-import { ITableRow } from '@components/AssetTable/interfaces'
-import { RecommendedPercentages } from '@components/Dashboard/interfaces'
+import { ITableRow } from 'components/AssetTable/interfaces'
+import { RecommendedPercentages } from 'features/dashboard/Dashboard/interfaces'
 
 export interface IAssetSectors {
   name: string
