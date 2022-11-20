@@ -22,13 +22,13 @@
     "sourceMap": true,
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"],
-      "@const/*": ["const/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@context/*": ["context/*"],
-      "@validations/*": ["validations/*"],
-      "@skeleton/*": ["skeleton/*"],
-      "@builders/*": ["builders/*"],
+      "components/*": ["components/*"],
+      "const/*": ["const/*"],
+      "interfaces/*": ["interfaces/*"],
+      "context/*": ["context/*"],
+      "validations/*": ["validations/*"],
+      "skeleton/*": ["skeleton/*"],
+      "builders/*": ["builders/*"],
       "firebase/*": ["firebase/*"]
     }
   },

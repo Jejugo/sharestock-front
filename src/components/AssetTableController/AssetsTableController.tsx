@@ -17,15 +17,15 @@ export default function AssetsTableController({
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(25)
   const { rows, columns } = useAssetTableData()
 
+  const handleShowAsset = () => {
+    setShowAddAsset((previousState) => !previousState)
+  }
+
   return (
     <>
       <S.TableTopActions>
         <Title>Meus Ativos</Title>
-        <S.AddAssetBtn
-          onClick={() => setShowAddAsset((previousState) => !previousState)}
-        >
-          Adicionar Ativo
-        </S.AddAssetBtn>
+        <S.AddAssetBtn onClick={handleShowAsset}>Adicionar Ativo</S.AddAssetBtn>
       </S.TableTopActions>
 
       <AssetTable
