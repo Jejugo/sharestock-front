@@ -5,7 +5,7 @@ body,
 html {
   margin: 0px;
   color: white;
-  background-color: #000000;
+  background-color: #151515;
   font-family: 'Josefin Sans', sans-serif;
   font-weight: 300;
   font-style: normal;

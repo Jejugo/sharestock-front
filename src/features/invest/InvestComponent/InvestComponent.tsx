@@ -19,6 +19,7 @@ import {
 import { getAllUserAssets } from 'firebase/utils'
 import calculateAssetPoints from 'builders/calculateAssetPoints'
 import Title from 'components/Title/Title'
+import Button from 'components/Button/Button'
 
 interface IDropdownItem {
   value: string
@@ -236,7 +237,7 @@ export default function InvestComponent({
         </Box>
       ) : (
         <S.InvestComponentLayout>
-          <Title>Faça o balanceamento do seu investimento</Title>
+          <Title text="Faça o balanceamento do seu investimento" />
           <S.StockListAdd>
             <S.InputWrapper>
               <S.DropdownStyle>
@@ -276,24 +277,24 @@ export default function InvestComponent({
               assetValue={selectedAsset.value}
             ></StockCheckList>
             <S.StockCheckBtnWrapper>
-              <S.StockCheckAddBtn
+              <Button
                 onClick={addNextAsset}
                 disabled={!selectedAsset}
-              >
-                Adicionar
-              </S.StockCheckAddBtn>
-              <S.StockCheckAddBtn
+                size="medium"
+                text="Adicionar"
+              />
+              <Button
                 onClick={() => handleCalculate()}
                 disabled={!Object.keys(assetsToInvest).length}
-              >
-                Calcular
-              </S.StockCheckAddBtn>
-              <S.StockCheckAddBtn
+                text="Calcular"
+                size="medium"
+              />
+              <Button
                 onClick={resetAssetsToInvest}
                 disabled={!Object.keys(assetsToInvest).length}
-              >
-                Resetar
-              </S.StockCheckAddBtn>
+                text="Resetar"
+                size="medium"
+              />
             </S.StockCheckBtnWrapper>
           </S.StockListAdd>
           {showSuggestions && (

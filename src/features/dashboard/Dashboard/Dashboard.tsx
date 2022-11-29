@@ -26,12 +26,12 @@ export default function DashboardComponent({ sharesMap }: IDashboardComponent) {
 
   return (
     <S.DashboardComponentWrapper>
-      <Title text="Olá, Jeff"></Title>
+      <Title text="Olá, Jeff" />
       <S.DashboardWrapper>
         <S.PieChartWrapper>
           <PieChartComponent
             data={pieChartData}
-            size={{ width: 1200, height: 500 }}
+            size={{ width: 850, height: 500 }}
           >
             <Tooltip
               isAnimationActive={true}

@@ -1,10 +1,9 @@
 import React from 'react'
-import Slider from '@mui/material/Slider'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Cell, Pie, PieChart, Tooltip } from 'recharts'
+import { Tooltip } from 'recharts'
 
 import * as S from '../styles'
-import { useFormContext } from 'react-hook-form'
+import { useController } from 'react-hook-form'
 import PieChartComponent from 'components/charts/PieChart/PieChart'
 
 interface IAssetType {
@@ -13,66 +12,54 @@ interface IAssetType {
   name: string
 }
 
-const COLORS = [
-  '#0088FE',
-  '#00C49F',
-  '#FFBB28',
-  '#FF8042',
-  '#9999ff',
-  '#d6aa7f',
-  '#a45a52',
-  '#36c90e',
-  '#cc3333',
-  '#fbbaf7',
-  '#82a8f4'
-]
+interface IAssetTypeParams {
+  title: string
+  name: string
+  dropdownItems?: string[]
+  colors: string[]
+}
 
-export default function InternationalPercentages() {
-  const { getValues, setValue, watch } = useFormContext()
-
-  const internationalValues = watch('international')
-
+export default function AssetType({
+  title,
+  name,
+  dropdownItems = [],
+  colors
+}: IAssetTypeParams) {
+  const {
+    field: { value, onChange: fieldOnChange }
+  } = useController({ name })
+  console.log(value)
   const setAssetType = (
     values: IAssetType[],
     assetType: string,
     index: number
   ) => {
-    setValue('international', [
-      ...values,
-      { name: assetType, value: '', id: index }
-    ])
-  }
-
-  const removeAssetItem = (id: number) => {
-    const newValues = internationalValues.filter(
-      (stock: IAssetType) => stock.id !== id
-    )
-    setValue('international', newValues)
+    const newValues = [...values, { name: assetType, value: '', id: index }]
+    fieldOnChange(newValues.sort((a, b) => (a.id > b.id ? 1 : -1)))
   }
 
   const handleAssetType = (
     e: React.ChangeEvent<HTMLSelectElement>,
     index: number
   ) => {
-    if (
-      internationalValues.find(
-        (stock: IAssetType) => stock.name === e.target.value
-      )
-    ) {
+    if (value.find((stock: IAssetType) => stock.name === e.target.value)) {
       alert('Voce ja possui esse ativo!')
       return
     }
     const newValues = [
-      ...internationalValues.filter((stock: IAssetType) => stock.id !== index)
+      ...value.filter((stock: IAssetType) => stock.id !== index)
     ]
+
     setAssetType(newValues, e.target.value, index)
   }
 
+  const removeAssetItem = (id: number) => {
+    const newValues = value.filter((stock: IAssetType) => stock.id !== id)
+    fieldOnChange(newValues)
+  }
+
   const addEmptyItem = () => {
-    setValue('international', [
-      ...internationalValues,
-      { name: '', value: '', id: internationalValues.length }
-    ])
+    fieldOnChange([...value, { name: '', value: '', id: value.length }])
   }
 
   const checkIfPercentagesSum100 = (arr: IAssetType[]) => {
@@ -83,9 +70,8 @@ export default function InternationalPercentages() {
   }
 
   const handleAssetPercentage = (e: Event, id: number) => {
-    setValue(
-      'international',
-      internationalValues.map((stock: IAssetType) =>
+    fieldOnChange(
+      value.map((stock: IAssetType) =>
         stock.id === id
           ? {
               ...stock,
@@ -100,34 +86,29 @@ export default function InternationalPercentages() {
     <section>
       <S.PercentageWrapper>
         <S.ChartComponent>
-          <PieChartComponent
-            size={{ width: 600, height: 600 }}
-            data={internationalValues}
-          >
+          <PieChartComponent size={{ width: 600, height: 450 }} data={value}>
             <Tooltip
               isAnimationActive={true}
               animationDuration={2}
               animationEasing="ease"
               formatter={(data: string) => `${data}%`}
-              // @ts-ignore
             />
           </PieChartComponent>
         </S.ChartComponent>
         <S.Percentages>
           <S.PercentageList>
-            <S.InvestTypeTitle>Ativos Internacionais</S.InvestTypeTitle>
-            {checkIfPercentagesSum100(internationalValues) === true ? (
+            <S.InvestTypeTitle>{title}</S.InvestTypeTitle>
+            {checkIfPercentagesSum100(value) === true ? (
               <S.PercentagesFeedback color="green">
-                {' '}
-                Os valores somam 100%!{' '}
+                Os valores somam 100%!
               </S.PercentagesFeedback>
             ) : (
               <S.PercentagesFeedback color="red">
                 Os valores tem que somar 100%.
               </S.PercentagesFeedback>
             )}
-            {getValues().stocks.length > 0 &&
-              internationalValues.map((stock: IAssetType, index: number) => (
+            {value.length > 0 &&
+              value.map((stock: IAssetType, index: number) => (
                 <S.PercentageListItem key={index}>
                   <S.PercentageHeader>
                     <S.PercentageDropdown
@@ -138,13 +119,16 @@ export default function InternationalPercentages() {
                       <option disabled selected value="">
                         Escolha
                       </option>
-                      <option value="medical-etf">Medical ETF</option>
-                      <option value="games-etf">Games ETF</option>
-                      <option value="dividends-etf">Dividends ETF</option>
-                      <option value="s&p-etf">S&P ETF</option>
-                      <option value="treasury">Treasury</option>
-                      <option value="reits">Reits</option>
-                      <option value="reits">Stocks</option>
+                      {dropdownItems.map(
+                        (dropdownItem: string, index: number) => (
+                          <option
+                            key={index}
+                            value={dropdownItem.toLowerCase()}
+                          >
+                            {dropdownItem}
+                          </option>
+                        )
+                      )}
                     </S.PercentageDropdown>
 
                     <S.PercentageItemRemove
@@ -162,18 +146,14 @@ export default function InternationalPercentages() {
                       valueLabelDisplay="auto"
                       onChange={(e) => handleAssetPercentage(e, stock.id)}
                       value={parseInt(stock.value)}
-                      customColor={COLORS[index]}
+                      customColor={colors[index]}
                     />
                     <S.PercentageValue>{stock.value}%</S.PercentageValue>
                   </S.PercentageSlider>
                 </S.PercentageListItem>
               ))}
+            <S.AddItem onClick={addEmptyItem}>+</S.AddItem>
           </S.PercentageList>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <S.PercentagesBtn onClick={addEmptyItem}>
-              Adicionar
-            </S.PercentagesBtn>
-          </div>
         </S.Percentages>
       </S.PercentageWrapper>
     </section>

@@ -2,13 +2,25 @@ import React, { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useAuth } from 'context/AuthUserContext'
 import Firestore from 'firebase/Firestore'
-import OverviewPercentages from './Overview/OverviewPercentages'
-import StockPercentages from './Stock/StockPercentages'
-import ReitsPercentages from './Reits/ReitsPercentages'
-import BondsPercentages from './Bonds/BondsPercentages'
-import InternationalStocksPercentages from './InternationalStocks/InternationalStocksPercentages'
+import assetTypes from './AssetTypes'
 
 import * as S from './styles'
+import AssetType from './AssetType/AssetType'
+import Button from 'components/Button/Button'
+
+const COLORS = [
+  '#0088FE',
+  '#00C49F',
+  '#FFBB28',
+  '#FF8042',
+  '#9999ff',
+  '#d6aa7f',
+  '#a45a52',
+  '#36c90e',
+  '#cc3333',
+  '#fbbaf7',
+  '#82a8f4'
+]
 
 interface GoalsForm {
   stocks: { name: string; value: string; id: number }[]
@@ -26,13 +38,13 @@ export default function InvestmentPercentages({
   shareList
 }: IInvestmentPercentages) {
   const { authUser } = useAuth() as IAuthUserContext
-  const [defaultValues] = useState<GoalsForm>({
+  const defaultValues = {
     stocks: [{ name: '', value: '', id: 0 }],
     bonds: [{ name: '', value: '', id: 0 }],
     reits: [{ name: '', value: '', id: 0 }],
     international: [{ name: '', value: '', id: 0 }],
     overview: [{ name: '', value: '', id: 0 }]
-  })
+  }
   const [sectors, setSectors] = useState<string[]>([])
   const methods = useForm<GoalsForm>({
     defaultValues
@@ -70,13 +82,19 @@ export default function InvestmentPercentages({
           <S.PercentagesTitle>
             Defina a parcela de investimento nos tipos de negócio:
           </S.PercentagesTitle>
-          <StockPercentages sectors={sectors} />
-          <ReitsPercentages />
-          <BondsPercentages />
-          <InternationalStocksPercentages />
-          <OverviewPercentages />
+          {assetTypes.map((asset, index) => (
+            <AssetType
+              key={index}
+              name={asset.name}
+              title={asset.title}
+              dropdownItems={
+                asset.name === 'stocks' ? sectors : asset.dropdownItems
+              }
+              colors={COLORS}
+            ></AssetType>
+          ))}
           <S.ButtonWrapper>
-            <S.SubmitButton type="submit">Salvar</S.SubmitButton>
+            <Button type="submit" text="Salvar" size="medium" />
           </S.ButtonWrapper>
         </form>
       </FormProvider>

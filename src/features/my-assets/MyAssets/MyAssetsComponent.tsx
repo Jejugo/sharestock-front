@@ -21,7 +21,7 @@ export default function MyAssetsComponent({
   const [showAddAsset, setShowAddAsset] = useState<boolean>(false)
   return (
     <S.MyAssets>
-      <Title>Analise seus ativos e aporte de acordo com as sugestões </Title>
+      <Title text="Analise seus ativos e aporte de acordo com as sugestões " />
       {!showAddAsset ? (
         <AssetsTableController
           setShowAddAsset={setShowAddAsset}
