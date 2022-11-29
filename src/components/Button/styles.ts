@@ -15,6 +15,9 @@ const sizeValues = {
 }
 
 export const Button = styled.button<Size>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${(props) => sizeValues[props.size]};
   padding: 20px 0px;
   background-color: #ffcd00;
