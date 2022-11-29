@@ -65,7 +65,9 @@ export default function AssetTable({
     rowColors[row.cheapStockScore]
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden', backgroundColor: 'black' }}>
+    <Paper
+      sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
+    >
       <span style={{ color: 'white' }}>
         Você possui {rows.length} ações em carteira
       </span>

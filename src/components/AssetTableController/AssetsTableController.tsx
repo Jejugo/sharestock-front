@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import AssetTable from '../AssetTable/AssetTable'
 
 import * as S from './styles'
+import Button from 'components/Button/Button'
 
 interface IAssetsTableController {
   setShowAddAsset: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,8 +25,12 @@ export default function AssetsTableController({
   return (
     <>
       <S.TableTopActions>
-        <Title>Meus Ativos</Title>
-        <S.AddAssetBtn onClick={handleShowAsset}>Adicionar Ativo</S.AddAssetBtn>
+        <Title text="Meus Ativos" />
+        <Button
+          onClick={handleShowAsset}
+          text="Adicionar Ativo"
+          size="medium"
+        />
       </S.TableTopActions>
 
       <AssetTable

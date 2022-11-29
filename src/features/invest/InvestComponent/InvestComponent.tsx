@@ -237,7 +237,7 @@ export default function InvestComponent({
         </Box>
       ) : (
         <S.InvestComponentLayout>
-          <Title>Faça o balanceamento do seu investimento</Title>
+          <Title text="Faça o balanceamento do seu investimento" />
           <S.StockListAdd>
             <S.InputWrapper>
               <S.DropdownStyle>

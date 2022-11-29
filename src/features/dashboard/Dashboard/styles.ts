@@ -6,14 +6,14 @@ export const DashboardComponentWrapper = styled.section`
 `
 
 export const DashboardWrapper = styled.section`
-  display: flex;
-  justify-content: space-around;
   margin-bottom: 5%;
   width: 70vw;
 `
 
 export const PieChartWrapper = styled.div`
-  flex-basis: 30%;
+  display: flex;
+  justify-content: center;
+  width: 90%;
 `
 
 export const WalletAssets = styled.div`
