@@ -38,6 +38,7 @@ export const PercentageListItem = styled.li`
 
 export const PercentageDropdown = styled.select`
   list-style: none;
+  width: 100%;
   padding: 5px 15px;
   margin: 5px 20px;
   font-size: 16px;
@@ -52,24 +53,15 @@ export const PercentageItemRemove = styled.span`
   cursor: pointer;
 `
 
-export const PercentagesBtn = styled.button`
-  padding: 5px 15px;
-  margin: 10px;
-  font-size: 16px;
-  cursor: pointer;
-`
-
 export const PercentageWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
-  align-items: center;
 `
-export const ChartComponent = styled.div`
-  width: 30%;
-`
+export const ChartComponent = styled.div``
 
 export const Percentages = styled.div`
-  width: 70%;
+  width: 70vw;
 `
 
 export const ButtonWrapper = styled.div`
@@ -78,23 +70,16 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
 `
 
-export const SubmitButton = styled.button`
-  width: 200px;
-  height: 50px;
-`
-
 export const PercentageHeader = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
 `
 
 export const PercentageSlider = styled.div`
   width: 100%;
   display: flex;
 `
-
-const green500 = '#228b22'
-const green900 = '#7FFF00'
 
 interface ISlider {
   customColor: string
@@ -111,3 +96,17 @@ export const CustomSlider = styled(Slider)((props: ISlider) => ({
     color: props.customColor ////color of the slider outside  teh area between thumbs
   }
 }))
+
+export const AddItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  width: 60%;
+  height: 50px;
+  background-color: rgba(28, 28, 28, 0.8);
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(38, 38, 38, 0.8);
+  }
+`

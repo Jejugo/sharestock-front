@@ -38,21 +38,6 @@ export const InputWrapper = styled.div`
   width: 100%;
 `
 
-export const StockCheckAddBtn = styled.button`
-  width: 20%;
-  padding: 20px 0px;
-  background-color: #ffcd00;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: grey;
-    color: white;
-    transition: 0.2s ease;
-  }
-`
-
 export const StockCheckBtnWrapper = styled.div`
   display: flex;
   justify-content: space-around;
