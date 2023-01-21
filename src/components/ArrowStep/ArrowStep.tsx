@@ -4,21 +4,18 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import * as S from './style'
 
 interface ArrowsProps {
-  handleCountNext: () => void
-  handleCountPrev: () => void
+  nextStep: () => void
+  prevStep: () => void
 }
 
-export default function Arrows({
-  handleCountNext,
-  handleCountPrev
-}: ArrowsProps) {
+export default function Arrows({ nextStep, prevStep }: ArrowsProps) {
   return (
-    <S.ArrowWrapper className="arrow-wrapper">
-      <S.Arrow className="arrow">
-        <S.ArrowPrev className="arrow__prev" onClick={handleCountPrev}>
+    <S.ArrowWrapper>
+      <S.Arrow>
+        <S.ArrowPrev onClick={prevStep}>
           <ArrowBackIosNewIcon></ArrowBackIosNewIcon>
         </S.ArrowPrev>
-        <S.ArrowNext className="arrow__next" onClick={handleCountNext}>
+        <S.ArrowNext onClick={nextStep}>
           <ArrowForwardIosIcon></ArrowForwardIosIcon>
         </S.ArrowNext>
       </S.Arrow>

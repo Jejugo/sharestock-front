@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState } from 'react'
-import { WishListProviderProps } from './interface'
 
-interface IWishListContext {
+interface WishListProviderProps {
+  children: React.ReactNode
+}
+export interface IWishListContext {
   wishList: string[]
   setWishList: React.Dispatch<React.SetStateAction<string[]>>
 }

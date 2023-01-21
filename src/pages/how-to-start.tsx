@@ -5,32 +5,18 @@ import TextLayout from '../layout/TextLayout/TextLayout'
 import Fonts from '../components/Fonts'
 
 import { stockShareAnalysis as steps } from '../const/definitions'
+import { StepsProvider } from 'context/StepsProvider'
 
 const HowToStart = () => {
-  const [count, setCount] = useState<number>(0)
-
-  useEffect(() => {
-    Fonts()
-  }, [])
-
-  const handleCountNext = () => {
-    if (count < steps.length - 1) setCount((previousState) => previousState + 1)
-  }
-
-  const handleCountPrev = () => {
-    if (count > 0) setCount((previousState) => previousState - 1)
-  }
+  useEffect(() => Fonts(), [])
 
   return (
     <>
       <Template tabTitle="strategy">
         <TextLayout>
-          <Steps
-            steps={steps}
-            count={count}
-            handleCountNext={handleCountNext}
-            handleCountPrev={handleCountPrev}
-          ></Steps>
+          <StepsProvider>
+            <Steps steps={steps}></Steps>
+          </StepsProvider>
         </TextLayout>
       </Template>
     </>

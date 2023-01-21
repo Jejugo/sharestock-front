@@ -5,19 +5,18 @@ import { definitionsList, Definitions } from '../const/definitions'
 import Template from '../layout/Template/Template'
 import DefinitionList from '../features/definitions/DefinitionList/DefinitionList'
 
-const Definitions = () => {
+const DefinitionsComponent = () => {
   const [defList, setDefList] = useState<Definitions[]>(definitionsList)
   const [search, setSearch] = useState<string>('')
 
-  const filteredItems = defList.filter(
+  const searchedItems = defList.filter(
     (item: Definitions) =>
-      item.alias.toUpperCase().includes(search.toUpperCase()) ||
-      item.name.toUpperCase().includes(search.toUpperCase())
+      item.alias.toLowerCase().includes(search.toLowerCase()) ||
+      item.name.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearch(e.target.value)
-  }
 
   const handleDef = (e: any): void => {
     const id = parseInt(e.target.getAttribute('name'))
@@ -38,11 +37,11 @@ const Definitions = () => {
           <SearchBar
             setSearchText={handleSearch}
             value={search}
-            placeholder={'Indicador'}
+            placeholder="Indicador"
           ></SearchBar>
           <TableLayout>
             <DefinitionList
-              filteredItems={filteredItems}
+              items={searchedItems}
               handleDef={handleDef}
             ></DefinitionList>
           </TableLayout>
@@ -52,4 +51,4 @@ const Definitions = () => {
   )
 }
 
-export default Definitions
+export default DefinitionsComponent
