@@ -2,20 +2,14 @@ import { StockShareAnalysis } from 'const/definitions'
 import React from 'react'
 import ArrowStep from '../ArrowStep/ArrowStep'
 import * as S from './styles'
+import { useStepsContext } from 'context/StepsProvider'
 
 interface StepsProps {
   steps: StockShareAnalysis[]
-  count: number
-  handleCountNext: () => void
-  handleCountPrev: () => void
 }
 
-export default function Steps({
-  steps,
-  count,
-  handleCountNext,
-  handleCountPrev
-}: StepsProps) {
+export default function Steps({ steps }: StepsProps) {
+  const { count, nextStep, prevStep } = useStepsContext()
   return (
     <S.StepsWrapper>
       <S.Steps>
@@ -27,10 +21,7 @@ export default function Steps({
           dangerouslySetInnerHTML={{ __html: steps[count].explanation }}
         ></S.Explanation>
       </S.Steps>
-      <ArrowStep
-        handleCountPrev={handleCountPrev}
-        handleCountNext={handleCountNext}
-      ></ArrowStep>
+      <ArrowStep prevStep={prevStep} nextStep={nextStep}></ArrowStep>
     </S.StepsWrapper>
   )
 }

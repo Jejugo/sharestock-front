@@ -28,7 +28,6 @@ export default function AssetType({
   const {
     field: { value, onChange: fieldOnChange }
   } = useController({ name })
-  console.log(value)
   const setAssetType = (
     values: IAssetType[],
     assetType: string,

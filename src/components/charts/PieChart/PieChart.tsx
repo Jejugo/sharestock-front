@@ -1,5 +1,5 @@
-import React from 'react'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import React, { useState } from 'react'
+import { Cell, Legend, Pie, PieChart } from 'recharts'
 
 import * as S from './styles'
 import { IPieData } from './interfaces'
@@ -28,27 +28,66 @@ interface IPieChart {
 }
 
 const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
+  const [filteredNames, setFilteredNames] = useState<string[]>([])
   const handlePieClick = (data: any) => {
     console.log('clicked', data)
   }
 
-  const handleLabel = (entry: any) => entry.name
+  const filteredData = data.map((asset) => {
+    if (filteredNames.length) {
+      return filteredNames.includes(asset.name)
+        ? asset
+        : {
+            ...asset,
+            value: 0
+          }
+    }
+    return asset
+  })
+
+  const handleLegend = (val: any) => {
+    if (filteredNames.includes(val.value)) {
+      return setFilteredNames((previousState) => {
+        return previousState.filter(
+          (filteredName) => filteredName !== val.value
+        )
+      })
+    }
+    setFilteredNames((previousState) => [...previousState, val.value])
+  }
+
+  const formatLegend = (val: string) => {
+    return filteredNames.includes(val) ? (
+      <b>{val}</b>
+    ) : (
+      <span style={{ color: 'grey' }}>{val}</span>
+    )
+  }
 
   return (
     <>
       {data.length ? (
-        <ResponsiveContainer width={size.width} height={size.height}>
-          <PieChart width={600} height={600}>
+        <S.ResponsiveContainerMargin width={size.width} height={size.height}>
+          <PieChart width={300} height={50}>
+            <Legend
+              height={36}
+              iconType="circle"
+              iconSize={10}
+              onClick={handleLegend}
+              formatter={formatLegend}
+              layout="vertical"
+              verticalAlign="top"
+              align="right"
+            />
             <Pie
               onClick={handlePieClick}
               dataKey="value"
               isAnimationActive={true}
-              data={data}
+              data={filteredData}
               cx="50%"
               cy="50%"
               outerRadius={150}
               fill="#8884d8"
-              label={handleLabel}
               style={{ fontWeight: '600' }}
             >
               {data.map((entry: any, index: number) => (
@@ -60,7 +99,7 @@ const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
             </Pie>
             {toolTip}
           </PieChart>
-        </ResponsiveContainer>
+        </S.ResponsiveContainerMargin>
       ) : null}
     </>
   )

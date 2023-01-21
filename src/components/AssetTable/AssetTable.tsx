@@ -1,5 +1,5 @@
-import React from 'react'
-
+import React, { useCallback } from 'react'
+import useAssetTableData from 'hooks/useAssetTableData'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -12,57 +12,30 @@ import TableRow from '@mui/material/TableRow'
 import NorthIcon from '@mui/icons-material/North'
 import SouthIcon from '@mui/icons-material/South'
 import { ITableColumn, ITableRow } from './interfaces'
+import { isValueGood, isCheapStock } from './utils/helpers'
 
-interface IRowColors {
-  [key: number]: string
-}
+export const AssetTable = React.memo(() => {
+  const [page, setPage] = React.useState(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState(25)
+  const { rows, columns } = useAssetTableData()
 
-const rowColors: IRowColors = {
-  0: 'rgba(237, 34, 38, 0.4)',
-  1: 'rgba(227, 66, 98, 0.4)',
-  2: 'rgba(255, 204, 92, 0.4)',
-  3: 'rgba(150, 206, 180, 0.4)',
-  4: 'rgba(5, 255, 161, 0.4)'
-}
+  const handleChangePage = useCallback(
+    (
+      _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+      newPage: number
+    ) => {
+      setPage(newPage)
+    },
+    []
+  )
 
-interface IAssetTable {
-  rows: ITableRow[]
-  columns: ITableColumn[]
-  page: number
-  rowsPerPage: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
-  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>
-}
-
-export default function AssetTable({
-  rows,
-  columns,
-  page,
-  rowsPerPage,
-  setPage,
-  setRowsPerPage
-}: IAssetTable) {
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
-    newPage: number
-  ) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value))
-    setPage(0)
-  }
-
-  const isValueGood = (currentValue: number, recommendedValue: number) =>
-    recommendedValue >= currentValue
-      ? recommendedValue - currentValue <= 1000
-      : recommendedValue - currentValue >= -1000
-
-  const isCheapStock = (row: ITableRow): string =>
-    rowColors[row.cheapStockScore]
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(parseInt(event.target.value, 10))
+      setPage(0)
+    },
+    []
+  )
 
   return (
     <Paper
@@ -168,4 +141,7 @@ export default function AssetTable({
       />
     </Paper>
   )
-}
+})
+
+export default AssetTable
+AssetTable.displayName = 'AssetTable'

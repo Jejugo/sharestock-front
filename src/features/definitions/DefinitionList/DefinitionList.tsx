@@ -2,17 +2,17 @@ import React from 'react'
 import * as S from './styles'
 import { Definitions } from 'const/definitions'
 interface DefinitionListProps {
-  filteredItems: Definitions[]
-  handleDef: (e: any) => void
+  items: Definitions[]
+  handleDef?: (e: any) => void
 }
 
 export default function DefinitionList({
-  filteredItems,
+  items,
   handleDef
 }: DefinitionListProps) {
   return (
     <S.DefinitionsList>
-      {filteredItems.map((def) => {
+      {items.map((def) => {
         return !def.showDef ? (
           <S.DefinitionsListItem
             name={def.id}

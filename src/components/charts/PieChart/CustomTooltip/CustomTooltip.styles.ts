@@ -8,7 +8,7 @@ export const ToolTip = styled.div`
 
 export const TooltipTitle = styled.h1`
   font-size: 20px;
-  margin: 0;
+  margin: 0 0 10px 0;
   font-weight: bold;
 `
 

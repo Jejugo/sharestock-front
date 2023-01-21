@@ -1,6 +1,5 @@
 import Title from 'components/Title/Title'
-import useAssetTableData from 'hooks/useAssetTableData'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import AssetTable from '../AssetTable/AssetTable'
 
@@ -14,10 +13,6 @@ interface IAssetsTableController {
 export default function AssetsTableController({
   setShowAddAsset
 }: IAssetsTableController) {
-  const [page, setPage] = React.useState<number>(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(25)
-  const { rows, columns } = useAssetTableData()
-
   const handleShowAsset = () => {
     setShowAddAsset((previousState) => !previousState)
   }
@@ -33,14 +28,7 @@ export default function AssetsTableController({
         />
       </S.TableTopActions>
 
-      <AssetTable
-        rows={rows}
-        columns={columns}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        setPage={setPage}
-        setRowsPerPage={setRowsPerPage}
-      ></AssetTable>
+      <AssetTable />
     </>
   )
 }

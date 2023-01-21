@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import { IDefinitionListItemDesc, IDefinitionsListItem } from './interfaces'
 
-const DefinitionsListItemStyles = `
+const definitionsListItemStyles = `
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border: 1px solid white;
+  border-radius: 10px;
   margin: 1% 1%;
   padding: 1%;
   height: 40vh;
@@ -28,22 +29,22 @@ export const DefinitionsList = styled.section`
 `
 
 export const DefinitionsListItem = styled.div<IDefinitionsListItem>`
-  ${DefinitionsListItemStyles}
+  ${definitionsListItemStyles}
   flex-basis: 45.8%;
 
   @media (min-width: 1441px) {
-    ${DefinitionsListItemStyles}
+    ${definitionsListItemStyles}
     flex-basis: 20.8%;
   }
 `
 
 export const DefinitionListItemDesc = styled.div<IDefinitionListItemDesc>`
-  ${DefinitionsListItemStyles}
+  ${definitionsListItemStyles}
   flex-basis: 45.8%;
   font-size: 20px;
 
   @media (min-width: 1441px) {
-    ${DefinitionsListItemStyles}
+    ${definitionsListItemStyles}
     flex-basis: 20.8%;
     font-size: 20px;
   }

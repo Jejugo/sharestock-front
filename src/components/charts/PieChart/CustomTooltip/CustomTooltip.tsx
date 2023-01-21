@@ -2,7 +2,6 @@ import React from 'react'
 import { Payload } from 'recharts/types/component/DefaultTooltipContent'
 import { IStockSector } from './interfaces'
 import * as S from './CustomTooltip.styles'
-import { Tooltip } from 'recharts'
 
 interface ICustomizedTooltip {
   payload: Payload<number, string>[]
@@ -16,6 +15,8 @@ export default function CustomTooltip({
   return (
     <S.ToolTip>
       <S.TooltipTitle>
+        {`${payload[0]?.name}`}
+        <br />
         {`${((payload[0]?.value ?? 0) * 100).toFixed(2)}%`}
       </S.TooltipTitle>
       <S.TooltipList>
