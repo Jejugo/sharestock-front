@@ -27,7 +27,7 @@ export {}
 
 // 	const storeAssetAndCalculate = async () => {
 // 		await storeAssetStatements();
-// 		const data = await Firestore().getAllItems({
+// 		const data = await Firestore().getData({
 // 			collection: 'userAssetStatements',
 // 			id: authUser.uid,
 // 		});

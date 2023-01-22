@@ -28,7 +28,7 @@ const Rows = ({ filteredItems, fixTableHeader }: RowsProps) => {
             ? previousState
             : [...previousState, item.Papel]
         )
-        await Firestore().singleKeyAddArrayItem({
+        await Firestore().addArrayItemToFirestoreKey({
           collection: 'watchlist',
           id: authUser.uid,
           itemKey: 'shares',

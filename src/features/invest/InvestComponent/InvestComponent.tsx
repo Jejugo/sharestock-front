@@ -6,7 +6,7 @@ import Snackbar from '@mui/material/Snackbar'
 import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 import SuggestedPercentages from 'components/SuggestedPercentages/SuggestedPercentages'
-import WishList from 'components/WishList/WishList'
+import WishList from 'features/indicators/WishList/WishList'
 import { useAuth } from 'context/AuthUserContext'
 
 import * as S from './styles'
@@ -140,13 +140,13 @@ export default function InvestComponent({
             return
           }
           Promise.all([
-            await Firestore().addListByKey({
+            await Firestore().setListByKey({
               collection: 'userAssetStatements',
               id: authUser.uid,
               list: assetsToInvest[asset],
               key: asset
             }),
-            await Firestore().addObjectByKey({
+            await Firestore().setDataByKey({
               collection: 'userAssets',
               id: authUser.uid,
               list: [

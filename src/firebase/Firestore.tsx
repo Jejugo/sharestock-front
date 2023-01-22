@@ -14,11 +14,11 @@ import {
   IFirebaseAddToArray,
   IFirebaseRemoveFromArray,
   IFirebaseRemoveFieldFromObject,
-  IFirebaseGetAllItems,
+  IFirebasegetData,
   IFirebaseAddListAsObject,
   IFirebaseAddListsAsObjectWithList,
   IFirebaseRemoveObjectKey,
-  IFirebaseAddAllItems
+  IFirebaseSetData
 } from './interfaces'
 
 export default function initalizeFirestore() {
@@ -30,7 +30,7 @@ export default function initalizeFirestore() {
      *    [key: string]: string[]
      * }
      */
-    singleKeyAddArrayItem: async function ({
+    addArrayItemToFirestoreKey: async function ({
       collection,
       id,
       itemKey,
@@ -63,7 +63,7 @@ export default function initalizeFirestore() {
      *    [key: string]: string[]
      * }
      */
-    singleKeyRemoveArrayItem: async function ({
+    removeArrayItemFromFirestoreKey: async function ({
       collection,
       id,
       item
@@ -90,7 +90,7 @@ export default function initalizeFirestore() {
      *    }
      * }
      */
-    deletePropertyFromObject: async function ({
+    deleteKeyValue: async function ({
       collection,
       id,
       field
@@ -107,10 +107,10 @@ export default function initalizeFirestore() {
       }
     },
 
-    getAllItems: async function ({
+    getData: async function ({
       collection,
       id
-    }: IFirebaseGetAllItems): Promise<any> {
+    }: IFirebasegetData): Promise<any> {
       const docRef = doc(db, collection, id)
       const docSnap = await getDoc(docRef)
       if (docSnap.exists()) return docSnap.data()
@@ -126,11 +126,7 @@ export default function initalizeFirestore() {
      * }
      *
      */
-    addAllItems: async function ({
-      collection,
-      id,
-      item
-    }: IFirebaseAddAllItems) {
+    setData: async function ({ collection, id, item }: IFirebaseSetData) {
       const docRef = doc(db, collection, id)
       const docSnap = await getDoc(docRef)
 
@@ -138,7 +134,7 @@ export default function initalizeFirestore() {
       else await setDoc(docRef, item)
     },
 
-    addObjectByKey: async function ({
+    setDataByKey: async function ({
       collection,
       id,
       list,
@@ -171,7 +167,7 @@ export default function initalizeFirestore() {
       }
     },
 
-    addListByKey: async function ({
+    setListByKey: async function ({
       collection,
       id,
       list,
@@ -212,7 +208,7 @@ export default function initalizeFirestore() {
       item
     }: IFirebaseRemoveObjectKey) {
       try {
-        const firebaseState = await this.getAllItems({ collection, id })
+        const firebaseState = await this.getData({ collection, id })
         if (firebaseState) {
           const keyToDelete = Object.keys(firebaseState).find(
             (key) => firebaseState[key].statement === item

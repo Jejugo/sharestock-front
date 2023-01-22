@@ -17,7 +17,7 @@ export interface IFirebaseRemoveFieldFromObject {
   field: string
 }
 
-export interface IFirebaseGetAllItems {
+export interface IFirebasegetData {
   collection: string
   id: string
 }
@@ -39,7 +39,7 @@ type WithFieldValue<T> =
         }
       : never)
 
-export interface IFirebaseAddAllItems {
+export interface IFirebaseSetData {
   collection: string
   id: string
   item: WithFieldValue<DocumentData>

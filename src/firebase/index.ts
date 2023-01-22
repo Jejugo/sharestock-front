@@ -1,4 +1,4 @@
-import { FirebaseApp, getApps, initializeApp } from 'firebase/app'
+import { getApps, FirebaseApp, initializeApp } from 'firebase/app'
 // the below imports are option - comment out what you don't need
 import 'firebase/auth'
 import '@firebase/firestore'
@@ -6,29 +6,43 @@ import 'firebase/storage'
 import { getAnalytics } from 'firebase/analytics'
 import 'firebase/performance'
 
-const FirebaseCredentials = {
-  apiKey: 'AIzaSyApV5D3FLttjYjlA7PExm-E7dTrf1BimBM',
-  authDomain: 'sharestock-app.firebaseapp.com',
-  projectId: 'sharestock-app',
-  storageBucket: 'sharestock-app.appspot.com',
-  messagingSenderId: '571999392036',
-  appId: '1:571999392036:web:703f66a957acfb1869a3b1',
-  measurementId: 'G-F13HGEFG33'
+interface IFirebaseCredentials {
+  apiKey: string
+  authDomain: string
+  projectId: string
+  storageBucket: string
+  messagingSenderId: string
+  appId: string
+  measurementId?: string
 }
 
-export default function (): FirebaseApp | null {
-  if (!getApps.length) {
-    const app = initializeApp(FirebaseCredentials)
-    // Check that `window` is in scope for the analytics module!
-    if (typeof window !== 'undefined') {
-      // Enable analytics. https://firebase.google.com/docs/analytics/get-started
-      if ('measurementId' in FirebaseCredentials) {
-        getAnalytics()
-      }
+const FirebaseCredentials: IFirebaseCredentials = {
+  apiKey: process.env.FIREBASE_API_KEY || '',
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN || '',
+  projectId: process.env.FIREBASE_PROJECT_ID || '',
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: process.env.FIREBASE_APP_ID || '',
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID || ''
+}
+
+const initializeFirebase = (credentials: IFirebaseCredentials): FirebaseApp => {
+  const app = initializeApp(credentials)
+  if (typeof window !== 'undefined') {
+    if ('measurementId' in credentials) {
+      getAnalytics()
     }
-    console.log('Firebase was successfully initialized.')
-    return app
   }
-
-  return null
+  console.log('Firebase was successfully initialized.')
+  return app
 }
+
+const getFirebaseApp = (): FirebaseApp | null => {
+  const apps = getApps()
+  if (!apps.length) {
+    return initializeFirebase(FirebaseCredentials)
+  }
+  return apps[0]
+}
+
+export default getFirebaseApp

@@ -28,6 +28,7 @@ export default function AssetType({
   const {
     field: { value, onChange: fieldOnChange }
   } = useController({ name })
+
   const setAssetType = (
     values: IAssetType[],
     assetType: string,
@@ -45,9 +46,7 @@ export default function AssetType({
       alert('Voce ja possui esse ativo!')
       return
     }
-    const newValues = [
-      ...value.filter((stock: IAssetType) => stock.id !== index)
-    ]
+    const newValues = value.filter((stock: IAssetType) => stock.id !== index)
 
     setAssetType(newValues, e.target.value, index)
   }
@@ -85,7 +84,8 @@ export default function AssetType({
     <section>
       <S.PercentageWrapper>
         <S.ChartComponent>
-          <PieChartComponent size={{ width: 600, height: 450 }} data={value}>
+          <S.InvestTypeTitle>{title}</S.InvestTypeTitle>
+          <PieChartComponent size={{ width: 800, height: 300 }} data={value}>
             <Tooltip
               isAnimationActive={true}
               animationDuration={2}
@@ -96,7 +96,6 @@ export default function AssetType({
         </S.ChartComponent>
         <S.Percentages>
           <S.PercentageList>
-            <S.InvestTypeTitle>{title}</S.InvestTypeTitle>
             {checkIfPercentagesSum100(value) === true ? (
               <S.PercentagesFeedback color="green">
                 Os valores somam 100%!

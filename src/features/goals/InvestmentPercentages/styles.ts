@@ -1,20 +1,23 @@
 import styled from 'styled-components'
 import Slider from '@mui/material/Slider'
 
+import { colors, fonts, spacings } from 'styles/constants'
+
 export const MainSection = styled.section``
 
 export const PercentagesTitle = styled.h1`
-  font-size: 26px;
+  font-size: ${fonts.title}px;
   text-align: center;
 `
 
 export const InvestTypeTitle = styled.h6`
-  font-size: 22px;
-  margin: 0;
+  font-size: ${fonts.xlarge}px;
+  margin: ${spacings.xlarge}px 0;
+  text-align: center;
 `
 
 export const PercentagesFeedback = styled.h6`
-  font-size: 18px;
+  font-size: ${fonts.large}px;
   color: ${(props) => props.color};
 `
 
@@ -28,7 +31,7 @@ export const PercentageList = styled.ul`
 `
 
 export const PercentageListItem = styled.li`
-  margin: 5px 0;
+  margin: ${spacings.xsmall}px 0;
   display: flex;
   width: 60%;
   flex-direction: column;
@@ -39,29 +42,35 @@ export const PercentageListItem = styled.li`
 export const PercentageDropdown = styled.select`
   list-style: none;
   width: 100%;
-  padding: 5px 15px;
-  margin: 5px 20px;
+  padding: ${spacings.xsmall}px;
+  margin: ${spacings.xsmall}px 0;
   font-size: 16px;
 `
 
 export const PercentageValue = styled.span`
-  margin-left: 20px;
+  margin-left: ${spacings.xlarge}px;
 `
 
 export const PercentageItemRemove = styled.span`
-  margin-left: 20px;
+  margin-left: ${spacings.xlarge}px;
   cursor: pointer;
 `
 
 export const PercentageWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  justify-content: space-around;
 `
-export const ChartComponent = styled.div``
+export const ChartComponent = styled.div`
+  flex: 1 1 auto;
+  min-width: 400px;
+  flex-basis: auto;
+`
 
 export const Percentages = styled.div`
-  width: 70vw;
+  flex: 2 1 auto;
+  min-width: 800px;
+  flex-basis: 800px;
 `
 
 export const ButtonWrapper = styled.div`
@@ -104,9 +113,9 @@ export const AddItem = styled.div`
   font-size: 30px;
   width: 60%;
   height: 50px;
-  background-color: rgba(28, 28, 28, 0.8);
+  background-color: ${colors.darkGrey};
   cursor: pointer;
   &:hover {
-    background-color: rgba(38, 38, 38, 0.8);
+    background-color: ${colors.grey};
   }
 `

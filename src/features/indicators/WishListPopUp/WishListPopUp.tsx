@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { WishListContext } from '../../context/WishList'
-import { useAuth } from '../../context/AuthUserContext'
-import Firestore from '../../firebase/Firestore'
-import WishList from '../../components/WishList/WishList'
+import { WishListContext } from 'context/WishList'
+import { useAuth } from 'context/AuthUserContext'
+import Firestore from 'firebase/Firestore'
+import WishList from 'features/indicators/WishList/WishList'
 
 const WishListPopUp = () => {
   const [visible, setVisible] = useState(false)
@@ -10,9 +10,9 @@ const WishListPopUp = () => {
   const { authUser } = useAuth()
 
   useEffect(() => {
-    const getAllItemsFirestore = async () => {
+    const getDataFirestore = async () => {
       if (authUser) {
-        const data = await Firestore().getAllItems({
+        const data = await Firestore().getData({
           collection: 'watchlist',
           id: authUser.uid
         })
@@ -21,7 +21,7 @@ const WishListPopUp = () => {
         }
       }
     }
-    getAllItemsFirestore().catch((err) => console.error('error: ', err))
+    getDataFirestore().catch((err) => console.error('error: ', err))
   }, [])
 
   const removeItem = async (
@@ -34,7 +34,7 @@ const WishListPopUp = () => {
         setWishList((previousState) =>
           previousState.filter((previousItem) => previousItem !== item)
         )
-        await Firestore().singleKeyRemoveArrayItem({
+        await Firestore().removeArrayItemFromFirestoreKey({
           collection: 'watchlist',
           id: authUser.uid,
           item

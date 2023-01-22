@@ -4,7 +4,7 @@ import Firestore from './Firestore'
 export const getUserStrategyStatements = async (
   authUser: IUser
 ): Promise<IFirebaseStrategyStatements> =>
-  (await Firestore().getAllItems({
+  (await Firestore().getData({
     collection: 'userStrategyStatements',
     id: authUser.uid
   })) as IFirebaseStrategyStatements
@@ -12,13 +12,13 @@ export const getUserStrategyStatements = async (
 export const getUserAssetStatements = async (
   authUser: IUser
 ): Promise<IFirebaseUserAssetStatements> =>
-  (await Firestore().getAllItems({
+  (await Firestore().getData({
     collection: 'userAssetStatements',
     id: authUser.uid
   })) as IFirebaseUserAssetStatements
 
 export const getAllUserAssets = async (authUser: IUser) =>
-  (await Firestore().getAllItems({
+  (await Firestore().getData({
     collection: 'userAssets',
     id: authUser.uid
   })) as IFirebaseUserAssets

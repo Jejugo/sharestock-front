@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import StockCheckList from '../StockChekList/StockCheckList'
+import StockCheckList from '../../../../components/StockChekList/StockCheckList'
 import Select, { ActionMeta, SingleValue } from 'react-select'
-import { useAuth } from '../../context/AuthUserContext'
+import { useAuth } from '../../../../context/AuthUserContext'
 
 import * as S from './styles'
 import Firestore from 'firebase/Firestore'
@@ -52,13 +52,13 @@ export default function AddAssets({
     try {
       if (!isEveryCheckFalse(statements) && quantity !== '' && authUser) {
         await Promise.all([
-          await Firestore().addListByKey({
+          await Firestore().setListByKey({
             collection: 'userAssetStatements',
             id: authUser.uid,
             list: statements,
             key: selectedAsset.value
           }),
-          await Firestore().addObjectByKey({
+          await Firestore().setDataByKey({
             collection: 'userAssets',
             id: authUser.uid,
             list: [
@@ -86,7 +86,7 @@ export default function AddAssets({
   useEffect(() => {
     const getAssetsFromFirebase = async () => {
       if (authUser) {
-        const data = (await Firestore().getAllItems({
+        const data = (await Firestore().getData({
           collection: 'userStrategyStatements',
           id: authUser.uid
         })) as IFirebaseStrategyStatements

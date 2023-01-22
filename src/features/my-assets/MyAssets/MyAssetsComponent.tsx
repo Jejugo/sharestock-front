@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 import AssetsTableController from 'components/AssetTableController/AssetsTableController'
-import AddAssets from 'components/AddAssets/AddAssets'
+import AddAssets from 'features/my-assets/MyAssets/AddAssets/AddAssets'
 
 import * as S from './styles'
 import Title from 'components/Title/Title'

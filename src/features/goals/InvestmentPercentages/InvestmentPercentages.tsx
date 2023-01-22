@@ -51,7 +51,7 @@ export default function InvestmentPercentages({
   })
 
   const onSubmit = (data: GoalsForm) => {
-    Firestore().addAllItems({
+    Firestore().setData({
       collection: 'assetTypePercentages',
       id: authUser.uid,
       item: data
@@ -59,8 +59,8 @@ export default function InvestmentPercentages({
   }
 
   useEffect(() => {
-    const getAllItems = async () => {
-      const allItems = await Firestore().getAllItems({
+    const getData = async () => {
+      const allItems = await Firestore().getData({
         collection: 'assetTypePercentages',
         id: authUser.uid
       })
@@ -72,7 +72,7 @@ export default function InvestmentPercentages({
       )
     ]
     setSectors(stockSectors)
-    getAllItems().catch(console.error)
+    getData().catch(console.error)
   }, [])
 
   return (

@@ -1,7 +1,8 @@
 import styled from 'styled-components'
+import { fonts } from 'styles/constants'
 
 export const InvestTitle = styled.h1`
-  font-size: 32px;
+  font-size: ${fonts.xlarge}px;
   font-family: 'Amatic SC', cursive;
   margin: 30px 0px;
 `

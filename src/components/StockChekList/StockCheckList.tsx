@@ -25,7 +25,7 @@ export default function StockCheckList({
 
   const updatedStrategyStatements = async (): Promise<IStatement[]> => {
     if (authUser) {
-      const firestoreStatements = (await Firestore().getAllItems({
+      const firestoreStatements = (await Firestore().getData({
         collection: 'userStrategyStatements',
         id: authUser.uid
       })) as IFirebaseStrategyStatements

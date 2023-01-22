@@ -63,12 +63,12 @@ export default function StrategyForm() {
       if (authUser) {
         try {
           setLoading(true)
-          const data = await Firestore().getAllItems({
+          const data = await Firestore().getData({
             collection: 'userAssetStatements',
             id: authUser.uid
           })
           await checkAssetByAssetForDifferenceAndRemove(data, statement)
-          await Firestore().deletePropertyFromObject({
+          await Firestore().deleteKeyValue({
             collection: 'userStrategyStatements',
             id: authUser.uid,
             field: index.toString()
@@ -107,7 +107,7 @@ export default function StrategyForm() {
             }
           }
         })
-        Firestore().addAllItems({
+        Firestore().setData({
           collection: 'userAssetStatements',
           id: authUser.uid,
           item: newState
@@ -149,7 +149,7 @@ export default function StrategyForm() {
             }
           })
         })
-        Firestore().addAllItems({
+        Firestore().setData({
           collection: 'userAssetStatements',
           id: authUser.uid,
           item: newState
@@ -186,13 +186,13 @@ export default function StrategyForm() {
       if (authUser) {
         e.preventDefault()
         setLoading(true)
-        const data = await Firestore().getAllItems({
+        const data = await Firestore().getData({
           collection: 'userAssetStatements',
           id: authUser.uid
         })
         const dataWithUpdatedStatements = assetStatementsUpdated(data)
         await checkAssetByAssetForDifferenceAndAdd(dataWithUpdatedStatements)
-        await Firestore().addObjectByKey({
+        await Firestore().setDataByKey({
           collection: 'userStrategyStatements',
           id: authUser.uid,
           list: statements
