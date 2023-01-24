@@ -23,7 +23,7 @@ const stockScore = (userAsset: IStockItem): number => {
 }
 
 interface IBuildAssetTableData {
-  userAssets: IFirebaseUserAssets
+  assets: IFirebaseAssets
   item: string
   recommendedPercentages: RecommendedPercentages
   totalValue: number
@@ -31,18 +31,17 @@ interface IBuildAssetTableData {
 }
 
 export const buildAssetTableData = ({
-  userAssets,
+  assets,
   item,
   recommendedPercentages,
   totalValue,
   assetPoints
 }: IBuildAssetTableData): ITableRow => ({
-  cheapStockScore: stockScore(userAssets[item]),
-  symbol: userAssets[item]['Papel'].toLowerCase(),
-  asset: userAssets[item]['nome'],
+  cheapStockScore: stockScore(assets[item]),
+  symbol: assets[item]['Papel'].toLowerCase(),
+  asset: assets[item]['nome'],
   recommended: recommendedPercentages[item].percentage,
-  currentValue:
-    parseInt(userAssets[item]['quantity']) * userAssets[item]['Cotação'],
+  currentValue: parseInt(assets[item]['quantity']) * assets[item]['Cotação'],
   recommendedValue: parseFloat(
     (
       totalValue *
@@ -51,12 +50,11 @@ export const buildAssetTableData = ({
   ),
   adjustment: `${Math.abs(
     parseFloat(recommendedPercentages[item].percentage) -
-      ((parseFloat(userAssets[item]['quantity']) *
-        userAssets[item]['Cotação']) /
+      ((parseFloat(assets[item]['quantity']) * assets[item]['Cotação']) /
         totalValue) *
         100
   ).toFixed(2)}% (R$${Math.abs(
-    parseInt(userAssets[item]['quantity']) * userAssets[item]['Cotação'] -
+    parseInt(assets[item]['quantity']) * assets[item]['Cotação'] -
       parseFloat(
         (
           totalValue *
@@ -66,11 +64,11 @@ export const buildAssetTableData = ({
   ).toFixed(2)})`,
   grade: assetPoints[item],
   total: `${(
-    ((parseInt(userAssets[item]['quantity']) * userAssets[item]['Cotação']) /
+    ((parseInt(assets[item]['quantity']) * assets[item]['Cotação']) /
       totalValue) *
     100
   ).toFixed(2)}%`,
-  quantity: parseInt(userAssets[item]['quantity'])
+  quantity: parseInt(assets[item]['quantity'])
 })
 
 interface IArrayToObject<T> {

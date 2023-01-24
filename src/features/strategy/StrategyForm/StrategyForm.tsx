@@ -64,12 +64,12 @@ export default function StrategyForm() {
         try {
           setLoading(true)
           const data = await Firestore().getData({
-            collection: 'userAssetStatements',
+            collection: 'assetStrategy',
             id: authUser.uid
           })
           await checkAssetByAssetForDifferenceAndRemove(data, statement)
           await Firestore().deleteKeyValue({
-            collection: 'userStrategyStatements',
+            collection: 'strategyStatements',
             id: authUser.uid,
             field: index.toString()
           })
@@ -108,7 +108,7 @@ export default function StrategyForm() {
           }
         })
         Firestore().setData({
-          collection: 'userAssetStatements',
+          collection: 'assetStrategy',
           id: authUser.uid,
           item: newState
         })
@@ -150,7 +150,7 @@ export default function StrategyForm() {
           })
         })
         Firestore().setData({
-          collection: 'userAssetStatements',
+          collection: 'assetStrategy',
           id: authUser.uid,
           item: newState
         })
@@ -187,7 +187,7 @@ export default function StrategyForm() {
         e.preventDefault()
         setLoading(true)
         const data = await Firestore().getData({
-          collection: 'userAssetStatements',
+          collection: 'assetStrategy',
           id: authUser.uid
         })
         const dataWithUpdatedStatements = assetStatementsUpdated(data)
@@ -240,7 +240,7 @@ export default function StrategyForm() {
   useEffect(() => {
     const getUserStatements = async () => {
       if (authUser) {
-        const statementsRef = doc(db, 'userStrategyStatements', authUser.uid)
+        const statementsRef = doc(db, 'strategyStatements', authUser.uid)
         const statementsSnap = await getDoc(statementsRef)
         if (statementsSnap.exists()) {
           const strategyStatements = statementsSnap.data()

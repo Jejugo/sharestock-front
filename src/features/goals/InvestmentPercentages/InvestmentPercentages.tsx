@@ -52,7 +52,7 @@ export default function InvestmentPercentages({
 
   const onSubmit = (data: GoalsForm) => {
     Firestore().setData({
-      collection: 'assetTypePercentages',
+      collection: 'goals',
       id: authUser.uid,
       item: data
     })
@@ -61,7 +61,7 @@ export default function InvestmentPercentages({
   useEffect(() => {
     const getData = async () => {
       const allItems = await Firestore().getData({
-        collection: 'assetTypePercentages',
+        collection: 'goals',
         id: authUser.uid
       })
       methods.reset({ ...defaultValues, ...allItems })

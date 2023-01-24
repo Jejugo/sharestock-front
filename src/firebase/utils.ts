@@ -1,27 +1,27 @@
 import { sortArrayAlphabetically } from 'builders/arrays'
 import Firestore from './Firestore'
 
-export const getUserStrategyStatements = async (
+export const getStrategyStatements = async (
   authUser: IUser
 ): Promise<IFirebaseStrategyStatements> =>
   (await Firestore().getData({
-    collection: 'userStrategyStatements',
+    collection: 'strategyStatements',
     id: authUser.uid
   })) as IFirebaseStrategyStatements
 
-export const getUserAssetStatements = async (
+export const getAssetStrategy = async (
   authUser: IUser
-): Promise<IFirebaseUserAssetStatements> =>
+): Promise<IFirebaseAssetStrategy> =>
   (await Firestore().getData({
-    collection: 'userAssetStatements',
+    collection: 'assetStrategy',
     id: authUser.uid
-  })) as IFirebaseUserAssetStatements
+  })) as IFirebaseAssetStrategy
 
 export const getAllUserAssets = async (authUser: IUser) =>
   (await Firestore().getData({
-    collection: 'userAssets',
+    collection: 'assets',
     id: authUser.uid
-  })) as IFirebaseUserAssets
+  })) as IFirebaseAssets
 
 export const strategyStatementsToArray = (
   strategyStatements: IFirebaseStrategyStatements
@@ -33,9 +33,7 @@ export const strategyStatementsToArray = (
     'statement'
   )
 
-export const calculateTotalUserAssetsValue = (
-  userAssets: IFirebaseUserAssets
-) =>
+export const calculateTotalUserAssetsValue = (userAssets: IFirebaseAssets) =>
   Object.keys(userAssets)
     .map((item) => userAssets[item])
     .reduce((acc, curr) => acc + parseInt(curr.quantity) * curr['Cotação'], 0)

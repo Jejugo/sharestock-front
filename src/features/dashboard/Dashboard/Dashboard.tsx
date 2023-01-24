@@ -10,6 +10,7 @@ import * as S from './styles'
 import Title from 'components/Title/Title'
 
 import useRowsData from './hooks/useRowsData'
+import useGoalsdata from './hooks/useGoalsdata'
 
 interface IArrayToObject<T> {
   [key: string]: T
@@ -20,6 +21,8 @@ interface IDashboardComponent {
 
 export default function DashboardComponent({ sharesMap }: IDashboardComponent) {
   const { assetSectors, pieChartData } = useRowsData({ sharesMap })
+  const { stocks } = useGoalsdata()
+  console.log(stocks)
 
   return (
     <S.DashboardComponentWrapper>
@@ -37,25 +40,22 @@ export default function DashboardComponent({ sharesMap }: IDashboardComponent) {
               `${(parseInt(data) * 100).toString()}%`
             }
             // @ts-ignore
-            content={<CustomTooltip assetSectors={assetSectors} />}
+            content={<CustomTooltip assetSectors={assetSectors} decimals={2} />}
           />
         </PieChartComponent>
-
-        <PieChartComponent
-          data={pieChartData}
-          size={{ width: 800, height: 300 }}
-        >
-          <Tooltip
-            isAnimationActive={true}
-            animationDuration={2}
-            animationEasing="ease"
-            formatter={(data: string) =>
-              `${(parseInt(data) * 100).toString()}%`
-            }
-            // @ts-ignore
-            content={<CustomTooltip assetSectors={assetSectors} />}
-          />
-        </PieChartComponent>
+        {stocks?.length > 0 ? (
+          <PieChartComponent data={stocks} size={{ width: 800, height: 300 }}>
+            <Tooltip
+              isAnimationActive={true}
+              animationDuration={2}
+              animationEasing="ease"
+              content={
+                // @ts-ignore
+                <CustomTooltip assetSectors={assetSectors} decimals={0} />
+              }
+            />
+          </PieChartComponent>
+        ) : null}
       </S.DashboardWrapper>
       <S.WalletAssets>
         <TableComponent />

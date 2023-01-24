@@ -99,11 +99,11 @@ declare global {
 
   // FIRESTORE
 
-  interface IFirebaseUserAssetStatements {
+  interface IFirebaseAssetStrategy {
     [key: string]: IStatement[]
   }
 
-  interface IFirebaseUserAssets {
+  interface IFirebaseAssets {
     [key: string]: IStockItem
   }
 

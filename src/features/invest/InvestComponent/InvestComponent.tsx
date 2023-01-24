@@ -141,7 +141,7 @@ export default function InvestComponent({
           }
           Promise.all([
             await Firestore().setListByKey({
-              collection: 'userAssetStatements',
+              collection: 'assetStrategy',
               id: authUser.uid,
               list: assetsToInvest[asset],
               key: asset

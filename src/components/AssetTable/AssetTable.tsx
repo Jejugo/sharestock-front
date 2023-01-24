@@ -36,13 +36,16 @@ export const AssetTable = React.memo(() => {
     },
     []
   )
-
   return (
     <Paper
       sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
     >
       <span style={{ color: 'white' }}>
-        Você possui {rows.length} ações em carteira
+        Você possui {rows.length} ações em carteira. Valor total{' '}
+        <span style={{ color: 'yellow' }}>
+          R$
+          {rows.reduce((acc, curr) => acc + curr.currentValue, 0)}
+        </span>
       </span>
       <TableContainer sx={{ maxHeight: '70vh' }}>
         <Table stickyHeader aria-label="sticky table">

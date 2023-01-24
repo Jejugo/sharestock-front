@@ -1,7 +1,7 @@
 import {
-  getUserStrategyStatements,
+  getStrategyStatements,
   strategyStatementsToArray,
-  getUserAssetStatements
+  getAssetStrategy
 } from 'firebase/utils'
 import React, { useEffect } from 'react'
 import Switch from 'react-switch'
@@ -26,7 +26,7 @@ export default function StockCheckList({
   const updatedStrategyStatements = async (): Promise<IStatement[]> => {
     if (authUser) {
       const firestoreStatements = (await Firestore().getData({
-        collection: 'userStrategyStatements',
+        collection: 'strategyStatements',
         id: authUser.uid
       })) as IFirebaseStrategyStatements
 
@@ -74,7 +74,7 @@ export default function StockCheckList({
   useEffect(() => {
     const getFirebaseStrategyStatements = async () => {
       if (assetValue && authUser) {
-        const assetListStatements = await getUserAssetStatements(authUser)
+        const assetListStatements = await getAssetStrategy(authUser)
 
         const updatedStatements = await updatedStrategyStatements()
 
@@ -106,7 +106,7 @@ export default function StockCheckList({
   useEffect(() => {
     const getAllStatements = async () => {
       if (authUser) {
-        const strategyStatements = await getUserStrategyStatements(authUser)
+        const strategyStatements = await getStrategyStatements(authUser)
         const formattedData = strategyStatementsToArray(strategyStatements)
         setStatements(formattedData)
       }

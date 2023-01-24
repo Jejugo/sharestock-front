@@ -6,10 +6,12 @@ import * as S from './CustomTooltip.styles'
 interface ICustomizedTooltip {
   payload: Payload<number, string>[]
   assetSectors: IStockSector[]
+  decimals: number
 }
 
 export default function CustomTooltip({
   payload,
+  decimals,
   assetSectors
 }: ICustomizedTooltip) {
   return (
@@ -17,7 +19,7 @@ export default function CustomTooltip({
       <S.TooltipTitle>
         {`${payload[0]?.name}`}
         <br />
-        {`${((payload[0]?.value ?? 0) * 100).toFixed(2)}%`}
+        {`${((payload[0]?.value ?? 0) * 10 ** decimals).toFixed(2)}%`}
       </S.TooltipTitle>
       <S.TooltipList>
         {payload[0]?.name &&

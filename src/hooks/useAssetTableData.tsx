@@ -3,7 +3,7 @@ import { columnsNames } from 'const/assetsTable'
 import {
   calculateTotalUserAssetsValue,
   getAllUserAssets,
-  getUserAssetStatements
+  getAssetStrategy
 } from 'firebase/utils'
 import calculateAssetPoints from 'builders/calculateAssetPoints'
 import { convertArrayToObject } from 'builders/arrays'
@@ -23,13 +23,13 @@ export default function useAssetTableData() {
   useEffect(() => {
     const getUserAssets = async () => {
       if (authUser) {
-        const [userAssets, userAssetStatements] = await Promise.all([
+        const [assets, assetStrategy] = await Promise.all([
           getAllUserAssets(authUser),
-          getUserAssetStatements(authUser)
+          getAssetStrategy(authUser)
         ])
-        if (Object.keys(userAssetStatements).length) {
+        if (Object.keys(assetStrategy).length) {
           const assetPoints: IWalletResistancePoints =
-            await calculateAssetPoints(userAssetStatements)
+            await calculateAssetPoints(assetStrategy)
           const assetRecommendedPercentages =
             calculateAssetPercentages(assetPoints)
 
@@ -37,12 +37,12 @@ export default function useAssetTableData() {
             assetRecommendedPercentages,
             'name'
           ) as RecommendedPercentages
-          const totalValue = calculateTotalUserAssetsValue(userAssets)
+          const totalValue = calculateTotalUserAssetsValue(assets)
 
-          const tableData: ITableRow[] = Object.keys(userAssets)
+          const tableData: ITableRow[] = Object.keys(assets)
             .map((item: string) =>
               buildAssetTableData({
-                userAssets,
+                assets,
                 item,
                 recommendedPercentages,
                 totalValue,

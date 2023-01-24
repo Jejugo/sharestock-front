@@ -1,9 +1,9 @@
-interface IUserAssetStatements {
+interface IAssetStrategy {
   [key: string]: IStatement[]
 }
 
 export default (
-  assetsToInvest: IUserAssetStatements
+  assetsToInvest: IAssetStrategy
 ): Promise<IWalletResistancePoints> =>
   new Promise((resolve, reject) => {
     const assetPoints = Object.keys(assetsToInvest).reduce(

@@ -53,13 +53,13 @@ export default function AddAssets({
       if (!isEveryCheckFalse(statements) && quantity !== '' && authUser) {
         await Promise.all([
           await Firestore().setListByKey({
-            collection: 'userAssetStatements',
+            collection: 'assetStrategy',
             id: authUser.uid,
             list: statements,
             key: selectedAsset.value
           }),
           await Firestore().setDataByKey({
-            collection: 'userAssets',
+            collection: 'assets',
             id: authUser.uid,
             list: [
               {
