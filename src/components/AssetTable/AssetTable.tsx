@@ -44,7 +44,7 @@ export const AssetTable = React.memo(() => {
         Você possui {rows.length} ações em carteira. Valor total{' '}
         <span style={{ color: 'yellow' }}>
           R$
-          {rows.reduce((acc, curr) => acc + curr.currentValue, 0)}
+          {rows.reduce((acc, curr) => acc + curr.currentValue, 0).toFixed(2)}
         </span>
       </span>
       <TableContainer sx={{ maxHeight: '70vh' }}>

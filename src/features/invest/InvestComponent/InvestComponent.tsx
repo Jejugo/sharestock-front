@@ -147,7 +147,7 @@ export default function InvestComponent({
               key: asset
             }),
             await Firestore().setDataByKey({
-              collection: 'userAssets',
+              collection: 'assets',
               id: authUser.uid,
               list: [
                 {
