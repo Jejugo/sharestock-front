@@ -3,34 +3,32 @@ import React from 'react'
 import * as S from './styles'
 
 interface FrameItemProps {
-  item: IFundamentusStockItem
+  item: IStockItem
   goToFundamentus: (share: any) => void
 }
 
 function FrameItem({ item, goToFundamentus }: FrameItemProps) {
   return (
-    <S.FrameItem onClick={() => goToFundamentus(item['Papel'])}>
-      <S.FrameTitle className="share__title">{item['Papel']}</S.FrameTitle>
-      <S.FramePrice className="share__price">{item['Cotação']}</S.FramePrice>
-      <S.FrameIndicator status={indicatorsValidator(item, 'Cresc.5anos')}>
-        Cresc5anos: {item['Cresc.5anos']}
+    <S.FrameItem onClick={() => goToFundamentus(item.papel)}>
+      <S.FrameTitle className="share__title">{item.papel}</S.FrameTitle>
+      <S.FramePrice className="share__price">{item.cotacao}</S.FramePrice>
+      <S.FrameIndicator status={indicatorsValidator(item, 'crescimento5Anos')}>
+        Cresc5anos: {item.crescimento5Anos}
       </S.FrameIndicator>
-      <S.FrameIndicator status={indicatorsValidator(item, 'Dividend Yield')}>
-        Dividend Y.: {item['Dividend Yield']}
+      <S.FrameIndicator status={indicatorsValidator(item, 'dividendYield')}>
+        Dividend Y.: {item.dividendYield}
       </S.FrameIndicator>
-      <S.FrameIndicator status={indicatorsValidator(item, 'Dividend Yield')}>
-        Liq Corrente: {item['Dividend Yield']}
+      <S.FrameIndicator status={indicatorsValidator(item, 'liquidezCorrente')}>
+        Liq Corrente: {item.liquidezCorrente}
       </S.FrameIndicator>
-      <S.FrameIndicator
-        status={indicatorsValidator(item, 'Dívida Bruta/Patrim.')}
-      >
-        Dívida/PL: {item['Dívida Bruta/Patrim.']}
+      <S.FrameIndicator status={indicatorsValidator(item, 'dividaBruta/pl')}>
+        Dívida/PL: {item['dividaBruta/pl']}
       </S.FrameIndicator>
-      <S.FrameIndicator status={indicatorsValidator(item, 'Margem Líquida')}>
-        Margem Líq: {item['Margem Líquida']}
+      <S.FrameIndicator status={indicatorsValidator(item, 'margemLiquida')}>
+        Margem Líq: {item.margemLiquida}
       </S.FrameIndicator>
-      <S.FrameIndicator status={indicatorsValidator(item, 'ROE')}>
-        ROE: {item['ROE']}
+      <S.FrameIndicator status={indicatorsValidator(item, 'roe')}>
+        ROE: {item.roe}
       </S.FrameIndicator>
     </S.FrameItem>
   )

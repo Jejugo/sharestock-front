@@ -10,12 +10,7 @@ import WishList from 'features/indicators/WishList/WishList'
 import { useAuth } from 'context/AuthUserContext'
 
 import * as S from './styles'
-import {
-  ISelectedAsset,
-  IAssetsToInvest,
-  IFirestoreGetAllUserAssets,
-  IAssetQuantities
-} from './interfaces'
+import { ISelectedAsset, IAssetsToInvest, IAssetQuantities } from './interfaces'
 import { getAllUserAssets } from 'firebase/utils'
 import calculateAssetPoints from 'builders/calculateAssetPoints'
 import Title from 'components/Title/Title'
@@ -147,7 +142,7 @@ export default function InvestComponent({
               key: asset
             }),
             await Firestore().setDataByKey({
-              collection: 'assets',
+              collection: 'userStocks',
               id: authUser.uid,
               list: [
                 {

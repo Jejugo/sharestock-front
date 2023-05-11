@@ -16,7 +16,7 @@ export default function Goals({ shareList }: IGoals) {
   )
 }
 export async function getServerSideProps() {
-  const data = await fetch(`${SHARE_API}/shares/all`)
+  const data = await fetch(`${SHARE_API}/shares`)
   const { items: shareList } = (await data.json()) as IStockItemResponse
 
   return {

@@ -5,7 +5,7 @@ export const getStrategyStatements = async (
   authUser: IUser
 ): Promise<IFirebaseStrategyStatements> =>
   (await Firestore().getData({
-    collection: 'strategyStatements',
+    collection: 'userStrategyStatements',
     id: authUser.uid
   })) as IFirebaseStrategyStatements
 
@@ -19,9 +19,9 @@ export const getAssetStrategy = async (
 
 export const getAllUserAssets = async (authUser: IUser) =>
   (await Firestore().getData({
-    collection: 'assets',
+    collection: 'userStocks',
     id: authUser.uid
-  })) as IFirebaseAssets
+  })) as IFirestoreGetAllUserAssets
 
 export const strategyStatementsToArray = (
   strategyStatements: IFirebaseStrategyStatements
@@ -33,7 +33,9 @@ export const strategyStatementsToArray = (
     'statement'
   )
 
-export const calculateTotalUserAssetsValue = (userAssets: IFirebaseAssets) =>
+export const calculateTotalUserAssetsValue = (
+  userAssets: IFirestoreGetAllUserAssets
+) =>
   Object.keys(userAssets)
     .map((item) => userAssets[item])
-    .reduce((acc, curr) => acc + parseInt(curr.quantity) * curr['Cotação'], 0)
+    .reduce((acc, curr) => acc + parseInt(curr.quantity) * curr.cotacao, 0)

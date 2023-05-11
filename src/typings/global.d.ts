@@ -2,73 +2,59 @@ export {}
 
 declare global {
   // API
-  interface IFundamentusStockItem {
-    Papel: string
-    Cotação: number
-    'P/L': number
-    'P/VP': number
-    PSR: number
-    'Dividend Yield': number
-    'P/Ativo': number
-    'P/Cap. Giro': number
-    'P/EBIT': number
-    'P/Ativ.Circ. Líq.': number
-    'EV/EBIT': number
-    'EV/EBITDA': number
-    'Mrg Ebit': number
-    'Margem Líquida': number
-    'Líq. Corrente': number
-    ROIC: number
-    ROE: number
-    'Líq.2meses ': number
-    'Patrimônio Líquido': number
-    'Dívida Bruta/Patrim.': number
-    'Cresc.5anos': number
-  }
 
   interface IStockItem {
-    Papel: string
-    Cotação: number
-    'P/L': number
-    'P/VP': number
-    PSR: number
-    'Dividend Yield': number
-    'P/Ativo': number
-    'P/Cap. Giro': number
-    'P/EBIT': number
-    'P/Ativ.Circ. Líq.': number
-    'EV/EBIT': number
-    'EV/EBITDA': number
-    'Mrg Ebit': number
-    'Margem Líquida': number
-    'Líq. Corrente': number
-    ROIC: number
-    ROE: number
-    'Líq.2meses': number
-    'Patrimônio Líquido': number
-    'Dívida Bruta/Patrim.': number
-    'Cresc.5anos': number
+    setor: string
+    max52semanas: number
+    roe: number
+    CAGRLucros5Anos: number
+    'p/vp': number
+    'p/ativo': number
+    'p/l': number
+    margemEbit: number
+    liquidezMediaDiaria: number
+    liquidezCorrente: number
+    psr: number
+    dividendYield: number
+    liquidez2Meses: number
+    'ev/ebit': number
+    CAGRReceitas5Anos: number
+    margemBruta: number
+    lucroLiquido: number
+    'dividaBruta/pl': 0
+    subsetor: string
+    cotacao: number
+    'ev/ebitda': number
+    valorDeMercado: number
+    lpa: number
+    papel: string
+    roic: number
+    'p/ebit': number
+    ROA: number
+    'p/capitalDeGiro': number
+    vpa: number
+    margemLiquida: number
+    'p/acl': number
     nome: string
-    setor_bovespa: string
-    subsetor_bovespa: string
-    segmento_bovespa: string
-    'seg._listagem': string
-    participação_no_ibovespa: string
-    crescimento_médio_anual: string
+    patrimonioLiquido: number
+    'dividaLíquida/patrimônio': number
+    min52semanas: number
+    giroAtivos: number
+    'pl/ativos': number
+    'dividaLiquida/ebit': number
+    'passivo/ativo': number
+    numeroAcoes: number
+    crescimento5Anos: number
+  }
+
+  type IUserStockItem = IStockItem & {
     quantity: string
-    fco: string
-    'capex/fco': string
-    'capex/d&a': string
-    'L/P': string
-    valor_de_mercado: string
-    dividendo_por_acao: string
-    lucro_por_acao: string
   }
 
   interface IStockItemResponse {
     status: number
     message: string
-    items: IFundamentusStockItem[] | IStockItem[]
+    items: IStockItem[]
   }
 
   // INTERNAL STATE
@@ -105,6 +91,10 @@ declare global {
 
   interface IFirebaseAssets {
     [key: string]: IStockItem
+  }
+
+  export interface IFirestoreGetAllUserAssets {
+    [key: string]: IUserStockItem
   }
 
   interface IFirebaseStrategyStatements {

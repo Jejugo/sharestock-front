@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { columnsNames } from 'const/assetsTable'
 import {
   calculateTotalUserAssetsValue,
@@ -15,6 +15,15 @@ import calculateAssetPercentages, {
 import { RecommendedPercentages } from 'features/dashboard/Dashboard/interfaces'
 import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
 
+const getUserStrategies = (assets: any, assetStrategy: any) =>
+  Object.keys(assets).reduce((acc: any, curr: string) => {
+    if (curr in assetStrategy) {
+      acc[curr] = assetStrategy[curr]
+    }
+
+    return acc
+  }, {})
+
 export default function useAssetTableData() {
   const { authUser } = useAuth()
   const [rows, setRows] = useState<ITableRow[]>([])
@@ -27,9 +36,13 @@ export default function useAssetTableData() {
           getAllUserAssets(authUser),
           getAssetStrategy(authUser)
         ])
+
+        const userAssetStrategy = getUserStrategies(assets, assetStrategy)
+
         if (Object.keys(assetStrategy).length) {
           const assetPoints: IWalletResistancePoints =
-            await calculateAssetPoints(assetStrategy)
+            await calculateAssetPoints(userAssetStrategy)
+
           const assetRecommendedPercentages =
             calculateAssetPercentages(assetPoints)
 

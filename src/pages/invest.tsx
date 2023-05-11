@@ -35,10 +35,10 @@ export default function Invest({ dropdownShares, sharesMap }: IInvest) {
 }
 
 export async function getServerSideProps() {
-  const data = await fetch(`${SHARE_API}/shares/all`)
+  const data = await fetch(`${SHARE_API}/shares`)
   const { items: shareList } = (await data.json()) as IStockItemResponse
   const dropdownShares = normalizeArrayToDropdown(shareList as IStockItem[])
-  const sharesMap = convertArrayToObject(shareList as IStockItem[], 'Papel')
+  const sharesMap = convertArrayToObject(shareList as IStockItem[], 'papel')
 
   return {
     props: {

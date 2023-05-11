@@ -59,7 +59,7 @@ export default function AddAssets({
             key: selectedAsset.value
           }),
           await Firestore().setDataByKey({
-            collection: 'assets',
+            collection: 'userStocks',
             id: authUser.uid,
             list: [
               {

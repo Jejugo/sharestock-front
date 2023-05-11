@@ -6,10 +6,7 @@ interface Style {
   bad: string
 }
 
-const indicatorsValidator = (
-  row: IFundamentusStockItem,
-  value: string
-): string | null => {
+const indicatorsValidator = (row: IStockItem, value: string): string | null => {
   const style: Style = {
     normal: 'normal',
     good: 'good',
@@ -18,7 +15,7 @@ const indicatorsValidator = (
   }
 
   switch (value) {
-    case 'Cresc.5anos':
+    case 'crescimento5Anos':
       if (row[value] > Validator[value].good.lowerLimit) return style.good
       if (
         row[value] > Validator[value].alert.lowerLimit &&
@@ -27,7 +24,7 @@ const indicatorsValidator = (
         return style.alert
       if (row[value] < Validator[value].bad.upperLimit) return style.bad
       break
-    case 'Dividend Yield':
+    case 'dividendYield':
       if (row[value] > Validator[value].good.lowerLimit) return style.good
       if (
         row[value] >= Validator[value].alert.lowerLimit &&
@@ -36,7 +33,7 @@ const indicatorsValidator = (
         return style.alert
       if (row[value] < Validator[value].bad.upperLimit) return style.bad
       break
-    case 'Dívida Bruta/Patrim.':
+    case 'dividaBruta/pl':
       if (row[value] < Validator[value].good.upperLimit) return style.good
       if (
         row[value] >= Validator[value].alert.lowerLimit &&
@@ -45,7 +42,7 @@ const indicatorsValidator = (
         return style.alert
       if (row[value] >= Validator[value].bad.lowerLimit) return style.bad
       break
-    case 'Líq. Corrente':
+    case 'liquidezCorrente':
       if (row[value] >= Validator[value].good.lowerLimit) return style.good
       if (
         row[value] >= Validator[value].alert.lowerLimit &&
@@ -54,7 +51,7 @@ const indicatorsValidator = (
         return style.alert
       if (row[value] < Validator[value].bad.upperLimit) return style.bad
       break
-    case 'Margem Líquida':
+    case 'margemLiquida':
       if (row[value] >= Validator[value].good.lowerLimit) return style.good
       if (
         row[value] >= Validator[value].alert.lowerLimit &&
@@ -63,7 +60,7 @@ const indicatorsValidator = (
         return style.alert
       if (row[value] < Validator[value].bad.upperLimit) return style.bad
       break
-    case 'ROE':
+    case 'roe':
       if (row[value] >= Validator[value].good.lowerLimit) return style.good
       if (
         row[value] >= Validator[value].alert.lowerLimit &&
@@ -72,7 +69,7 @@ const indicatorsValidator = (
         return style.alert
       if (row[value] < Validator[value].bad.upperLimit) return style.bad
       break
-    case 'P/VP':
+    case 'p/vp':
       if (
         row[value] <= Validator[value].good.upperLimit &&
         row[value] >= Validator[value].good.lowerLimit
@@ -89,24 +86,7 @@ const indicatorsValidator = (
       )
         return style.bad
       break
-    case 'P/VP':
-      if (
-        row[value] <= Validator[value].good.upperLimit &&
-        row[value] >= Validator[value].good.lowerLimit
-      )
-        return style.good
-      if (
-        row[value] > Validator[value].alert.lowerLimit &&
-        row[value] <= Validator[value].alert.upperLimit
-      )
-        return style.alert
-      if (
-        row[value] > Validator[value].bad.upperLimit ||
-        row[value] < Validator[value].bad.lowerLimit
-      )
-        return style.bad
-      break
-    case 'P/L':
+    case 'p/l':
       if (
         row[value] >= Validator[value].good.lowerLimit &&
         row[value] <= Validator[value].good.upperLimit

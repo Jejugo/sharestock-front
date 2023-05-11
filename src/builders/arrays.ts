@@ -27,8 +27,8 @@ export const convertArrayToObject = <T>(
 
 export const normalizeArrayToDropdown = (arr: IStockItem[]): IDropdownItem[] =>
   arr.map((item) => ({
-    value: item['Papel'].toLowerCase(),
-    label: `${item['nome']} - ${item['Papel']}`
+    value: item.papel.toLowerCase(),
+    label: `${item['nome']} - ${item.papel}`
   }))
 
 /**

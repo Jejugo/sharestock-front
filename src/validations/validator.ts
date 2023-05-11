@@ -1,5 +1,5 @@
 export default {
-  'Cresc.5anos': {
+  crescimento5Anos: {
     good: {
       lowerLimit: 0
     },
@@ -12,7 +12,7 @@ export default {
       upperLimit: -1
     }
   },
-  'Dividend Yield': {
+  dividendYield: {
     good: {
       lowerLimit: 0.05
     },
@@ -25,7 +25,7 @@ export default {
       upperLimit: 0
     }
   },
-  'Dívida Bruta/Patrim.': {
+  'dividaBruta/pl': {
     good: {
       upperLimit: 1.15
     },
@@ -37,7 +37,7 @@ export default {
       lowerLimit: 2
     }
   },
-  'Líq. Corrente': {
+  liquidezCorrente: {
     // from 1 to infinite
     good: {
       lowerLimit: 1
@@ -52,7 +52,7 @@ export default {
       upperLimit: 0
     }
   },
-  'Margem Líquida': {
+  margemLiquida: {
     good: {
       // from 0.1 to infinite
       lowerLimit: 0.1
@@ -67,7 +67,7 @@ export default {
       upperLimit: 0
     }
   },
-  ROE: {
+  roe: {
     good: {
       lowerLimit: 0.1
     },
@@ -79,7 +79,7 @@ export default {
       upperLimit: 0
     }
   },
-  'P/VP': {
+  'p/vp': {
     good: {
       // from 0 to 1
       upperLimit: 1.5,
@@ -96,7 +96,7 @@ export default {
       lowerLimit: 0
     }
   },
-  'P/L': {
+  'p/l': {
     good: {
       // from 0 to 15
       lowerLimit: 0,

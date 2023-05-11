@@ -3,8 +3,8 @@ import React from 'react'
 import FrameItem from './FrameItem/FrameItem'
 import * as S from './styles'
 interface FramesProps {
-  filteredItems: IFundamentusStockItem[]
-  goToFundamentus: (share: any) => void
+  filteredItems: IStockItem[]
+  goToFundamentus: (share: IStockItem) => void
 }
 
 export default function Frames({

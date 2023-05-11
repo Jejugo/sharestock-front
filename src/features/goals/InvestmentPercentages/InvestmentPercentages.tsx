@@ -67,10 +67,9 @@ export default function InvestmentPercentages({
       methods.reset({ ...defaultValues, ...allItems })
     }
     const stockSectors = [
-      ...new Set(
-        shareList.map((shares: IStockItem) => shares['segmento_bovespa'])
-      )
-    ]
+      ...new Set(shareList.map((shares: IStockItem) => shares['subsetor']))
+    ].filter((a) => a)
+
     setSectors(stockSectors)
     getData().catch(console.error)
   }, [])

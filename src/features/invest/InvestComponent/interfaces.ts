@@ -10,8 +10,3 @@ export interface ISelectedAsset {
 export interface IAssetsToInvest {
   [key: string]: IStatement[]
 }
-
-export interface IFirestoreGetAllUserAssets {
-  //'abev3': {cotacao: '', l/p: '', papel: ''}
-  [key: string]: IStockItem
-}

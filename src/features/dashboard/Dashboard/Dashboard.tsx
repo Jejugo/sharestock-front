@@ -21,8 +21,8 @@ interface IDashboardComponent {
 
 export default function DashboardComponent({ sharesMap }: IDashboardComponent) {
   const { assetSectors, pieChartData } = useRowsData({ sharesMap })
+
   const { stocks } = useGoalsdata()
-  console.log(stocks)
 
   return (
     <S.DashboardComponentWrapper>

@@ -1,12 +1,12 @@
 import RowItem from './RowItem/RowItem'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { IWishListContext, WishListContext } from '../../../context/WishList'
 import { useAuth } from '../../../context/AuthUserContext'
 import Firestore from '../../../firebase/Firestore'
 import * as S from './styles'
 
 interface RowsProps {
-  filteredItems: IFundamentusStockItem[]
+  filteredItems: IStockItem[]
   fixTableHeader: boolean
 }
 

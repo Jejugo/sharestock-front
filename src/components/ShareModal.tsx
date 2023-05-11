@@ -15,7 +15,7 @@ export default function ShareModal({ data, hideModal }: IShareModal) {
         </div>
         <section className="modal__container">
           <div className="modal__share_container">
-            <h1 className="modal__share">{data['Papel']}</h1>
+            <h1 className="modal__share">{data.papel}</h1>
           </div>
           <h3 className="modal__share_calc">Cálculo de Evaluation</h3>
         </section>

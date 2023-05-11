@@ -15,7 +15,7 @@ import Loading from 'components/Loading/Loading'
 const { SHARE_API } = config
 
 interface TableProps {
-  shares: IFundamentusStockItem[]
+  shares: IStockItem[]
   value: string
   isGoodShares: boolean
   goToFundamentus: (share: any) => void
@@ -31,7 +31,7 @@ const TableToggle = ({
 }: TableProps) => {
   const [listMode, setListMode] = useState<string>('table')
   const [loading, setLoading] = useState<boolean>(false)
-  const [filteredData, setFilteredData] = useState<IFundamentusStockItem[]>([])
+  const [filteredData, setFilteredData] = useState<IStockItem[]>([])
   const [showModalSettings, setShowModalSettings] = useState<boolean>(false)
   const [fixTableHeader, setFixTableHeader] = useState<boolean>(false)
 
@@ -55,7 +55,7 @@ const TableToggle = ({
   useEffect(() => {
     setFilteredData(
       shares.filter((item) =>
-        item['Papel'].toUpperCase().includes(value.toUpperCase())
+        item.papel.toUpperCase().includes(value.toUpperCase())
       )
     )
   }, [value])
@@ -68,9 +68,7 @@ const TableToggle = ({
     window.scroll({ top: 450, behavior: 'smooth' })
   }
 
-  const handleShowSettings = (
-    e: React.MouseEvent<HTMLLIElement, MouseEvent>
-  ) => {
+  const handleShowSettings = () => {
     setShowModalSettings(true)
   }
 
@@ -105,7 +103,7 @@ const TableToggle = ({
           <S.TableHeaderIcon
             clickable
             name="table"
-            onClick={(e) => handleShowSettings(e)}
+            onClick={() => handleShowSettings()}
           >
             <SettingsIcon />
           </S.TableHeaderIcon>

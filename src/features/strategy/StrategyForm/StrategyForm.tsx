@@ -69,7 +69,7 @@ export default function StrategyForm() {
           })
           await checkAssetByAssetForDifferenceAndRemove(data, statement)
           await Firestore().deleteKeyValue({
-            collection: 'strategyStatements',
+            collection: 'userStrategyStatements',
             id: authUser.uid,
             field: index.toString()
           })
@@ -220,7 +220,6 @@ export default function StrategyForm() {
     e: React.ChangeEvent<HTMLInputElement>,
     selectedStatement: string
   ) => {
-    // @ts-ignore
     setStatements((prevState) =>
       prevState.map((statement: IStatement) => {
         if (statement.statement === selectedStatement) {
@@ -240,7 +239,7 @@ export default function StrategyForm() {
   useEffect(() => {
     const getUserStatements = async () => {
       if (authUser) {
-        const statementsRef = doc(db, 'strategyStatements', authUser.uid)
+        const statementsRef = doc(db, 'userStrategyStatements', authUser.uid)
         const statementsSnap = await getDoc(statementsRef)
         if (statementsSnap.exists()) {
           const strategyStatements = statementsSnap.data()

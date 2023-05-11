@@ -14,16 +14,16 @@ export interface IValueBySector {
 const stockScore = (userAsset: IStockItem): number => {
   let points = 0
 
-  if (userAsset['P/L'] <= 15) points++
-  if (parseInt(userAsset['lucro_por_acao']) > 1.5) points++
-  if (userAsset['P/VP'] <= 1.5 && userAsset['P/VP'] > 0) points++
-  if (parseFloat(userAsset['crescimento_médio_anual']) / 100 > 0) points++
+  if (userAsset['p/l'] <= 15) points++
+  if (userAsset['lpa'] > 1.5) points++
+  if (userAsset['p/vp'] <= 1.5 && userAsset['p/vp'] > 0) points++
+  if (userAsset.crescimento5Anos / 100 > 0) points++
 
   return points
 }
 
 interface IBuildAssetTableData {
-  assets: IFirebaseAssets
+  assets: IFirestoreGetAllUserAssets
   item: string
   recommendedPercentages: RecommendedPercentages
   totalValue: number
@@ -38,10 +38,10 @@ export const buildAssetTableData = ({
   assetPoints
 }: IBuildAssetTableData): ITableRow => ({
   cheapStockScore: stockScore(assets[item]),
-  symbol: assets[item]['Papel'].toLowerCase(),
-  asset: assets[item]['nome'],
+  symbol: assets[item].papel.toLowerCase(),
+  asset: assets[item].nome,
   recommended: recommendedPercentages[item].percentage,
-  currentValue: parseInt(assets[item]['quantity']) * assets[item]['Cotação'],
+  currentValue: parseInt(assets[item].quantity) * assets[item].cotacao,
   recommendedValue: parseFloat(
     (
       totalValue *
@@ -50,11 +50,11 @@ export const buildAssetTableData = ({
   ),
   adjustment: `${Math.abs(
     parseFloat(recommendedPercentages[item].percentage) -
-      ((parseFloat(assets[item]['quantity']) * assets[item]['Cotação']) /
+      ((parseFloat(assets[item].quantity) * assets[item].cotacao) /
         totalValue) *
         100
   ).toFixed(2)}% (R$${Math.abs(
-    parseInt(assets[item]['quantity']) * assets[item]['Cotação'] -
+    parseInt(assets[item].quantity) * assets[item].cotacao -
       parseFloat(
         (
           totalValue *
@@ -64,11 +64,10 @@ export const buildAssetTableData = ({
   ).toFixed(2)})`,
   grade: assetPoints[item],
   total: `${(
-    ((parseInt(assets[item]['quantity']) * assets[item]['Cotação']) /
-      totalValue) *
+    ((parseInt(assets[item].quantity) * assets[item].cotacao) / totalValue) *
     100
   ).toFixed(2)}%`,
-  quantity: parseInt(assets[item]['quantity'])
+  quantity: parseInt(assets[item].quantity)
 })
 
 interface IArrayToObject<T> {
@@ -82,7 +81,7 @@ export const walletSectors = (
   sharesMap: sharesMap
 ): IAssetSectors[] =>
   rows.map((row) => {
-    const sector = sharesMap[row.symbol].segmento_bovespa
+    const sector = sharesMap[row.symbol].subsetor
     return {
       name: row.symbol,
       sector,

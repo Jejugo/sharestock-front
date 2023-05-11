@@ -13,8 +13,8 @@ import * as S from './styles'
 const { SHARE_API, STATUS_INVEST_HOST } = config
 
 interface IndicatorsProps {
-  shares: IFundamentusStockItem[]
-  goodShares: IFundamentusStockItem[]
+  shares: IStockItem[]
+  goodShares: IStockItem[]
 }
 
 const Indicators = ({ shares, goodShares }: IndicatorsProps) => {
@@ -55,10 +55,8 @@ const Indicators = ({ shares, goodShares }: IndicatorsProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const shares = await fetch(`${SHARE_API}/fundamentus/shares/indicators`)
-  const goodShares = await fetch(
-    `${SHARE_API}/fundamentus/shares/indicators?optimized=true`
-  )
+  const shares = await fetch(`${SHARE_API}/shares`)
+  const goodShares = await fetch(`${SHARE_API}/shares?optimized=true`)
   const { items: sharesItems } = (await shares.json()) as IStockItemResponse
   const { items: goodSharesItems } =
     (await goodShares.json()) as IStockItemResponse

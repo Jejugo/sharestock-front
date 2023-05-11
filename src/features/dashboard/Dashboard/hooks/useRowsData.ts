@@ -36,6 +36,7 @@ export default function useRowsData({ sharesMap }: IUseRowsData) {
       setAssetSectors(currentWalletSectors)
 
       const totalValueBySector = getTotalValueBySector(currentWalletSectors)
+      console.log('totalValueBySector', totalValueBySector)
 
       const totalValuesList = Object.keys(totalValueBySector).map(
         (key: string) => ({
@@ -43,6 +44,7 @@ export default function useRowsData({ sharesMap }: IUseRowsData) {
           value: parseFloat((totalValueBySector[key] / totalValue).toFixed(4))
         })
       )
+      console.log('!!', totalValuesList)
 
       const finalData = sortArrayAlphabetically<IPieData>(
         totalValuesList,

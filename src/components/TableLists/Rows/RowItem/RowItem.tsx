@@ -3,14 +3,14 @@ import indicatorsValidator from 'validations/indicators'
 import * as S from './styles'
 
 interface RowListProps {
-  item: IFundamentusStockItem
+  item: IStockItem
   addToWatchList: (e: React.MouseEvent<HTMLDivElement>, item: any) => any
 }
 
 const RowList = ({ item, addToWatchList }: RowListProps) => {
   return (
     <div>
-      <S.Row name={item['Papel']}>
+      <S.Row name={item.papel}>
         <S.RowItemPlus
           onClick={(e: React.MouseEvent<HTMLDivElement>) =>
             addToWatchList(e, item)
@@ -18,38 +18,38 @@ const RowList = ({ item, addToWatchList }: RowListProps) => {
         >
           +
         </S.RowItemPlus>
-        <S.RowItem status={indicatorsValidator(item, 'Papel')}>
-          {item['Papel']}
+        <S.RowItem status={indicatorsValidator(item, 'papel')}>
+          {item.papel}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'Cotação')}>
-          {item['Cotação']}
+        <S.RowItem status={indicatorsValidator(item, 'cotacao')}>
+          {item.cotacao}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'EV/EBITDA')}>
-          {item['EV/EBITDA']}
+        <S.RowItem status={indicatorsValidator(item, 'ev/ebitda')}>
+          {item['ev/ebitda']}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'P/L')}>
-          {item['P/L']}
+        <S.RowItem status={indicatorsValidator(item, 'p/l')}>
+          {item['p/l']}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'P/VP')}>
-          {item['P/VP']}
+        <S.RowItem status={indicatorsValidator(item, 'p/vp')}>
+          {item['p/vp']}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'Cresc.5anos')}>
-          {item['Cresc.5anos']}
+        <S.RowItem status={indicatorsValidator(item, 'crescimento5Anos')}>
+          {item.crescimento5Anos}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'Dividend Yield')}>
-          {item['Dividend Yield']}
+        <S.RowItem status={indicatorsValidator(item, 'dividendYield')}>
+          {item.dividendYield}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'Dívida Bruta/Patrim.')}>
-          {item['Dívida Bruta/Patrim.']}
+        <S.RowItem status={indicatorsValidator(item, 'dividaBruta/pl')}>
+          {item['dividaBruta/pl']}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'Líq. Corrente')}>
-          {item['Líq. Corrente']}
+        <S.RowItem status={indicatorsValidator(item, 'liquidezCorrente')}>
+          {item.liquidezCorrente}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'Margem Líquida')}>
-          {item['Margem Líquida']}
+        <S.RowItem status={indicatorsValidator(item, 'margemLiquida')}>
+          {item.margemLiquida}
         </S.RowItem>
-        <S.RowItem status={indicatorsValidator(item, 'ROE')}>
-          {item['ROE']}
+        <S.RowItem status={indicatorsValidator(item, 'roe')}>
+          {item.roe}
         </S.RowItem>
       </S.Row>
     </div>

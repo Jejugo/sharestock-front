@@ -22,9 +22,10 @@ export default function Dashboard({ sharesMap }: IDashboard) {
 }
 
 export async function getServerSideProps() {
-  const data = await fetch(`${SHARE_API}/shares/all`)
+  const data = await fetch(`${SHARE_API}/shares`)
   const { items: sharesList } = (await data.json()) as IStockItemResponse
-  const sharesMap = convertArrayToObject(sharesList as IStockItem[], 'Papel')
+  const sharesMap = convertArrayToObject(sharesList as IStockItem[], 'papel')
+
   return {
     props: {
       sharesMap,
