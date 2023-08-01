@@ -15,13 +15,27 @@ interface IArrayToObject<T> {
 }
 
 type sharesMap = IArrayToObject<IStockItem>
+type reitsMap = IArrayToObject<IReitItem>
 
-export const walletSectors = (
+export const walletStockSectors = (
   rows: ITableRow[],
   sharesMap: sharesMap
 ): IAssetSectors[] =>
   rows.map((row) => {
     const sector = sharesMap[row.symbol].subsetor
+    return {
+      name: row.symbol,
+      sector,
+      value: row.currentValue
+    }
+  })
+
+export const walletReitSectors = (
+  rows: ITableRow[],
+  reitsMap: reitsMap
+): IAssetSectors[] =>
+  rows.map((row) => {
+    const sector = reitsMap[row.symbol].segmento
     return {
       name: row.symbol,
       sector,

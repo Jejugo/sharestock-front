@@ -11,8 +11,9 @@ import TableRow from '@mui/material/TableRow'
 
 import NorthIcon from '@mui/icons-material/North'
 import SouthIcon from '@mui/icons-material/South'
+import CachedIcon from '@material-ui/icons/Cached'
 import { ITableColumn, ITableRow } from './interfaces'
-import { isValueGood, isCheapStock } from './utils/helpers'
+import { isCheapStock } from './utils/helpers'
 
 import Text from 'components/Text/Text'
 
@@ -20,14 +21,19 @@ import * as S from './AssetTable.styles'
 import useOutsideClick from './hooks/useOutsideClick'
 import axios from 'axios'
 import config from 'configs'
+import { useAuth } from 'context/AuthUserContext'
+import Loading from 'components/Loading/Loading'
+const { SHARE_API } = config
 
 export const AssetTable = React.memo(() => {
+  const { authUser } = useAuth()
   const menuContentRef = React.useRef<HTMLDivElement | null>(null)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(50)
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null) // Set this to the row's unique identifier
-  const [balancedAssets, setBalancedAssets] = React.useState<number>(0)
-  const { rows, columns } = useAssetTableData()
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [shouldRefetch, setShouldRefetch] = React.useState<boolean>(false)
+  const { rows, columns } = useAssetTableData(shouldRefetch, setIsLoading)
 
   useOutsideClick(menuContentRef, () => {
     setSelectedRow(null) // close the menu when a click outside is detected
@@ -76,142 +82,154 @@ export const AssetTable = React.memo(() => {
     return acc
   }, 0)
 
+  const renderRow = (row: ITableRow, column: ITableColumn) => {
+    const value = row[column?.id as keyof ITableRow]
+    const recommendedPercentage = row.recommended
+    const totalPercentage = row.total
+
+    const textColor =
+      column.id === 'currentValue'
+        ? row.isBalanced
+          ? 'green'
+          : 'red'
+        : 'white'
+
+    let content: any = value
+    if (column.id === 'cheapStockScore') {
+      content = <>{isCheapStock(value as any)}</>
+    } else if (column.format && typeof value === 'number') {
+      content = column.format(value)
+    } else if (column.id === 'adjustment') {
+      const adjustmentIcon =
+        recommendedPercentage > totalPercentage ? (
+          <NorthIcon style={{ fontSize: 'medium', color: 'green' }} />
+        ) : (
+          <SouthIcon style={{ fontSize: 'medium', color: 'red' }} />
+        )
+      content = (
+        <>
+          {adjustmentIcon}
+          {value}
+        </>
+      )
+    }
+
+    return (
+      <TableCell key={column.id} align={column.align} sx={{ color: textColor }}>
+        {content}
+      </TableCell>
+    )
+  }
+
+  const onSync = async () => {
+    await fetch(`${SHARE_API}/sync/user/${authUser.uid}`, { method: 'POST' })
+    setShouldRefetch(true)
+  }
+
   return (
-    <Paper
-      sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
-    >
-      <Text color="white">
-        Você possui {rows.length} ativos.{' '}
-        <Text color="lightGreen">{balancedRows} deles estão balanceados!</Text>
-      </Text>
-      <Text color="white">
-        Valor Total: {` `}
-        <Text color="yellow" style={{ display: 'inline' }}>
-          R${rows.reduce((acc, curr) => acc + curr.currentValue, 0).toFixed(2)}
-        </Text>
-      </Text>
-      <S.TableContainerStyle>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column: ITableColumn) => (
-                <TableCell
-                  sx={{ backgroundColor: '#3E3E3E', color: 'white' }}
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row: ITableRow, index: number) => {
-                return (
-                  <S.TableRowStyle role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column: ITableColumn) => {
-                      // @ts-ignore
-                      const value = row[column.id]
-                      const recommendedPercentage = row.recommended
-                      const totalPercentage = row.total
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Paper
+          sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
+        >
+          <Text color="white">
+            Você possui {rows.length} ativos.{' '}
+            <Text color="lightGreen">
+              {balancedRows} deles estão balanceados!
+            </Text>
+          </Text>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
+          >
+            <Text color="white">
+              Valor Total: {` `}
+              <Text color="yellow" style={{ display: 'inline' }}>
+                R$
+                {rows
+                  .reduce((acc, curr) => acc + curr.currentValue, 0)
+                  .toFixed(2)}
+              </Text>
+            </Text>
 
-                      const recommendedValue = row['recommendedValue']
-                      const currentValue = row['currentValue']
-
-                      let cellColor
-                      if (column.id === 'currentValue') {
-                        const goodValue = isValueGood(
-                          currentValue,
-                          recommendedValue
-                        )
-
-                        if (goodValue) {
-                          cellColor = 'green'
-                        } else cellColor = 'red'
-                      } else cellColor = 'white'
-
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          sx={{
-                            backgroundColor: isCheapStock(row),
-                            color:
-                              column.id === 'currentValue'
-                                ? row.isBalanced
-                                  ? 'green'
-                                  : 'red'
-                                : 'white'
-                          }}
-                        >
-                          {column.format && typeof value === 'number' ? (
-                            column.format(value)
-                          ) : column.id === 'adjustment' ? (
-                            <span>
-                              {recommendedPercentage > totalPercentage ? (
-                                <>
-                                  <NorthIcon
-                                    style={{
-                                      fontSize: 'medium',
-                                      color: 'green'
-                                    }}
-                                  />
-                                  {value}
-                                </>
-                              ) : (
-                                <>
-                                  <SouthIcon
-                                    style={{ fontSize: 'medium', color: 'red' }}
-                                  />
-                                  {value}
-                                </>
-                              )}
-                            </span>
-                          ) : (
-                            value
-                          )}
-                        </TableCell>
-                      )
-                    })}
-                    <S.MenuItem
-                      onClick={() =>
-                        setSelectedRow(selectedRow === index ? null : index)
-                      }
+            <S.UpdateIcon clickable onClick={onSync}>
+              <CachedIcon />
+            </S.UpdateIcon>
+          </div>
+          <S.TableContainerStyle>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column: ITableColumn) => (
+                    <TableCell
+                      sx={{ backgroundColor: '#3E3E3E', color: 'white' }}
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
                     >
-                      &#xFE19;
-                    </S.MenuItem>
-                    {selectedRow === index && (
-                      <S.MenuContent>
-                        <S.MenuContentList>
-                          <S.MenuContentListItem>Edit</S.MenuContentListItem>
-                          <S.MenuContentListItem
-                            onClick={(e) => handleDeleteItem(e, row)}
-                          >
-                            Delete
-                          </S.MenuContentListItem>
-                        </S.MenuContentList>
-                      </S.MenuContent>
-                    )}
-                  </S.TableRowStyle>
-                )
-              })}
-          </TableBody>
-        </Table>
-      </S.TableContainerStyle>
-      <TablePagination
-        sx={{ backgroundColor: '#1E1E1E', color: 'white' }}
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row: ITableRow, index: number) => {
+                    return (
+                      <S.TableRowStyle
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={index}
+                      >
+                        {columns.map((column: ITableColumn) =>
+                          renderRow(row, column)
+                        )}
+                        <S.MenuItem
+                          onClick={() =>
+                            setSelectedRow(selectedRow === index ? null : index)
+                          }
+                        >
+                          &#xFE19;
+                        </S.MenuItem>
+                        {selectedRow === index && (
+                          <S.MenuContent>
+                            <S.MenuContentList>
+                              <S.MenuContentListItem>
+                                Edit
+                              </S.MenuContentListItem>
+                              <S.MenuContentListItem
+                                onClick={(e) => handleDeleteItem(e, row)}
+                              >
+                                Delete
+                              </S.MenuContentListItem>
+                            </S.MenuContentList>
+                          </S.MenuContent>
+                        )}
+                      </S.TableRowStyle>
+                    )
+                  })}
+              </TableBody>
+            </Table>
+          </S.TableContainerStyle>
+          <TablePagination
+            sx={{ backgroundColor: '#1E1E1E', color: 'white' }}
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      )}
+    </>
   )
 })
 

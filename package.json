@@ -43,6 +43,7 @@
     "react-redux": "^7.2.6",
     "react-select": "^5.4.0",
     "react-switch": "^7.0.0",
+    "react-transition-group": "^4.4.5",
     "recharts": "^2.1.15",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",

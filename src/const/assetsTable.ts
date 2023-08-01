@@ -50,5 +50,12 @@ export const columnsNames: ITableColumn[] = [
     minWidth: 50,
     align: 'left',
     format: (value: number) => value
+  },
+  {
+    id: 'cheapStockScore',
+    label: 'Price Check',
+    minWidth: 50,
+    align: 'left',
+    format: (value: number) => value
   }
 ]

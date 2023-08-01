@@ -47,6 +47,10 @@ declare global {
     crescimento5Anos: number
   }
 
+  interface IInternationalAssetItem {
+    [key: string]: number
+  }
+
   interface IReitItem {
     alguelM2: number
     capRate: number

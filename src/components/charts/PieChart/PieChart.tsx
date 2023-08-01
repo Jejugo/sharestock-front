@@ -68,7 +68,7 @@ const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
     <>
       {data.length ? (
         <S.ResponsiveContainerMargin width={size.width} height={size.height}>
-          <PieChart width={300} height={50}>
+          <PieChart>
             <Legend
               height={36}
               iconType="circle"
@@ -84,9 +84,8 @@ const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
               dataKey="value"
               isAnimationActive={true}
               data={filteredData}
-              cx="50%"
-              cy="50%"
-              outerRadius={150}
+              cy="40%"
+              outerRadius={100}
               fill="#8884d8"
               style={{ fontWeight: '600' }}
             >

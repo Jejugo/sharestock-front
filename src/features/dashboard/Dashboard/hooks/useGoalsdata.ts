@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Firestore from 'firebase/Firestore'
 import { useAuth } from 'context/AuthUserContext'
 import { sortArrayAlphabetically } from 'builders/arrays'
+import { IGoal } from '../Dashboard'
 
 interface IUseGoalsData {
-  bonds: { id: number; name: string; value: number }[]
-  international: { id: number; name: string; value: number }[]
-  overview: { id: number; name: string; value: number }[]
-  reits: { id: number; name: string; value: number }[]
-  stocks: { id: number; name: string; value: number }[]
+  bonds: IGoal[]
+  international: IGoal[]
+  overview: IGoal[]
+  reits: IGoal[]
+  stocks: IGoal[]
 }
 
 export default function useGoalsdata() {

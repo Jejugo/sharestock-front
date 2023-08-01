@@ -1,5 +1,5 @@
 import { ITableRow } from '../interfaces'
-import { rowColors } from './rowColors'
+import { cheapRow } from './cheapRow'
 
 // value is good if the difference is less than 1000
 export const isValueGood = (currentValue: number, recommendedValue: number) =>
@@ -7,5 +7,4 @@ export const isValueGood = (currentValue: number, recommendedValue: number) =>
     ? recommendedValue - currentValue <= 1000
     : recommendedValue - currentValue >= -1000
 
-export const isCheapStock = (row: ITableRow): string =>
-  rowColors[row.cheapStockScore]
+export const isCheapStock = (score: number): string => cheapRow[score]

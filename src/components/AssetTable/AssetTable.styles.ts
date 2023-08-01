@@ -65,3 +65,26 @@ export const MenuContentListItem = styled.li`
     background-color: #ccc;
   }
 `
+
+export interface UpdateIcon {
+  clickable?: boolean
+  name?: string
+  onClick?: (e: React.MouseEvent<HTMLLIElement>) => void | Promise<void>
+}
+
+export const UpdateIcon = styled.div<UpdateIcon>`
+  margin-right: 50px;
+  font-size: 25px;
+  color: white;
+  ${(props) => props.clickable && 'cursor: pointer;'}
+
+  .MuiSvgIcon-root {
+    font-size: 1.2em;
+  }
+
+  .MuiSvgIcon-root:hover {
+    transition: ease 0.5s;
+    color: orange;
+    font-size: 1.6em;
+  }
+`
