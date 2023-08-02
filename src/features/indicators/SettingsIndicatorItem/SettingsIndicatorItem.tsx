@@ -15,11 +15,11 @@ interface IIndicatorConfiguration {
 
 const useStyles = makeStyles((theme) => ({
   selectStyle: {
-    maxHeight: 200
+    maxHeight: 100
   }
 }))
 
-function SettingsIndicatorItem({ title, formData }: any) {
+function SettingsIndicatorItem({ title, name, formData }: any) {
   const classes = useStyles()
   const generateOptions = useMemo(
     () =>
@@ -42,7 +42,7 @@ function SettingsIndicatorItem({ title, formData }: any) {
         >
           <InputLabel id="pl-input-lowerlimit-label">From</InputLabel>
           <Controller
-            name={`${title}_lowerLimit`}
+            name={`${name}_lowerLimit`}
             defaultValue={''}
             control={formData.control}
             render={({ field }: any) => (
@@ -81,7 +81,7 @@ function SettingsIndicatorItem({ title, formData }: any) {
         >
           <InputLabel id="pl-input-upperlimit-label">To</InputLabel>
           <Controller
-            name={`${title}_upperLimit`}
+            name={`${name}_upperLimit`}
             defaultValue={''}
             control={formData.control}
             render={({ field }: any) => (
@@ -90,7 +90,10 @@ function SettingsIndicatorItem({ title, formData }: any) {
                 sx={{
                   backgroundColor: 'white',
                   border: '1px solid darkgrey',
-                  outline: 'none'
+                  outline: 'none',
+                  '&:focus': {
+                    outline: 'none'
+                  }
                 }}
                 labelId="pl-input-upperlimit-label"
                 id="pl-input-upperlimit"

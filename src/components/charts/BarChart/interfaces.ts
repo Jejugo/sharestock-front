@@ -5,4 +5,5 @@ export interface IChartData {
 export type IBarData = {
   name: string
   value: number
+  percentage: number
 }

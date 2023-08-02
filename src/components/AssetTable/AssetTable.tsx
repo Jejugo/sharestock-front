@@ -23,6 +23,7 @@ import axios from 'axios'
 import config from 'configs'
 import { useAuth } from 'context/AuthUserContext'
 import Loading from 'components/Loading/Loading'
+import Flex from 'components/container/Flex/Flex'
 const { SHARE_API } = config
 
 export const AssetTable = React.memo(() => {
@@ -134,33 +135,17 @@ export const AssetTable = React.memo(() => {
         <Paper
           sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
         >
-          <Text color="white">
-            Você possui {rows.length} ativos.{' '}
-            <Text color="lightGreen">
-              {balancedRows} deles estão balanceados!
-            </Text>
-          </Text>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}
-          >
-            <Text color="white">
-              Valor Total: {` `}
-              <Text color="yellow" style={{ display: 'inline' }}>
-                R$
-                {rows
-                  .reduce((acc, curr) => acc + curr.currentValue, 0)
-                  .toFixed(2)}
-              </Text>
-            </Text>
-
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text color="white">Você possui {rows.length} ativos. </Text>
             <S.UpdateIcon clickable onClick={onSync}>
               <CachedIcon />
             </S.UpdateIcon>
-          </div>
+          </Flex>
+
+          <Text color="lightGreen">
+            {balancedRows} deles estão balanceados!
+          </Text>
+
           <S.TableContainerStyle>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>

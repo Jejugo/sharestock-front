@@ -1,5 +1,5 @@
 import React from 'react'
-import indicatorsValidator from 'validations/indicators'
+import indicatorsValidator from 'validations/stocks/indicators'
 import * as S from './styles'
 
 interface RowItemColum {
@@ -8,7 +8,7 @@ interface RowItemColum {
 }
 
 interface RowListProps {
-  item: IStockItem
+  item: IStockItem & IReitItem
   addToWatchList: (e: React.MouseEvent<HTMLDivElement>, item: any) => any
   columns: RowItemColum[]
 }

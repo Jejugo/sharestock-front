@@ -40,42 +40,69 @@ export default function useBarChartData() {
           .toFixed(2)
       )
 
+      const totalValue =
+        stockRowsTotalValue +
+        reitRowsTotalValue +
+        bondRowsTotalValue +
+        internationalRowsTotalValue
+
       setCurrentChartData([
         {
           name: 'Shares',
-          value: stockRowsTotalValue
+          value: stockRowsTotalValue,
+          percentage: parseFloat(
+            ((stockRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
+          )
         },
         {
           name: 'Reits',
-          value: reitRowsTotalValue
+          value: reitRowsTotalValue,
+          percentage: parseFloat(
+            ((reitRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
+          )
         },
         {
           name: 'Bonds',
-          value: bondRowsTotalValue
+          value: bondRowsTotalValue,
+          percentage: parseFloat(
+            ((bondRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
+          )
         },
         {
           name: 'International Assets',
-          value: internationalRowsTotalValue
+          value: internationalRowsTotalValue,
+          percentage: parseFloat(
+            ((internationalRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
+          )
         }
       ])
       setGoalsChartData([
         {
           name: 'Shares',
-          value: overview.find((item) => item.name === 'ações')?.value || 0
+          value: overview.find((item) => item.name === 'ações')?.value || 0,
+          percentage: overview.find((item) => item.name === 'ações')?.value || 0
         },
         {
           name: 'Reits',
           value:
             overview.find((item) => item.name === 'fundos imobiliarios')
+              ?.value || 0,
+          percentage:
+            overview.find((item) => item.name === 'fundos imobiliarios')
               ?.value || 0
         },
         {
           name: 'Bonds',
-          value: overview.find((item) => item.name === 'renda fixa')?.value || 0
+          value:
+            overview.find((item) => item.name === 'renda fixa')?.value || 0,
+          percentage:
+            overview.find((item) => item.name === 'renda fixa')?.value || 0
         },
         {
           name: 'International Assets',
           value:
+            overview.find((item) => item.name === 'internacional')?.value || 0,
+          percentage:
             overview.find((item) => item.name === 'internacional')?.value || 0
         }
       ])

@@ -18,6 +18,9 @@ import useBarChartData from './hooks/useBarChartData'
 import Flex from 'components/container/Flex/Flex'
 import Loading from 'components/Loading/Loading'
 
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+
 interface IArrayToObject<T> {
   [key: string]: T
 }
@@ -65,6 +68,7 @@ export default function DashboardComponent({
   const [sliderMap, setSliderMap] = useState<ISliderMap[]>([] as ISliderMap[])
 
   const [totalValue, setTotalValue] = useState(0)
+  const [hideTotalValue, setHideTotalValue] = useState(false)
 
   usePieChartData({
     sharesMap,
@@ -84,7 +88,37 @@ export default function DashboardComponent({
     <S.DashboardComponentWrapper>
       <Flex justifyContent="space-between">
         <Title text="Olá, Jeff" />
-        <Title text={`R$${totalValue}`} color="#82ca9d" />
+        <Flex justifyContent="space-between" alignItems="center">
+          {hideTotalValue ? (
+            <VisibilityOffIcon
+              sx={{
+                marginRight: 2,
+                cursor: 'pointer'
+              }}
+              onClick={() => setHideTotalValue((prevState) => !prevState)}
+            />
+          ) : (
+            <VisibilityIcon
+              sx={{
+                marginRight: 2,
+                cursor: 'pointer'
+              }}
+              onClick={() => setHideTotalValue((prevState) => !prevState)}
+            />
+          )}
+
+          <Title
+            text={
+              !hideTotalValue
+                ? totalValue.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  })
+                : `R$ 0,00`
+            }
+            color="#82ca9d"
+          />
+        </Flex>
       </Flex>
       {currentChartData.length === 0 ||
       goalsChartData.length === 0 ||

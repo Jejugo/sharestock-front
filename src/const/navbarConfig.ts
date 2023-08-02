@@ -3,6 +3,7 @@ import SubjectIcon from '@mui/icons-material/Subject'
 import TableChartIcon from '@mui/icons-material/TableChart'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined'
+import FlagIcon from '@mui/icons-material/Flag'
 import PaidIcon from '@mui/icons-material/Paid'
 import { OverridableComponent } from '@material-ui/core/OverridableComponent'
 import { SvgIconTypeMap } from '@material-ui/core'
@@ -22,7 +23,7 @@ export default [
     href: '/'
   },
   {
-    icon: DashboardOutlinedIcon,
+    icon: FlagIcon,
     text: 'Objetivos',
     href: '/goals'
   },
@@ -32,7 +33,7 @@ export default [
     href: '/strategy'
   },
   // {
-  //   icon: FactCheckIcon,
+  //   icon: BalanceIcon,
   //   text: 'Balancear',
   //   href: '/balance'
   // },

@@ -14,12 +14,18 @@ export default function CustomTooltip({
   decimals,
   totalValue
 }: ICustomizedTooltip) {
+  const value = parseFloat((payload?.[0]?.value ?? 0).toFixed(2))
+
   return (
     <S.ToolTip>
       <S.TooltipTitle>
         {`${payload?.[0]?.name}`}
         <br />
-        {`R$${(payload?.[0]?.value ?? 0).toFixed(2)}`}
+
+        {value.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })}
         <br />
         {payload?.[0]?.value
           ? `${((payload?.[0]?.value / totalValue) * 10 ** decimals).toFixed(

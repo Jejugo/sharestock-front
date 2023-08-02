@@ -26,7 +26,10 @@ export default function CustomTooltip({
         {capitalizedName}
         <br />
         {simpleAsset
-          ? `R$ ${payload?.[0]?.value}`
+          ? payload?.[0]?.value?.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL'
+            })
           : `${((payload?.[0]?.value ?? 0) * 10 ** decimals).toFixed(2)}%`}
         {simpleAsset && (
           <div>{`${

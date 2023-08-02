@@ -2,8 +2,12 @@ import React from 'react'
 import { Box, Modal, Typography } from '@material-ui/core'
 import SettingsIndicatorItem from 'features/indicators/SettingsIndicatorItem/SettingsIndicatorItem'
 import { useForm } from 'react-hook-form'
+import { useAuth } from 'context/AuthUserContext'
 
 import * as S from './styles'
+import config from 'configs'
+
+const { SHARE_API } = config
 
 const style = {
   position: 'absolute',
@@ -34,9 +38,12 @@ export function SettingsModal({
   setShowModalSettings
 }: ISettingsModal) {
   const formData = useForm()
-
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const { authUser } = useAuth()
+  const onSubmit = async (data: any) => {
+    await fetch(`${SHARE_API}/user/stocks/fundaments/${authUser.uid}`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
   }
 
   return (
@@ -47,29 +54,38 @@ export function SettingsModal({
         </Typography>
         <S.ModalContent>
           <form onSubmit={formData.handleSubmit(onSubmit)}>
-            <SettingsIndicatorItem title={'P/L'} formData={formData} />
-            <SettingsIndicatorItem title={'P/VP'} formData={formData} />
+            <SettingsIndicatorItem title="P/L" name="p_l" formData={formData} />
             <SettingsIndicatorItem
-              title={'Cresc. 5 Anos'}
+              title="P/VPA"
+              name="p_vp"
               formData={formData}
             />
             <SettingsIndicatorItem
-              title={'Dividend Yield'}
+              title="Cresc. 5 Anos"
+              name="crescimento5Anos"
               formData={formData}
             />
             <SettingsIndicatorItem
-              title={'Dívida Bruta/Patrimônio'}
+              title="Dividend Yield"
+              name="dividendYield"
               formData={formData}
             />
             <SettingsIndicatorItem
-              title={'Liquidez Corrente'}
+              title="Divida Bruta/PL"
+              name="dividaBruta_pl"
               formData={formData}
             />
             <SettingsIndicatorItem
-              title={'Margem Líquida'}
+              title="Liquidez Corrente"
+              name="liquidezCorrente"
               formData={formData}
             />
-            <SettingsIndicatorItem title={'ROE'} formData={formData} />
+            <SettingsIndicatorItem
+              title="Margem Líquida"
+              name="margemLiquida"
+              formData={formData}
+            />
+            <SettingsIndicatorItem title="ROE" name="roe" formData={formData} />
             <S.ModalBtn>Salvar</S.ModalBtn>
           </form>
         </S.ModalContent>
