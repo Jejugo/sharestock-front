@@ -20,7 +20,7 @@ export const FrameItem = styled.div`
 `
 
 export const FrameTitle = styled.h1`
-font-family: 'Amatic SC', cursive;
+  font-family: 'Amatic SC', cursive;
   font-size: 25px;
   margin: 0;
 `

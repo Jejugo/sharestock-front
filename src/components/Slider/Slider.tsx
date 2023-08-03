@@ -22,15 +22,13 @@ const Slider: React.FC<ISliderProps> = ({ children }: ISliderProps) => {
   return (
     <S.SliderWrapper>
       <S.Arrow onClick={previousSlide}>
-        {/* @ts-ignore */}
-        <ArrowBackIosNewIcon fontSize="20px" />
+        <ArrowBackIosNewIcon />
       </S.Arrow>
 
       <S.Slide>{children[activeIndex]}</S.Slide>
 
       <S.Arrow onClick={nextSlide}>
-        {/* @ts-ignore */}
-        <ArrowForwardIosIcon fontSize="20px" />
+        <ArrowForwardIosIcon />
       </S.Arrow>
     </S.SliderWrapper>
   )

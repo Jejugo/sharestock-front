@@ -48,7 +48,7 @@ const SignupComponent = () => {
       <button className="submit" type="submit">
         Registrar
       </button>
-      <style jsx global>{`
+      {/* <style jsx global>{`
         .signup__title {
           text-align: center;
           font-size: 30px;
@@ -85,7 +85,7 @@ const SignupComponent = () => {
           border: 0;
           border-radius: 5px;
         }
-      `}</style>
+      `}</style> */}
     </form>
   )
 }

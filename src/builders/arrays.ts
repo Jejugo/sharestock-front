@@ -16,9 +16,8 @@ export const convertArrayToObject = <T>(
   key: string
 ): RandomObject<T> => {
   return arr.reduce(
-    (acc, curr) => ({
+    (acc, curr: any) => ({
       ...acc,
-      // @ts-ignore
       [curr[key].toLowerCase()]: curr
     }),
     {}
@@ -51,7 +50,7 @@ export const convertObjectKeysToList = <T extends RandomObject<T>>(obj: T) =>
   Object.keys(obj).reduce((acc, key) => {
     return {
       ...acc,
-      [key]: Object.values(obj[key]).map((item: any) => item)
+      [key]: Object.values(obj[key]).map((item: T) => item)
     }
   }, {})
 

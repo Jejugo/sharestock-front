@@ -19,7 +19,7 @@ interface IApp {
 }
 
 const firebaseApp = initFirebase()
-class MyApp extends App<IApp, {}> {
+class MyApp extends App<IApp, any> {
   static async getInitialProps({ Component, ctx }: IGetInitialProps) {
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)

@@ -41,7 +41,7 @@ type WithFieldValue<T> =
   | T
   | (T extends Primitive
       ? T
-      : T extends {}
+      : T extends any
       ? {
           [K in keyof T]: WithFieldValue<T[K]>
         }

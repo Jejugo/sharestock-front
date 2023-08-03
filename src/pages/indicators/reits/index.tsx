@@ -8,8 +8,8 @@ import config from 'configs'
 import Template from 'layout/Template/Template'
 import WishListPopUp from 'features/indicators/WishListPopUp/WishListPopUp'
 import WishListProvider from 'context/WishList'
-import * as S from './styles'
-import { tableColumns } from './constants'
+import { tableColumnsReits } from 'features/indicators/constants'
+import styled from 'styled-components'
 
 const { SHARE_API, STATUS_INVEST_HOST } = config
 
@@ -17,6 +17,10 @@ interface IndicatorsProps {
   reits: IReitItem[]
   goodReits: IReitItem[]
 }
+
+const IndicatorsTitle = styled.h1`
+  font-size: 32px;
+`
 
 const Indicators = ({ reits, goodReits }: IndicatorsProps) => {
   const [search, setSearch] = useState<string>('')
@@ -33,9 +37,9 @@ const Indicators = ({ reits, goodReits }: IndicatorsProps) => {
 
   return (
     <Template tabTitle="all-reits">
-      <S.IndicatorsTitle>
+      <IndicatorsTitle>
         Escolha os ativos de acordo com os indicadores
-      </S.IndicatorsTitle>
+      </IndicatorsTitle>
       <SearchBar
         setSearchText={setSearchText}
         value={search}
@@ -43,7 +47,7 @@ const Indicators = ({ reits, goodReits }: IndicatorsProps) => {
       ></SearchBar>
       <WishListProvider>
         <TableToggle
-          columns={tableColumns}
+          columns={tableColumnsReits}
           assets={isGoodReits ? goodReits : reits}
           value={search}
           setIsGoodAsset={setIsGoodReits}

@@ -20,7 +20,7 @@ export default function ShareModal({ data, hideModal }: IShareModal) {
           <h3 className="modal__share_calc">Cálculo de Evaluation</h3>
         </section>
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .modal {
           opacity: 1;
           height: 50%;
@@ -65,7 +65,7 @@ export default function ShareModal({ data, hideModal }: IShareModal) {
           cursor: pointer;
           margin: 30px;
         }
-      `}</style>
+      `}</style> */}
     </>
   )
 }

@@ -7,7 +7,7 @@ import { IArrayToObject } from 'firebase/interfaces'
 import Router from 'next/router'
 import config from 'configs'
 
-const getStatusInvestLink = {
+const getStatusInvestLink: Record<'stocks' | 'reits', string> = {
   stocks: 'acoes',
   reits: 'fundos-imobiliarios'
 }
@@ -49,8 +49,9 @@ export default function MyAssetsForm({
       return
 
     window.open(
-      // @ts-ignore
-      `${config.STATUS_INVEST_HOST}/${getStatusInvestLink[tabName]}/${selectedAsset}`,
+      `${config.STATUS_INVEST_HOST}/${
+        getStatusInvestLink[tabName as 'stocks' | 'reits']
+      }/${selectedAsset}`,
       '_blank'
     )
   }
@@ -76,7 +77,6 @@ export default function MyAssetsForm({
           </S.TopActions>
           <MyAssetsContent
             name={tabName}
-            //@ts-ignore
             dropdownAssetList={dropdownList as IDropdownItem[]}
           />
         </FormProvider>

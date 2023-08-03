@@ -8,17 +8,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: mskelton/setup-yarn@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Yarn
+        uses: mskelton/setup-yarn@v1
+
       - run: yarn install
       - run: yarn build
 
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v1
-        with: 
+        with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
-      
+
       - name: Deploy
-        run: aws s3 sync build s3://stockshare-holder
+        run: aws s3 sync build s3://stockshare-holder --delete
+
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DESTRIBUTION_ID }} --paths /index.html

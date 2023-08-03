@@ -47,10 +47,6 @@ declare global {
     crescimento5Anos: number
   }
 
-  interface IInternationalAssetItem {
-    [key: string]: number
-  }
-
   interface IReitItem {
     alguelM2: number
     capRate: number
@@ -79,6 +75,10 @@ declare global {
     vacanciaMedia: number
     valorDeMercado: number
     'valorPatrimonial/cota': number
+  }
+
+  interface IInternationalAssetItem {
+    [key: string]: number
   }
 
   type IUserStockItem = IStockItem & {

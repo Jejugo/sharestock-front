@@ -4,6 +4,7 @@ import AssetTypeTabContent from 'features/goals/InvestmentPercentages/AssetTypeT
 import assetTypes from 'const/AssetTypes'
 import StrategyTabContent from './StrategyTabContent/StrategyTabContent'
 
+type SupportedAssets = 'stocks' | 'reits' | 'international'
 export default function StrategyComponent({
   onDeleteItem
 }: {
@@ -11,7 +12,7 @@ export default function StrategyComponent({
     e: React.MouseEvent<HTMLElement>,
     index: number,
     statement: string,
-    name: Partial<AssetTypes>
+    name: SupportedAssets
   ) => Promise<void>
 }) {
   const tabsList = useRef(
@@ -22,7 +23,7 @@ export default function StrategyComponent({
   return (
     <section>
       <AssetTypeTabContent tabsList={tabsList.current} defaultTab="stocks">
-        {(activeTab: Partial<AssetTypes>) => (
+        {(activeTab: any) => (
           <StrategyTabContent tabName={activeTab} onDeleteItem={onDeleteItem} />
         )}
       </AssetTypeTabContent>

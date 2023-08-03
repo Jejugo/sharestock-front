@@ -43,9 +43,8 @@ export default function useStrategyForm() {
     e: React.MouseEvent<HTMLElement>,
     index: number,
     statement: string,
-    name: Partial<AssetTypes>
+    name: 'stocks' | 'reits' | 'international'
   ) => {
-    //@ts-ignore
     const values = methods.getValues()[name]
 
     if (confirm('Tem certeza que deseja excluir esse item da sua base?')) {

@@ -6,11 +6,16 @@ import initialFormValues, {
 } from 'features/strategy/StrategyForm/initialFormValues'
 import StrategyTabContent from '../StrategyTabContent/StrategyTabContent'
 
-function StrategyTabContentForm({ tabName }: { tabName: Partial<AssetTypes> }) {
+type SupportedStrategy = 'stocks' | 'reits' | 'international'
+
+function StrategyTabContentForm({
+  tabName
+}: {
+  tabName: Omit<AssetTypes, 'overview'>
+}) {
   const methods = useForm<IStategyFormAsset>({
     defaultValues: {
-      //@ts-ignore
-      [tabName as keyof IStategyFormAsset]: initialFormValues[tabName]
+      [tabName.toString()]: initialFormValues[tabName as SupportedStrategy]
     }
   })
 

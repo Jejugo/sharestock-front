@@ -1,12 +1,12 @@
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import * as S from './StrategyList.style'
-import { useController, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 interface IStrategyList {
   handleWeightChange?: any
   handleRemoveStatement: any
-  name: string
+  name: Omit<AssetTypes, 'overview'>
 }
 
 interface IWeight {
@@ -30,7 +30,7 @@ export default function StrategyList({
   name = 'stocks'
 }: IStrategyList) {
   const { getValues } = useFormContext()
-  const value = getValues()[name] || {}
+  const value = getValues()[name as 'stocks' | 'reits'] || {}
 
   return (
     <div>

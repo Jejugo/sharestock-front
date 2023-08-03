@@ -9,7 +9,7 @@ import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 
 interface IStrategyList {
-  name: Partial<AssetTypes>
+  name: Omit<AssetTypes, 'overview'>
 }
 
 interface ISelectedWeight {
@@ -30,7 +30,7 @@ export default function StrategyInputValues({
 
   const formState = watch()
 
-  const value = getValues()[name] || {}
+  const value = getValues()[name as 'stocks' | 'reits'] || {}
 
   const handleInputStatement = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(`${name}.statement`, e.target.value)

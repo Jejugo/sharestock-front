@@ -1,4 +1,4 @@
-export const tableColumns = [
+export const tableColumnsReits = [
   { label: 'FII', name: 'papel' },
   { label: 'Cotação', name: 'cotacao' },
   { label: 'P/VPA', name: 'p_vp' },
@@ -10,4 +10,18 @@ export const tableColumns = [
   { label: 'Número de Cotas', name: 'numeroCotas' },
   { label: 'Número de Cotistas', name: 'numeroCotistas' },
   { label: 'Último Dividendo', name: 'ultimoDividendo' }
+]
+
+export const tableColumnsStocks = [
+  { label: 'Ação', name: 'papel' },
+  { label: 'Cotação', name: 'cotacao' },
+  { label: 'EV/EBITDA', name: 'ev_ebitda' },
+  { label: 'P/L', name: 'p_l' },
+  { label: 'P/VPA', name: 'p_vp' },
+  { label: 'Crescimento 5 Anos', name: 'crescimento5Anos' },
+  { label: 'DY', name: 'dividendYield' },
+  { label: 'Divida Bruta/PL', name: 'dividaBruta_pl' },
+  { label: 'Liq.Corrente', name: 'liquidezCorrente' },
+  { label: 'Margem Líq.', name: 'margemLiquida' },
+  { label: 'ROE', name: 'roe' }
 ]

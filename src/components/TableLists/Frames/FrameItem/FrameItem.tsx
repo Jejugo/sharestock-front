@@ -1,4 +1,3 @@
-// @ts-nocheck
 import indicatorsValidator from 'validations/stocks/indicators'
 import React from 'react'
 import * as S from './styles'
@@ -11,7 +10,7 @@ interface FrameItemProps {
 function FrameItem({ item, goToFundamentus }: FrameItemProps) {
   return (
     <S.FrameItem onClick={() => goToFundamentus(item.papel)}>
-      <S.FrameTitle className="share__title">{item.papel}</S.FrameTitle>
+      {/* <S.FrameTitle className="share__title">{item.papel}</S.FrameTitle>
       <S.FramePrice className="share__price">{item.cotacao}</S.FramePrice>
       <S.FrameIndicator status={indicatorsValidator(item, 'crescimento5Anos')}>
         Cresc5anos: {item.crescimento5Anos}
@@ -30,7 +29,7 @@ function FrameItem({ item, goToFundamentus }: FrameItemProps) {
       </S.FrameIndicator>
       <S.FrameIndicator status={indicatorsValidator(item, 'roe')}>
         ROE: {item.roe}
-      </S.FrameIndicator>
+      </S.FrameIndicator> */}
     </S.FrameItem>
   )
 }

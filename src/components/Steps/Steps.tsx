@@ -15,11 +15,9 @@ export default function Steps({ steps }: StepsProps) {
       <S.Steps>
         <S.Title>{steps[count].title}</S.Title>
         <S.Description>{steps[count].description}</S.Description>
-        <S.Explanation
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
+        {/* <S.Explanation
           dangerouslySetInnerHTML={{ __html: steps[count].explanation }}
-        ></S.Explanation>
+        ></S.Explanation> */}
       </S.Steps>
       <ArrowStep prevStep={prevStep} nextStep={nextStep}></ArrowStep>
     </S.StepsWrapper>

@@ -58,8 +58,7 @@ const TableToggle = ({
 
   useEffect(() => {
     setFilteredData(
-      // @ts-ignore
-      assets.filter((item: IStockItem | IReitItem) =>
+      (assets as any).filter((item: IStockItem | IReitItem) =>
         item.papel.toUpperCase().includes(value.toUpperCase())
       )
     )

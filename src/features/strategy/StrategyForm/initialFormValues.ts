@@ -1,13 +1,20 @@
 export interface IStategyFormAsset {
+  defaultValues: FormAsset
+}
+
+interface FormAsset {
   statement: string
   weight: string
   statements: IStatement[]
 }
 
 export interface IStrategyForm {
-  stocks: IStategyFormAsset
-  reits: IStategyFormAsset
-  international: IStategyFormAsset & {
+  stocks: FormAsset
+  reits: FormAsset
+  international: FormAsset & {
+    type: string
+  }
+  bonds: FormAsset & {
     type: string
   }
 }
@@ -19,22 +26,22 @@ export type TabName =
   | 'overview'
   | 'bonds'
 
-const initialFormState: IStrategyForm = {
+const initialFormState: Partial<IStrategyForm> = {
   stocks: {
     statement: '',
     weight: '',
-    statements: []
+    statements: [] as IStatement[]
   },
   reits: {
     statement: '',
     weight: '',
-    statements: []
+    statements: [] as IStatement[]
   },
   international: {
     type: '',
     statement: '',
     weight: '',
-    statements: []
+    statements: [] as IStatement[]
   }
 }
 

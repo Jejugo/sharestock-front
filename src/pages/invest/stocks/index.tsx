@@ -34,7 +34,7 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
     const getAssetsFromFirebase = async () => {
       if (authUser) {
         const data = await axios
-          .get(SHARE_API + '/user/strategy')
+          .get(SHARE_API + `/user/strategy/${authUser.uid}`)
           .then((res) => res.data.items[0])
 
         console.log('setting strategy', data)

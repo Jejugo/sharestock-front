@@ -8,8 +8,7 @@ import config from 'configs'
 import Template from 'layout/Template/Template'
 import WishListPopUp from 'features/indicators/WishListPopUp/WishListPopUp'
 import WishListProvider from 'context/WishList'
-import * as S from './styles'
-import { tableColumns } from './constants'
+import { tableColumnsStocks } from 'features/indicators/constants'
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary'
 
 const { SHARE_API, STATUS_INVEST_HOST } = config
@@ -42,7 +41,7 @@ const Indicators = ({ shares, goodShares }: IndicatorsProps) => {
         ></SearchBar>
         <WishListProvider>
           <TableToggle
-            columns={tableColumns}
+            columns={tableColumnsStocks}
             assets={isGoodShares ? goodShares : shares}
             value={search}
             setIsGoodAsset={setIsGoodShares}
