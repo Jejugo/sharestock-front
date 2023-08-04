@@ -3,26 +3,32 @@ import { columnsNames } from 'const/assetsTable'
 import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
 import axios from 'axios'
 import { useAuth } from 'context/AuthUserContext'
+import useSWR from 'swr'
+
+const domain = process.env.NEXT_PUBLIC_SHARE_API
+
+const fetcher = (url: string, options: RequestInit) =>
+  fetch(`${domain}${url}`, options).then((res: Response) => res.json())
 
 export default function useAssetTableData(
-  shouldRefetch = false,
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>> = () => null
 ) {
   const [rows, setRows] = useState<ITableRow[]>([])
   const [columns, setColumns] = useState<ITableColumn[]>([])
   const { authUser } = useAuth()
 
-  console.log('ENVIRONMENT: ', process.env)
+  const { data, isLoading, mutate } = useSWR(
+    `/user/recommendation/${authUser.uid}`,
+    fetcher
+  )
+
+  useEffect(() => setIsLoading(isLoading), [isLoading])
 
   useEffect(() => {
-    const getUserAssets = async () => {
+    if (data) {
       setIsLoading(true)
-      const { items } = await axios
-        .get(
-          process.env.NEXT_PUBLIC_SHARE_API +
-            `/user/recommendation/${authUser.uid}`
-        )
-        .then((res) => res.data)
+
+      const { items } = data
 
       setRows([
         ...items.stocks.tableData,
@@ -32,17 +38,13 @@ export default function useAssetTableData(
       ])
 
       setColumns(columnsNames)
+      setIsLoading(false)
     }
-    getUserAssets()
-      .catch((err) => {
-        console.error(
-          `There was an error getting the user Assets: ${err.message} `
-        )
-      })
-      .finally(() => setIsLoading(false))
-  }, [shouldRefetch])
+  }, [data])
+
   return {
     rows,
-    columns
+    columns,
+    mutate
   }
 }

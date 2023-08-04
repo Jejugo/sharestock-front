@@ -2,8 +2,6 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
-    font-family: 'Metropolis Light';
-    src: url('./fonts/metropolis.light.otf') format('opentype');
     font-weight: 300;
     font-style: normal;
     font-display: swap;

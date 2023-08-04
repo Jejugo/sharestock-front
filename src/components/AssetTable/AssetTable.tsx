@@ -24,6 +24,8 @@ import { useAuth } from 'context/AuthUserContext'
 import Loading from 'components/Loading/Loading'
 import Flex from 'components/container/Flex/Flex'
 
+const domain = process.env.NEXT_PUBLIC_SHARE_API
+
 export const AssetTable = React.memo(() => {
   const { authUser } = useAuth()
   const menuContentRef = React.useRef<HTMLDivElement | null>(null)
@@ -31,8 +33,7 @@ export const AssetTable = React.memo(() => {
   const [rowsPerPage, setRowsPerPage] = React.useState(50)
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null) // Set this to the row's unique identifier
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [shouldRefetch, setShouldRefetch] = React.useState<boolean>(false)
-  const { rows, columns } = useAssetTableData(shouldRefetch, setIsLoading)
+  const { rows, columns, mutate } = useAssetTableData(setIsLoading)
 
   useOutsideClick(menuContentRef, () => {
     setSelectedRow(null) // close the menu when a click outside is detected
@@ -67,7 +68,6 @@ export const AssetTable = React.memo(() => {
         const data = await axios.delete(
           `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/${row.symbol}`
         )
-        console.log('data: ', data)
       }
     } catch (err) {
       console.log(err)
@@ -127,7 +127,7 @@ export const AssetTable = React.memo(() => {
         method: 'POST'
       }
     )
-    setShouldRefetch(true)
+    mutate()
   }
 
   return (
