@@ -20,11 +20,9 @@ import Text from 'components/Text/Text'
 import * as S from './AssetTable.styles'
 import useOutsideClick from './hooks/useOutsideClick'
 import axios from 'axios'
-import config from 'configs'
 import { useAuth } from 'context/AuthUserContext'
 import Loading from 'components/Loading/Loading'
 import Flex from 'components/container/Flex/Flex'
-const { SHARE_API } = config
 
 export const AssetTable = React.memo(() => {
   const { authUser } = useAuth()
@@ -67,7 +65,7 @@ export const AssetTable = React.memo(() => {
         e.preventDefault()
 
         const data = await axios.delete(
-          `${config.SHARE_API}/bonds/${row.symbol}`
+          `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/${row.symbol}`
         )
         console.log('data: ', data)
       }
@@ -123,7 +121,12 @@ export const AssetTable = React.memo(() => {
   }
 
   const onSync = async () => {
-    await fetch(`${SHARE_API}/sync/user/${authUser.uid}`, { method: 'POST' })
+    await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/sync/user/${authUser.uid}`,
+      {
+        method: 'POST'
+      }
+    )
     setShouldRefetch(true)
   }
 

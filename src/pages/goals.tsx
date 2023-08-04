@@ -1,9 +1,7 @@
 import React from 'react'
 import Template from '../layout/Template/Template'
-import config from '../configs'
 import InvestmentPercentages from 'features/goals/InvestmentPercentages/InvestmentPercentages'
 
-const { SHARE_API } = config
 interface IGoals {
   stockSectors: string[]
   reitSectors: string[]
@@ -30,7 +28,9 @@ export default function Goals({
 }
 export async function getServerSideProps() {
   try {
-    const data = await fetch(`${SHARE_API}/assets/all/sectors`)
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/assets/all/sectors`
+    )
     const {
       items: { stocks, reits, bonds, international }
     } = (await data.json()) as {

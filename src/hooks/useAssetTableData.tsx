@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react'
 import { columnsNames } from 'const/assetsTable'
 import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
-import config from '../configs'
 import axios from 'axios'
 import { useAuth } from 'context/AuthUserContext'
-
-const { SHARE_API } = config
 
 export default function useAssetTableData(
   shouldRefetch = false,
@@ -15,11 +12,16 @@ export default function useAssetTableData(
   const [columns, setColumns] = useState<ITableColumn[]>([])
   const { authUser } = useAuth()
 
+  console.log('ENVIRONMENT: ', process.env)
+
   useEffect(() => {
     const getUserAssets = async () => {
       setIsLoading(true)
       const { items } = await axios
-        .get(SHARE_API + `/user/recommendation/${authUser.uid}`)
+        .get(
+          process.env.NEXT_PUBLIC_SHARE_API +
+            `/user/recommendation/${authUser.uid}`
+        )
         .then((res) => res.data)
 
       setRows([

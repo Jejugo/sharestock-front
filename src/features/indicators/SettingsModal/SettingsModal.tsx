@@ -5,9 +5,6 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from 'context/AuthUserContext'
 
 import * as S from './styles'
-import config from 'configs'
-
-const { SHARE_API } = config
 
 const style = {
   position: 'absolute',
@@ -40,10 +37,13 @@ export function SettingsModal({
   const formData = useForm()
   const { authUser } = useAuth()
   const onSubmit = async (data: any) => {
-    await fetch(`${SHARE_API}/user/stocks/fundaments/${authUser.uid}`, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
+    await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/user/stocks/fundaments/${authUser.uid}`,
+      {
+        method: 'POST',
+        body: JSON.stringify(data)
+      }
+    )
   }
 
   return (

@@ -11,7 +11,7 @@ import WishListProvider from 'context/WishList'
 import { tableColumnsReits } from 'features/indicators/constants'
 import styled from 'styled-components'
 
-const { SHARE_API, STATUS_INVEST_HOST } = config
+const { STATUS_INVEST_HOST } = config
 
 interface IndicatorsProps {
   reits: IReitItem[]
@@ -61,8 +61,10 @@ const Indicators = ({ reits, goodReits }: IndicatorsProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const shares = await fetch(`${SHARE_API}/reits`)
-  const goodReits = await fetch(`${SHARE_API}/reits?optimized=true`)
+  const shares = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`)
+  const goodReits = await fetch(
+    `${process.env.NEXT_PUBLIC_SHARE_API}/reits?optimized=true`
+  )
   const { items: reitItems } = (await shares.json()) as IStockItemResponse
   const { items: goodReitItems } =
     (await goodReits.json()) as IStockItemResponse

@@ -7,12 +7,9 @@ import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
 import CachedIcon from '@material-ui/icons/Cached'
 import axios from 'axios'
-import config from 'configs'
 import * as S from './styles'
 
 import Loading from 'components/Loading/Loading'
-
-const { SHARE_API } = config
 
 interface TableProps {
   assets: IStockItem[] | IReitItem[]
@@ -80,7 +77,7 @@ const TableToggle = ({
     e.preventDefault()
     setLoading(true)
     try {
-      await axios.get(`${SHARE_API}/shares/sync`)
+      await axios.get(`${process.env.NEXT_PUBLIC_SHARE_API}/shares/sync`)
       setLoading(false)
     } catch (err) {
       console.error('error: ', err)

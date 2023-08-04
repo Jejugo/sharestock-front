@@ -66,6 +66,7 @@ export default function useMyAssetsForm({
     }
 
     alert('Data saved successfully')
+    methods.reset()
   }
 
   useEffect(() => {

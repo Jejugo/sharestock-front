@@ -1,14 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 
 import assetTypes from 'const/AssetTypes'
 import MyAssetsForm from 'features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
-import config from '../../../configs'
 import Template from 'layout/Template/Template'
 import Tabs from 'components/Tabs/Tabs'
 import Router from 'next/router'
 import InvestContextProvider from 'context/InvestContext'
-
-const { SHARE_API } = config
 
 interface IAddAssets {
   dropdownInternational: IDropdownList
@@ -40,7 +37,9 @@ export default function InternationInvest({
 
 export async function getServerSideProps() {
   try {
-    const internationalData = await fetch(`${SHARE_API}/international/sectors`)
+    const internationalData = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/international/sectors`
+    )
     const internationalList = await internationalData.json()
 
     const bondItems = internationalList.items

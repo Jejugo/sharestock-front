@@ -2,13 +2,10 @@ import React from 'react'
 
 import assetTypes from 'const/AssetTypes'
 import MyAssetsForm from 'features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
-import config from '../../../configs'
 import Template from 'layout/Template/Template'
 import Tabs from 'components/Tabs/Tabs'
 import Router from 'next/router'
 import InvestContextProvider from 'context/InvestContext'
-
-const { SHARE_API } = config
 
 interface IAddAssets {
   dropdownBonds: IDropdownList
@@ -35,7 +32,9 @@ export default function StockInvest({ dropdownBonds }: IAddAssets) {
 
 export async function getServerSideProps() {
   try {
-    const bondsData = await fetch(`${SHARE_API}/bonds/sectors`)
+    const bondsData = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/sectors`
+    )
     const bondsList = await bondsData.json()
 
     const bondItems = bondsList.items

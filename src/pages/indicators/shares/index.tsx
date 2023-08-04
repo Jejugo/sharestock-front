@@ -11,7 +11,7 @@ import WishListProvider from 'context/WishList'
 import { tableColumnsStocks } from 'features/indicators/constants'
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary'
 
-const { SHARE_API, STATUS_INVEST_HOST } = config
+const { STATUS_INVEST_HOST } = config
 
 interface IndicatorsProps {
   shares: IStockItem[]
@@ -57,8 +57,10 @@ const Indicators = ({ shares, goodShares }: IndicatorsProps) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    const shares = await fetch(`${SHARE_API}/shares`)
-    const goodShares = await fetch(`${SHARE_API}/shares?optimized=true`)
+    const shares = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/shares`)
+    const goodShares = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/shares?optimized=true`
+    )
     const { items: sharesItems } = (await shares.json()) as IStockItemResponse
     const { items: goodSharesItems } =
       (await goodShares.json()) as IStockItemResponse

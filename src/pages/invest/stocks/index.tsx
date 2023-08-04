@@ -5,15 +5,12 @@ import { useAuth } from 'context/AuthUserContext'
 import assetTypes from 'const/AssetTypes'
 import MyAssetsForm from 'features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
 import axios from 'axios'
-import config from '../../../configs'
 import Template from 'layout/Template/Template'
 import { convertArrayToObject } from 'builders/arrays'
 import { normalizeArrayToDropdown } from '../../../builders/arrays'
 import Tabs from 'components/Tabs/Tabs'
 import Router from 'next/router'
 import InvestContextProvider from 'context/InvestContext'
-
-const { SHARE_API } = config
 
 interface IArrayToObject<T> {
   [key: string]: T
@@ -34,10 +31,10 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
     const getAssetsFromFirebase = async () => {
       if (authUser) {
         const data = await axios
-          .get(SHARE_API + `/user/strategy/${authUser.uid}`)
-          .then((res) => res.data.items[0])
-
-        console.log('setting strategy', data)
+          .get(
+            process.env.NEXT_PUBLIC_SHARE_API + `/user/strategy/${authUser.uid}`
+          )
+          .then((res) => res.data.items)
 
         setAssetStrategyData(data)
       }
@@ -69,7 +66,9 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
 
 export async function getServerSideProps() {
   try {
-    const sharesData = await fetch(`${SHARE_API}/shares`)
+    const sharesData = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/shares`
+    )
 
     const stockList = await sharesData.json()
 
