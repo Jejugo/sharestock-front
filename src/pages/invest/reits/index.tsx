@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useAuth } from '../../../context/AuthUserContext'
 
@@ -19,10 +19,6 @@ interface IAddAssets {
   dropdownList: IDropdownList
   reitsMap: IArrayToObject<IReitItem>
 }
-interface ISelectedAsset {
-  value: string
-  label: string
-}
 
 export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   const { authUser } = useAuth() as IAuthUserContext
@@ -36,9 +32,11 @@ export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
     const getAssetsFromFirebase = async () => {
       if (authUser) {
         const data = await axios
-          .get(
-            process.env.NEXT_PUBLIC_SHARE_API + `/user/strategy/${authUser.uid}`
-          )
+          .get(process.env.NEXT_PUBLIC_SHARE_API + '/user/strategy', {
+            headers: {
+              Authorization: `Bearer ${authUser.accessToken}`
+            }
+          })
           .then((res) => res.data.items)
 
         console.log('setting strategy reits', data)
@@ -70,9 +68,20 @@ export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const acessToken = context.req.cookies.accessToken
+
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${acessToken}`
+    }
+  }
+
   try {
-    const reitsData = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`)
+    const reitsData = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/reits`,
+      { ...authorization }
+    )
     const reitsList = await reitsData.json()
 
     const reitItems = reitsList.items

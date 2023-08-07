@@ -10,6 +10,7 @@ import axios from 'axios'
 import * as S from './styles'
 
 import Loading from 'components/Loading/Loading'
+import { useAuth } from 'context/AuthUserContext'
 
 interface TableProps {
   assets: IStockItem[] | IReitItem[]
@@ -28,6 +29,7 @@ const TableToggle = ({
   goToFundamentus,
   setIsGoodAsset
 }: TableProps) => {
+  const { authUser } = useAuth()
   const [listMode, setListMode] = useState<string>('table')
   const [loading, setLoading] = useState<boolean>(false)
   const [filteredData, setFilteredData] = useState<IStockItem[] | IReitItem[]>(
@@ -77,7 +79,11 @@ const TableToggle = ({
     e.preventDefault()
     setLoading(true)
     try {
-      await axios.get(`${process.env.NEXT_PUBLIC_SHARE_API}/shares/sync`)
+      await axios.get(`${process.env.NEXT_PUBLIC_SHARE_API}/shares/sync`, {
+        headers: {
+          Authorization: `Bearer ${authUser.accessToken}`
+        }
+      })
       setLoading(false)
     } catch (err) {
       console.error('error: ', err)

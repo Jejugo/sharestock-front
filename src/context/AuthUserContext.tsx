@@ -21,6 +21,19 @@ function Unauthenticated() {
     }, 1000)
   }, [authUser, loading])
 
+  useEffect(() => {
+    const storeAccessTokenCookie = async () => {
+      if (authUser) {
+        const accessToken = await authUser.getIdToken()
+
+        console.log('Token will expire in: 3600 seconds')
+        document.cookie = `accessToken=${accessToken};max-age=3600;path=/`
+      }
+    }
+
+    storeAccessTokenCookie()
+  }, [authUser])
+
   return <div>{!authUser && !loading && 'Unauthenticated... Redirecting'}</div>
 }
 

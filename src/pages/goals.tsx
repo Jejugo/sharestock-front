@@ -26,10 +26,19 @@ export default function Goals({
     </Template>
   )
 }
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const acessToken = context.req.cookies.accessToken
+
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${acessToken}`
+    }
+  }
+
   try {
     const data = await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/assets/all/sectors`
+      `${process.env.NEXT_PUBLIC_SHARE_API}/assets/all/sectors`,
+      { ...authorization }
     )
     const {
       items: { stocks, reits, bonds, international }
@@ -43,7 +52,6 @@ export async function getServerSideProps() {
     }
 
     // ADD REITS
-
     return {
       props: {
         stockSectors: stocks,

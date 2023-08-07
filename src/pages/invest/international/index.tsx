@@ -35,10 +35,19 @@ export default function InternationInvest({
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const acessToken = context.req.cookies.accessToken
+
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${acessToken}`
+    }
+  }
+
   try {
     const internationalData = await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/international/sectors`
+      `${process.env.NEXT_PUBLIC_SHARE_API}/international/sectors`,
+      { ...authorization }
     )
     const internationalList = await internationalData.json()
 

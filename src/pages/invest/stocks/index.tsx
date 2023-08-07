@@ -31,9 +31,11 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
     const getAssetsFromFirebase = async () => {
       if (authUser) {
         const data = await axios
-          .get(
-            process.env.NEXT_PUBLIC_SHARE_API + `/user/strategy/${authUser.uid}`
-          )
+          .get(`${process.env.NEXT_PUBLIC_SHARE_API}/user/strategy`, {
+            headers: {
+              Authorization: `Bearer ${authUser.accessToken}`
+            }
+          })
           .then((res) => res.data.items)
 
         setAssetStrategyData(data)
@@ -64,10 +66,19 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const acessToken = context.req.cookies.accessToken
+
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${acessToken}`
+    }
+  }
+
   try {
     const sharesData = await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/shares`
+      `${process.env.NEXT_PUBLIC_SHARE_API}/shares`,
+      { ...authorization }
     )
 
     const stockList = await sharesData.json()

@@ -14,7 +14,7 @@ export default function useBarChartData() {
   const { overview } = useGoalsdata()
 
   useEffect(() => {
-    if (rows.length && overview.length) {
+    if (rows?.length && overview?.length) {
       const stockRowsTotalValue = Number(
         rows
           .filter((item) => item.type === 'stocks')

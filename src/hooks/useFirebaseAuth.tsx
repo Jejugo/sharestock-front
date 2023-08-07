@@ -1,39 +1,32 @@
 import { useState, useEffect } from 'react'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
-
-interface User {
-  uid: string
-  email: string
-}
-
-type AuthUser = User
-
-const formatAuthUser = (user: AuthUser): User => ({
-  uid: user.uid,
-  email: user.email
-})
+import {
+  NextOrObserver,
+  User,
+  getAuth,
+  onAuthStateChanged
+} from 'firebase/auth'
 
 export default function useFirebaseAuth() {
   const auth = getAuth()
   const [authUser, setAuthUser] = useState<User | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  const authStateChanged = async (authState: any) => {
+  const authStateChanged = async (
+    authState: NextOrObserver<User>
+  ): Promise<void> => {
     if (!authState) {
       setAuthUser(null)
       setLoading(false)
       return
     }
 
-    setLoading(true)
-    const formattedUser = formatAuthUser(authState)
-    setAuthUser(formattedUser)
+    setAuthUser(authState as any)
     setLoading(false)
   }
 
   // listen for Firebase state change
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, authStateChanged)
+    const unsubscribe = onAuthStateChanged(auth, authStateChanged as any)
     return () => unsubscribe()
   }, [])
 

@@ -1,5 +1,4 @@
 import { useFormContext } from 'react-hook-form'
-import { useAuth } from 'context/AuthUserContext'
 import { TabName } from 'features/strategy/StrategyForm/initialFormValues'
 
 const TRIM_ZEROES_STRING = /^0+(\d)|(\d)0+$/gm
@@ -9,7 +8,6 @@ export default function useStrategyComponent({
 }: {
   name: Omit<TabName, 'overview'>
 }) {
-  const { authUser } = useAuth() as IAuthUserContext
   const { setValue, getValues } = useFormContext()
 
   const value = getValues()[name.toString()] || {}

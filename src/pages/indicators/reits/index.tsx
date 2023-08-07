@@ -60,10 +60,21 @@ const Indicators = ({ reits, goodReits }: IndicatorsProps) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const shares = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`)
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  const acessToken = context.req.cookies.accessToken
+
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${acessToken}`
+    }
+  }
+
+  const shares = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`, {
+    ...authorization
+  })
   const goodReits = await fetch(
-    `${process.env.NEXT_PUBLIC_SHARE_API}/reits?optimized=true`
+    `${process.env.NEXT_PUBLIC_SHARE_API}/reits?optimized=true`,
+    { ...authorization }
   )
   const { items: reitItems } = (await shares.json()) as IStockItemResponse
   const { items: goodReitItems } =

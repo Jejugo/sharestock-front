@@ -30,10 +30,19 @@ export default function StockInvest({ dropdownBonds }: IAddAssets) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: any) {
+  const acessToken = context.req.cookies.accessToken
+
+  const authorization = {
+    headers: {
+      Authorization: `Bearer ${acessToken}`
+    }
+  }
+
   try {
     const bondsData = await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/sectors`
+      `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/sectors`,
+      { ...authorization }
     )
     const bondsList = await bondsData.json()
 

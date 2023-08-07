@@ -1,14 +1,25 @@
 import { useEffect, useState } from 'react'
 import { columnsNames } from 'const/assetsTable'
 import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
-import axios from 'axios'
 import { useAuth } from 'context/AuthUserContext'
 import useSWR from 'swr'
 
 const domain = process.env.NEXT_PUBLIC_SHARE_API
 
-const fetcher = (url: string, options: RequestInit) =>
-  fetch(`${domain}${url}`, options).then((res: Response) => res.json())
+interface FetcherArgs {
+  url: string
+  token: string
+}
+
+const fetcher = ({ url, token }: FetcherArgs) => {
+  return fetch(`${domain}${url}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  }).then((res: Response) => res.json())
+}
 
 export default function useAssetTableData(
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>> = () => null
@@ -18,7 +29,10 @@ export default function useAssetTableData(
   const { authUser } = useAuth()
 
   const { data, isLoading, mutate } = useSWR(
-    `/user/recommendation/${authUser.uid}`,
+    {
+      url: '/user/recommendation',
+      token: authUser.accessToken
+    },
     fetcher
   )
 

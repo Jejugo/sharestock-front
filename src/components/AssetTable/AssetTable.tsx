@@ -24,8 +24,6 @@ import { useAuth } from 'context/AuthUserContext'
 import Loading from 'components/Loading/Loading'
 import Flex from 'components/container/Flex/Flex'
 
-const domain = process.env.NEXT_PUBLIC_SHARE_API
-
 export const AssetTable = React.memo(() => {
   const { authUser } = useAuth()
   const menuContentRef = React.useRef<HTMLDivElement | null>(null)
@@ -66,7 +64,12 @@ export const AssetTable = React.memo(() => {
         e.preventDefault()
 
         const data = await axios.delete(
-          `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/${row.symbol}`
+          `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/${row.symbol}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authUser.accessToken}`
+            }
+          }
         )
       }
     } catch (err) {
@@ -124,7 +127,10 @@ export const AssetTable = React.memo(() => {
     await fetch(
       `${process.env.NEXT_PUBLIC_SHARE_API}/sync/user/${authUser.uid}`,
       {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          Authorization: authUser.accessToken
+        }
       }
     )
     mutate()
