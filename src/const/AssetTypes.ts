@@ -17,38 +17,18 @@ export default {
   },
   international: {
     name: 'international',
-    title: 'Ativos Internacionais',
-    dropdownItems: [
-      'Medical ETF',
-      'Games ETF',
-      'Dividends ETF',
-      'S&P ETF',
-      'Treasury',
-      'Reits',
-      'Stocks'
-    ]
+    title: 'Ativos Internacionais'
   },
   bonds: {
     name: 'bonds',
-    title: 'Renda Fixa',
-    dropdownItems: [
-      'Selic Futuro',
-      'Selic Presente',
-      'Tesouro Prefixado',
-      'CDB',
-      'LCI',
-      'LCA',
-      'CRI'
-    ]
+    title: 'Renda Fixa'
+  },
+  crypto: {
+    name: 'crypto',
+    title: 'Crypto'
   },
   overview: {
     name: 'overview',
-    title: 'Porcentagens Gerais',
-    dropdownItems: [
-      'Ações',
-      'Fundos Imobiliarios',
-      'Renda Fixa',
-      'Internacional'
-    ]
+    title: 'Porcentagens Gerais'
   }
 } as IAssetTypes

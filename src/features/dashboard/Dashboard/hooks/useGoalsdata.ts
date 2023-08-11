@@ -2,18 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Firestore from 'firebase/Firestore'
 import { useAuth } from 'context/AuthUserContext'
 import { sortArrayAlphabetically } from 'builders/arrays'
-import { IGoal } from '../Dashboard'
-
-interface IUseGoalsData {
-  bonds: IGoal[]
-  international: IGoal[]
-  overview: IGoal[]
-  reits: IGoal[]
-  stocks: IGoal[]
-}
 
 export default function useGoalsdata() {
-  const [goals, setGoals] = useState<IUseGoalsData>({} as IUseGoalsData)
+  const [goals, setGoals] = useState<any>({} as any)
   const { authUser } = useAuth()
 
   useEffect(() => {
@@ -22,19 +13,24 @@ export default function useGoalsdata() {
         collection: 'goals',
         id: authUser.uid
       })
-      setGoals(data)
+
+      const formattedGoals = Object.keys(data).reduce((acc: any, curr: any) => {
+        return {
+          ...acc,
+          ...(data[curr].length
+            ? {
+                [curr]:
+                  data[curr] && sortArrayAlphabetically(data[curr], 'name')
+              }
+            : {})
+        }
+      }, {})
+
+      setGoals(formattedGoals)
     }
 
     getFirestoreData().catch((err) => console.error(err))
   }, [])
 
-  return {
-    stocks: goals.stocks && sortArrayAlphabetically(goals.stocks, 'name'),
-    reits: goals.reits && sortArrayAlphabetically(goals.reits, 'name'),
-    international:
-      goals.international &&
-      sortArrayAlphabetically(goals.international, 'name'),
-    bonds: goals.bonds && sortArrayAlphabetically(goals.bonds, 'name'),
-    overview: goals.overview && sortArrayAlphabetically(goals.overview, 'name')
-  }
+  return goals
 }

@@ -5,6 +5,9 @@ import { Tooltip } from 'recharts'
 import * as S from '../styles'
 import { useFormContext } from 'react-hook-form'
 import PieChartComponent from 'components/charts/PieChart/PieChart'
+import CustomSelect from 'components/CustomSelect/CustomSelect'
+import { v4 as uuidv4 } from 'uuid'
+import { Sector, Option } from '../interfaces'
 
 interface IAssetType {
   value: string
@@ -15,15 +18,19 @@ interface IAssetType {
 interface IAssetTypeParams {
   title: string
   name: string
-  dropdownItems?: string[]
+  dropdownItems?: Sector[]
   colors: string[]
+  onAddNewDropdownItem: (item: string, name: string) => Promise<void>
+  onRemoveDropdownItem: (itemId: string, name: string) => Promise<void>
 }
 
 export default function AssetType({
   title,
   name,
-  dropdownItems = [],
-  colors
+  dropdownItems = [] as Sector[],
+  colors,
+  onAddNewDropdownItem,
+  onRemoveDropdownItem
 }: IAssetTypeParams) {
   const { setValue, getValues } = useFormContext()
 
@@ -31,27 +38,37 @@ export default function AssetType({
 
   const setAssetType = (
     values: IAssetType[],
-    assetType: string,
+    assetOption: Option,
     index: number
   ) => {
-    const newValues = [...values, { name: assetType, value: '', id: index }]
-    setValue(
-      name,
-      newValues.sort((a, b) => (a.id > b.id ? 1 : -1))
-    )
+    const oldValues = [...values].filter((value: any) => value.index !== index)
+    const newValues = [
+      ...oldValues,
+      {
+        id: assetOption.id,
+        name: assetOption.name,
+        value: 0,
+        default: dropdownItems.find((item) => item.id === assetOption.id)
+          ?.default,
+        index
+      }
+    ]
+    setValue(name, newValues)
   }
 
-  const handleAssetType = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    index: number
-  ) => {
-    if (value.find((stock: IAssetType) => stock.name === e.target.value)) {
+  const handleAssetType = (option: Option, index: number) => {
+    if (
+      value.find(
+        (stock: IAssetType) =>
+          stock.name.toLowerCase() === option.name.toLowerCase()
+      )
+    ) {
       alert('Voce ja possui esse ativo!')
       return
     }
     const newValues = value.filter((stock: IAssetType) => stock.id !== index)
 
-    setAssetType(newValues, e.target.value, index)
+    setAssetType(newValues, option, index)
   }
 
   const removeAssetItem = (id: number) => {
@@ -60,7 +77,10 @@ export default function AssetType({
   }
 
   const addEmptyItem = () => {
-    setValue(name, [...value, { name: '', value: '', id: value.length }])
+    setValue(name, [
+      ...value,
+      { id: uuidv4(), name: '', value: 0, index: value.length }
+    ])
   }
 
   const checkIfPercentagesSum100 = (arr: IAssetType[]) => {
@@ -100,7 +120,7 @@ export default function AssetType({
         </S.ChartComponent>
         <S.Percentages>
           <S.PercentageList>
-            {checkIfPercentagesSum100(value) === true ? (
+            {checkIfPercentagesSum100(value) ? (
               <S.PercentagesFeedback color="green">
                 Os valores somam 100%!
               </S.PercentagesFeedback>
@@ -113,25 +133,27 @@ export default function AssetType({
               value.map((stock: IAssetType, index: number) => (
                 <S.PercentageListItem key={index}>
                   <S.PercentageHeader>
-                    <S.PercentageDropdown
-                      name="percentage"
-                      onChange={(e) => handleAssetType(e, index)}
+                    <CustomSelect
                       value={stock.name}
-                    >
-                      <option disabled selected value="">
-                        Escolha
-                      </option>
-                      {dropdownItems.map(
-                        (dropdownItem: string, index: number) => (
-                          <option
-                            key={index}
-                            value={dropdownItem.toLowerCase()}
-                          >
-                            {dropdownItem}
-                          </option>
-                        )
-                      )}
-                    </S.PercentageDropdown>
+                      placeholder="Adicione ativo"
+                      onSelectItem={(option: Option) => {
+                        handleAssetType(option, index)
+                      }}
+                      onAddItem={(item) => onAddNewDropdownItem(item, name)}
+                      onRemoveItem={(itemId) =>
+                        onRemoveDropdownItem(itemId, name)
+                      }
+                      options={dropdownItems.map((item: Sector) => ({
+                        id: item.id,
+                        name: item.name,
+                        showDeleteIcon: !item.default
+                      }))}
+                      allowAddItem={
+                        name === 'international' ||
+                        name === 'bonds' ||
+                        name === 'crypto'
+                      }
+                    ></CustomSelect>
 
                     <S.PercentageItemRemove
                       onClick={(e) => removeAssetItem(stock.id)}

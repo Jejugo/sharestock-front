@@ -1,37 +1,46 @@
 import React from 'react'
 import Template from '../layout/Template/Template'
 import InvestmentPercentages from 'features/goals/InvestmentPercentages/InvestmentPercentages'
+import { Sector } from 'features/goals/InvestmentPercentages/interfaces'
 
 interface IGoals {
-  stockSectors: string[]
-  reitSectors: string[]
-  bondsSectors: string[]
-  internationalSectors: string[]
+  stockSectors: Sector[]
+  reitSectors: Sector[]
+  bondsSectors: Sector[]
+  internationalSectors: Sector[]
+  cryptoSectors: Sector[]
+  overviewSectors: Sector[]
 }
 
 export default function Goals({
   stockSectors,
   reitSectors,
   bondsSectors,
-  internationalSectors
+  internationalSectors,
+  cryptoSectors,
+  overviewSectors
 }: IGoals) {
   return (
     <Template tabTitle="strategy">
       <InvestmentPercentages
-        stockSectors={stockSectors}
-        reitSectors={reitSectors}
-        bondsSectors={bondsSectors}
-        internationalSectors={internationalSectors}
+        {...{
+          stockSectors,
+          reitSectors,
+          bondsSectors,
+          internationalSectors,
+          cryptoSectors,
+          overviewSectors
+        }}
       ></InvestmentPercentages>
     </Template>
   )
 }
 export async function getServerSideProps(context: any) {
-  const acessToken = context.req.cookies.accessToken
+  const accessToken = context.req.cookies.accessToken
 
   const authorization = {
     headers: {
-      Authorization: `Bearer ${acessToken}`
+      Authorization: `Bearer ${accessToken}`
     }
   }
 
@@ -40,24 +49,28 @@ export async function getServerSideProps(context: any) {
       `${process.env.NEXT_PUBLIC_SHARE_API}/assets/all/sectors`,
       { ...authorization }
     )
+
     const {
-      items: { stocks, reits, bonds, international }
+      items: { stocks, reits, bonds, international, crypto, overview }
     } = (await data.json()) as {
       items: {
-        stocks: string[]
-        reits: string[]
-        bonds: string[]
-        international: string[]
+        stocks: Sector[]
+        reits: Sector[]
+        bonds: Sector[]
+        international: Sector[]
+        crypto: Sector[]
+        overview: Sector[]
       }
     }
 
-    // ADD REITS
     return {
       props: {
         stockSectors: stocks,
         reitSectors: reits,
         bondsSectors: bonds,
-        internationalSectors: international
+        internationalSectors: international,
+        cryptoSectors: crypto,
+        overviewSectors: overview
       }
     }
   } catch (err) {
