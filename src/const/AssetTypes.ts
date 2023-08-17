@@ -7,6 +7,10 @@ interface IAssetTypes {
 }
 
 export default {
+  overview: {
+    name: 'overview',
+    title: 'Porcentagens Gerais'
+  },
   stocks: {
     name: 'stocks',
     title: 'Ações'
@@ -26,9 +30,5 @@ export default {
   crypto: {
     name: 'crypto',
     title: 'Crypto'
-  },
-  overview: {
-    name: 'overview',
-    title: 'Porcentagens Gerais'
   }
 } as IAssetTypes

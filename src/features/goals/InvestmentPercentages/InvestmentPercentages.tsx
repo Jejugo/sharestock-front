@@ -219,7 +219,7 @@ export default function InvestmentPercentages({
           </S.PercentagesTitle>
           <AssetTypeTabContent
             tabsList={Object.keys(assetTypes).map((assetType) => assetType)}
-            defaultTab="stocks"
+            defaultTab="overview"
           >
             {(activeTab: string) => (
               <AssetType

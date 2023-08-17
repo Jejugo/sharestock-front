@@ -78,7 +78,7 @@ export default function DashboardComponent({
     setSliderMap
   })
 
-  const { currentChartData, goalsChartData } = useBarChartData()
+  const { currentChartData, goalsChartData } = useBarChartData(totalValue)
 
   useEffect(() => {
     setTotalValue(currentChartData.reduce((acc, curr) => acc + curr.value, 0))

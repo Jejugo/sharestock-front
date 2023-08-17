@@ -18,7 +18,7 @@ const calculateTotalByAssetType = (arr: ITableRow[]) =>
     return acc
   }, {})
 
-export default function useBarChartData() {
+export default function useBarChartData(totalValue: number) {
   const { rows } = useAssetTableData()
   const [currentChartData, setCurrentChartData] = useState<IBarData[]>([])
   const [goalsChartData, setGoalsChartData] = useState<IBarData[]>([])
@@ -28,10 +28,6 @@ export default function useBarChartData() {
     if (rows?.length && overview?.length) {
       const totalValues = calculateTotalByAssetType(rows)
 
-      const totalValue = Object.keys(totalValues).reduce(
-        (acc, curr) => acc + totalValues[curr],
-        0
-      )
       const chartData = Object.keys(totalValues).map((totalKey: string) => ({
         name: totalKey,
         value: totalValues[totalKey],
@@ -39,8 +35,6 @@ export default function useBarChartData() {
           ((totalValues[totalKey] / totalValue) * 10 ** 2).toFixed(2)
         )
       }))
-
-      console.log('overview: ', overview)
 
       setCurrentChartData(chartData)
       setGoalsChartData(
