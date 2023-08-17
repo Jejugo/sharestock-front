@@ -3,20 +3,28 @@ import * as S from './styles'
 
 interface IButton {
   text: string
-  size: S.ButtonSizes
+  width: S.ButtonSizes | number
+  height?: number
   disabled?: boolean
   type?: S.ButtonTypes
-  onClick?: () => Promise<any>
+  onClick?: () => Promise<any> | VoidFunction
 }
 export default function Button({
   text,
-  size,
+  width,
+  height,
   disabled = false,
   type = 'button',
   onClick
 }: IButton) {
   return (
-    <S.Button type={type} onClick={onClick} size={size} disabled={disabled}>
+    <S.Button
+      type={type}
+      onClick={onClick}
+      width={width}
+      height={height}
+      disabled={disabled}
+    >
       {text}
     </S.Button>
   )

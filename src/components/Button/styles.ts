@@ -1,12 +1,13 @@
 import styled from 'styled-components'
-import { fonts, spacings } from 'styles/constants'
+import { fonts } from 'styles/constants'
 
 export type ButtonTypes = 'button' | 'submit' | 'reset'
 export type ButtonSizes = 'small' | 'medium' | 'large'
 
 interface Size {
-  size: ButtonSizes
+  width: ButtonSizes | number
   type: ButtonTypes
+  height?: number
 }
 
 const sizeValues = {
@@ -19,14 +20,14 @@ export const Button = styled.button<Size>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${(props) => sizeValues[props.size]};
-  padding: 20px 0px;
+  width: ${(props) =>
+    sizeValues[props.width as ButtonSizes] || `${props.width}px`};
+  height: ${(props) => `${props.height}px` || 'auto'};
   background-color: #ffcd00;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   font-size: ${fonts.medium}px;
-  margin: ${spacings.medium}px 0;
 
   &:hover {
     background-color: grey;

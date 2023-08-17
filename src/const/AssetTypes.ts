@@ -7,6 +7,10 @@ interface IAssetTypes {
 }
 
 export default {
+  overview: {
+    name: 'overview',
+    title: 'Porcentagens Gerais'
+  },
   stocks: {
     name: 'stocks',
     title: 'Ações'
@@ -17,38 +21,14 @@ export default {
   },
   international: {
     name: 'international',
-    title: 'Ativos Internacionais',
-    dropdownItems: [
-      'Medical ETF',
-      'Games ETF',
-      'Dividends ETF',
-      'S&P ETF',
-      'Treasury',
-      'Reits',
-      'Stocks'
-    ]
+    title: 'Ativos Internacionais'
   },
   bonds: {
     name: 'bonds',
-    title: 'Renda Fixa',
-    dropdownItems: [
-      'Selic Futuro',
-      'Selic Presente',
-      'Tesouro Prefixado',
-      'CDB',
-      'LCI',
-      'LCA',
-      'CRI'
-    ]
+    title: 'Renda Fixa'
   },
-  overview: {
-    name: 'overview',
-    title: 'Porcentagens Gerais',
-    dropdownItems: [
-      'Ações',
-      'Fundos Imobiliarios',
-      'Renda Fixa',
-      'Internacional'
-    ]
+  crypto: {
+    name: 'crypto',
+    title: 'Crypto'
   }
 } as IAssetTypes

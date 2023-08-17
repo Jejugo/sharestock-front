@@ -2,12 +2,23 @@ import { IBarData } from 'components/charts/BarChart/interfaces'
 import React, { useState, useEffect } from 'react'
 import useAssetTableData from 'hooks/useAssetTableData'
 import useGoalsdata from '../hooks/useGoalsdata'
+import { ITableRow } from 'components/AssetTable/interfaces'
 
-interface IArrayToObject<T> {
-  [key: string]: T
-}
+const calculateTotalByAssetType = (arr: ITableRow[]) =>
+  arr.reduce((acc: any, item: ITableRow) => {
+    const assetType = item.type
+    const value = item.currentValue
 
-export default function useBarChartData() {
+    if (acc[assetType]) {
+      acc[assetType] = Number((acc[assetType] + value).toFixed(2))
+    } else {
+      acc[assetType] = Number(value.toFixed(2))
+    }
+
+    return acc
+  }, {})
+
+export default function useBarChartData(totalValue: number) {
   const { rows } = useAssetTableData()
   const [currentChartData, setCurrentChartData] = useState<IBarData[]>([])
   const [goalsChartData, setGoalsChartData] = useState<IBarData[]>([])
@@ -15,97 +26,23 @@ export default function useBarChartData() {
 
   useEffect(() => {
     if (rows?.length && overview?.length) {
-      const stockRowsTotalValue = Number(
-        rows
-          .filter((item) => item.type === 'stocks')
-          .reduce((acc, curr) => curr.currentValue + acc, 0)
-          .toFixed(2)
-      )
-      const reitRowsTotalValue = Number(
-        rows
-          .filter((item) => item.type === 'reits')
-          .reduce((acc, curr) => curr.currentValue + acc, 0)
-          .toFixed(2)
-      )
-      const bondRowsTotalValue = Number(
-        rows
-          .filter((item) => item.type === 'bonds')
-          .reduce((acc, curr) => curr.currentValue + acc, 0)
-          .toFixed(2)
-      )
-      const internationalRowsTotalValue = Number(
-        rows
-          .filter((item) => item.type === 'international')
-          .reduce((acc, curr) => curr.currentValue + acc, 0)
-          .toFixed(2)
-      )
+      const totalValues = calculateTotalByAssetType(rows)
 
-      const totalValue =
-        stockRowsTotalValue +
-        reitRowsTotalValue +
-        bondRowsTotalValue +
-        internationalRowsTotalValue
+      const chartData = Object.keys(totalValues).map((totalKey: string) => ({
+        name: totalKey,
+        value: totalValues[totalKey],
+        percentage: parseFloat(
+          ((totalValues[totalKey] / totalValue) * 10 ** 2).toFixed(2)
+        )
+      }))
 
-      setCurrentChartData([
-        {
-          name: 'Shares',
-          value: stockRowsTotalValue,
-          percentage: parseFloat(
-            ((stockRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
-          )
-        },
-        {
-          name: 'Reits',
-          value: reitRowsTotalValue,
-          percentage: parseFloat(
-            ((reitRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
-          )
-        },
-        {
-          name: 'Bonds',
-          value: bondRowsTotalValue,
-          percentage: parseFloat(
-            ((bondRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
-          )
-        },
-        {
-          name: 'International Assets',
-          value: internationalRowsTotalValue,
-          percentage: parseFloat(
-            ((internationalRowsTotalValue / totalValue) * 10 ** 2).toFixed(2)
-          )
-        }
-      ])
-      setGoalsChartData([
-        {
-          name: 'Shares',
-          value: overview.find((item) => item.name === 'ações')?.value || 0,
-          percentage: overview.find((item) => item.name === 'ações')?.value || 0
-        },
-        {
-          name: 'Reits',
-          value:
-            overview.find((item) => item.name === 'fundos imobiliarios')
-              ?.value || 0,
-          percentage:
-            overview.find((item) => item.name === 'fundos imobiliarios')
-              ?.value || 0
-        },
-        {
-          name: 'Bonds',
-          value:
-            overview.find((item) => item.name === 'renda fixa')?.value || 0,
-          percentage:
-            overview.find((item) => item.name === 'renda fixa')?.value || 0
-        },
-        {
-          name: 'International Assets',
-          value:
-            overview.find((item) => item.name === 'internacional')?.value || 0,
-          percentage:
-            overview.find((item) => item.name === 'internacional')?.value || 0
-        }
-      ])
+      setCurrentChartData(chartData)
+      setGoalsChartData(
+        overview.map((overviewItem: { name: string; value: number }) => ({
+          name: overviewItem.name,
+          value: overviewItem.value || 0
+        }))
+      )
     }
   }, [rows, overview])
 
