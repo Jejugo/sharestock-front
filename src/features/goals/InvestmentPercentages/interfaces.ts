@@ -11,10 +11,10 @@ export interface Option {
 }
 
 export interface GoalsForm {
-  stocks: { name: string; value: string; id: number; default: boolean }[]
-  bonds: { name: string; value: string; id: number; default: boolean }[]
-  reits: { name: string; value: string; id: number; default: boolean }[]
-  international: { name: string; value: string; id: number; default: boolean }[]
-  overview: { name: string; value: string; id: number; default: boolean }[]
-  crypto: { name: string; value: string; id: number; default: boolean }[]
+  stocks: { name: string; value: string; id: string; default: boolean }[]
+  bonds: { name: string; value: string; id: string; default: boolean }[]
+  reits: { name: string; value: string; id: string; default: boolean }[]
+  international: { name: string; value: string; id: string; default: boolean }[]
+  overview: { name: string; value: string; id: string; default: boolean }[]
+  crypto: { name: string; value: string; id: string; default: boolean }[]
 }

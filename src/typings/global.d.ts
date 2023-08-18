@@ -124,7 +124,13 @@ declare global {
     [key: string]: number
   }
 
-  type AssetTypes = 'stocks' | 'reits' | 'bonds' | 'international' | 'overview'
+  type AssetTypes =
+    | 'stocks'
+    | 'reits'
+    | 'bonds'
+    | 'international'
+    | 'overview'
+    | 'crypto'
 
   // FIRESTORE
 

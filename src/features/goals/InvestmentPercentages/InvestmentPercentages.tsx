@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useAuth } from 'context/AuthUserContext'
 
@@ -8,14 +8,9 @@ import AssetTypeTabContent from './AssetTypeTabContent/AssetTypeTabContent'
 import AssetType from './AssetType/AssetType'
 import assetTypes from 'const/AssetTypes'
 import { GoalsForm, Sector } from './interfaces'
-import { v4 as uuidv4 } from 'uuid'
 
-import {
-  deleteDropdownItem,
-  getFirestoreGoals,
-  setFirestoreGoalsData,
-  setNewDropdownItem
-} from './requests'
+import { getFirestoreGoals, setFirestoreGoalsData } from './requests'
+import { useSectors } from './hooks/useSectors'
 
 const COLORS = [
   '#0088FE',
@@ -49,30 +44,32 @@ export default function InvestmentPercentages({
   overviewSectors
 }: IInvestmentPercentages) {
   const { authUser } = useAuth() as IAuthUserContext
+
+  // Form values that will be saved to the Goals Firebase collection
   const defaultValues = {
-    stocks: [{ name: '', value: '', id: 0, default: false }],
-    bonds: [{ name: '', value: '', id: 0, default: false }],
-    reits: [{ name: '', value: '', id: 0, default: false }],
-    international: [{ name: '', value: '', id: 0, default: false }],
-    overview: [{ name: '', value: '', id: 0, default: false }],
-    crypto: [{ name: '', value: '', id: 0, default: false }]
+    stocks: [{ name: '', value: '', id: '0' }],
+    bonds: [{ name: '', value: '', id: '0' }],
+    reits: [{ name: '', value: '', id: '0' }],
+    international: [{ name: '', value: '', id: '0' }],
+    overview: [{ name: '', value: '', id: '0' }],
+    crypto: [{ name: '', value: '', id: '0' }]
   }
-
-  const [currentStockSectors, setCurrentStockSectors] = useState(stockSectors)
-  const [currentReitSectors, setCurrentReitSectors] = useState(reitSectors)
-  const [currentBondSectors, setCurrentBondSectors] = useState(bondsSectors)
-  const [currentInternationalSectors, setCurrentInternationalSectors] =
-    useState(internationalSectors)
-  const [currentCryptoSectors, setCurrentCryptoSectors] =
-    useState(cryptoSectors)
-  const [currentOverviewSectors, setCurrentOverviewSectors] =
-    useState(overviewSectors)
-
-  const [dropdownItems, setDropdownItems] = useState<any>({})
 
   const methods = useForm<GoalsForm>({
     defaultValues
   })
+
+  const { sectors, removeDropdownItem, onAddNewDropdownItem } = useSectors(
+    {
+      stocks: stockSectors,
+      reits: reitSectors,
+      bonds: bondsSectors,
+      international: internationalSectors,
+      crypto: cryptoSectors,
+      overview: overviewSectors
+    },
+    methods
+  )
 
   const onSubmit = async (data: any) => {
     const goalsData = Object.keys(defaultValues).reduce(
@@ -90,108 +87,6 @@ export default function InvestmentPercentages({
     await setFirestoreGoalsData(goalsData, authUser.uid)
     alert('Dados salvos com sucesso!')
   }
-
-  const removeDropdownItem = async (id: string, name: string) => {
-    try {
-      await deleteDropdownItem({
-        itemId: id,
-        accessToken: authUser.accessToken,
-        assetType: name
-      })
-
-      switch (name) {
-        case 'stocks':
-          setCurrentStockSectors((prevState: any) => [
-            ...prevState.filter((item: any) => item.id !== id)
-          ])
-          break
-        case 'reits':
-          setCurrentReitSectors((prevState: any) => [
-            ...prevState.filter((item: any) => item.id !== id)
-          ])
-          break
-        case 'bonds':
-          setCurrentBondSectors((prevState: any) => [
-            ...prevState.filter((item: any) => item.id !== id)
-          ])
-          break
-        case 'international':
-          setCurrentInternationalSectors((prevState: any) => [
-            ...prevState.filter((item: any) => item.id !== id)
-          ])
-          break
-        case 'crypto':
-          setCurrentCryptoSectors((prevState: any) => [
-            ...prevState.filter((item: any) => item.id !== id)
-          ])
-          break
-        default:
-          setCurrentOverviewSectors((prevState: any) => [
-            ...prevState.filter((item: any) => item.id !== id)
-          ])
-          break
-      }
-    } catch (err) {
-      console.log('There was an error removing the dropdown item: ', err)
-    }
-  }
-
-  const onAddNewDropdownItem = async (item: string, name: string) => {
-    const uniqueId = uuidv4()
-    const sector = {
-      id: uniqueId,
-      name: item,
-      default: false
-    }
-
-    try {
-      await setNewDropdownItem(uniqueId, item, name, authUser.accessToken)
-
-      switch (name) {
-        case 'stocks':
-          setCurrentStockSectors((prevState: any) => [...prevState, sector])
-          break
-        case 'reits':
-          setCurrentReitSectors((prevState: any) => [...prevState, sector])
-          break
-        case 'bonds':
-          setCurrentBondSectors((prevState: any) => [...prevState, sector])
-          break
-        case 'international':
-          setCurrentInternationalSectors((prevState: any) => [
-            ...prevState,
-            sector
-          ])
-          break
-        case 'crypto':
-          setCurrentCryptoSectors((prevState: any) => [...prevState, sector])
-          break
-        default:
-          setCurrentOverviewSectors((prevState: any) => [...prevState, sector])
-          break
-      }
-    } catch (err) {
-      console.log('There was an error adding the item: ', err)
-    }
-  }
-
-  useEffect(() => {
-    setDropdownItems({
-      stocks: currentStockSectors,
-      reits: currentReitSectors,
-      bonds: currentBondSectors,
-      international: currentInternationalSectors,
-      crypto: currentCryptoSectors,
-      overview: currentOverviewSectors
-    })
-  }, [
-    currentStockSectors,
-    currentReitSectors,
-    currentBondSectors,
-    currentInternationalSectors,
-    currentCryptoSectors,
-    currentOverviewSectors
-  ])
 
   useEffect(() => {
     const getData = async () => {
@@ -218,19 +113,28 @@ export default function InvestmentPercentages({
             Defina a parcela de investimento nos tipos de negócio:
           </S.PercentagesTitle>
           <AssetTypeTabContent
-            tabsList={Object.keys(assetTypes).map((assetType) => assetType)}
-            defaultTab="overview"
-          >
-            {(activeTab: string) => (
-              <AssetType
-                name={assetTypes[activeTab].name}
-                title={assetTypes[activeTab].title}
-                dropdownItems={dropdownItems[activeTab]}
-                colors={COLORS}
-                onAddNewDropdownItem={onAddNewDropdownItem}
-                onRemoveDropdownItem={removeDropdownItem}
-              ></AssetType>
+            tabsList={Object.keys(assetTypes).map(
+              (assetType) => assetTypes[assetType].title
             )}
+            defaultTab="Porcentagens Gerais"
+          >
+            {(activeTab) => {
+              const formattedTab =
+                Object.keys(assetTypes).find(
+                  (key) => assetTypes[key].title === activeTab
+                ) || ''
+
+              return (
+                <AssetType
+                  name={assetTypes[formattedTab]?.name as AssetTypes}
+                  title={assetTypes[formattedTab]?.title}
+                  dropdownItems={sectors[formattedTab as AssetTypes]}
+                  colors={COLORS}
+                  onAddNewDropdownItem={onAddNewDropdownItem}
+                  onRemoveDropdownItem={removeDropdownItem}
+                ></AssetType>
+              )
+            }}
           </AssetTypeTabContent>
           <S.ButtonWrapper>
             <Button type="submit" text="Salvar" width="medium" />

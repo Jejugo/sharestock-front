@@ -45,7 +45,12 @@ export default function MyAssetsForm({
   const selectedAsset = methods.watch(tabName).selectedAsset.value
 
   const handleStatusInvest = () => {
-    if (!selectedAsset || tabName === 'international' || tabName === 'bonds')
+    if (
+      !selectedAsset ||
+      tabName === 'international' ||
+      tabName === 'bonds' ||
+      tabName === 'crypto'
+    )
       return
 
     window.open(

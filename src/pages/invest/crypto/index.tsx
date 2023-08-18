@@ -9,28 +9,23 @@ import InvestContextProvider from 'context/InvestContext'
 import { Sector } from 'features/goals/InvestmentPercentages/interfaces'
 
 interface IAddAssets {
-  dropdownInternational: IDropdownList
+  dropdownCrypto: IDropdownList
 }
 
-export default function InternationInvest({
-  dropdownInternational
-}: IAddAssets) {
+export default function InternationInvest({ dropdownCrypto }: IAddAssets) {
   const assetTypesList = Object.keys(assetTypes)
     .map((assetType) => assetType)
     .filter((assetType) => assetType !== 'overview') as Partial<AssetTypes>[]
 
   return (
-    <Template tabTitle="Invest International">
+    <Template tabTitle="Invest Crypto">
       <Tabs
         assetTypes={assetTypesList}
-        activeTab="international"
+        activeTab="crypto"
         setActiveTab={(tabName) => Router.push(`/invest/${tabName}`)}
       />
       <InvestContextProvider>
-        <MyAssetsForm
-          tabName="international"
-          dropdownList={dropdownInternational}
-        />
+        <MyAssetsForm tabName="crypto" dropdownList={dropdownCrypto} />
       </InvestContextProvider>
     </Template>
   )
@@ -46,22 +41,22 @@ export async function getServerSideProps(context: any) {
   }
 
   try {
-    const internationalData = await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/international/sectors`,
+    const cryptoData = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/crypto/sectors`,
       { ...authorization }
     )
-    const internationalList = await internationalData.json()
+    const cryptoList = await cryptoData.json()
 
-    const internationalItems = internationalList.items.international
+    const cryptoItems = cryptoList.items.crypto
 
-    const dropdownInternational = internationalItems.map((item: Sector) => ({
+    const dropdownCrypto = cryptoItems.map((item: Sector) => ({
       value: item.name.toLowerCase(),
       label: item.name
     }))
 
     return {
       props: {
-        dropdownInternational
+        dropdownCrypto
       }
     }
   } catch (error) {
@@ -69,7 +64,7 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
-        dropdownInternational: []
+        dropdownCrypto: []
       }
     }
   }
