@@ -22,7 +22,7 @@ export const walletStockSectors = (
   sharesMap: sharesMap
 ): IAssetSectors[] =>
   rows.map((row) => {
-    const sector = sharesMap[row.symbol].subsetor
+    const sector = sharesMap[row.symbol]?.subsetor
     return {
       name: row.symbol,
       sector,

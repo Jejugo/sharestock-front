@@ -36,25 +36,38 @@ export async function getServerSideProps(context: any) {
     }
   }
 
-  const [shares, reits] = await Promise.all([
-    await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/shares`, {
-      ...authorization
-    }),
-    await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`, {
-      ...authorization
-    })
-  ])
+  let sharesMap = {}
+  let reitsMap = {}
 
-  const { items: sharesList } = (await shares.json()) as IStockItemResponse
-  const sharesMap = convertArrayToObject(sharesList as IStockItem[], 'papel')
+  try {
+    const [shares, reits] = await Promise.all([
+      await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/shares`, {
+        ...authorization
+      }),
+      await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`, {
+        ...authorization
+      })
+    ])
 
-  const { items: reitsList } = (await reits.json()) as IStockItemResponse
-  const reitsMap = convertArrayToObject(reitsList as IStockItem[], 'papel')
+    const { items: sharesList } = await shares.json()
+    sharesMap = convertArrayToObject(sharesList as IStockItem[], 'papel')
 
-  return {
-    props: {
-      sharesMap,
-      reitsMap
+    const { items: reitsList } = await reits.json()
+    reitsMap = convertArrayToObject(reitsList as IStockItem[], 'papel')
+
+    return {
+      props: {
+        sharesMap,
+        reitsMap
+      }
+    }
+  } catch (err) {
+    console.error(err)
+    return {
+      props: {
+        sharesMap: {},
+        reitsMap: {}
+      }
     }
   }
 }

@@ -45,11 +45,11 @@ export default function useAssetTableData(
       const { items } = data
 
       setRows([
-        ...items.stocks.tableData,
-        ...items.reits.tableData,
-        ...items.bonds.tableData,
-        ...items.international.tableData,
-        ...items.crypto.tableData
+        ...(items.stocks?.tableData || []),
+        ...(items.reits?.tableData || []),
+        ...(items.bonds?.tableData || []),
+        ...(items.international?.tableData || []),
+        ...(items.crypto?.tableData || [])
       ])
 
       setColumns(columnsNames)
