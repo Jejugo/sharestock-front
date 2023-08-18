@@ -27,12 +27,6 @@ interface IArrayToObject<T> {
 interface IDashboardComponent {
   sharesMap: IArrayToObject<IStockItem>
   reitsMap: IArrayToObject<IReitItem>
-  bondsMap: IArrayToObject<{
-    value: number
-  }>
-  internationalAssetsMap: IArrayToObject<{
-    value: number
-  }>
 }
 
 export interface IGoal {
@@ -61,9 +55,7 @@ export interface ISliderMap {
 
 export default function DashboardComponent({
   sharesMap,
-  reitsMap,
-  bondsMap,
-  internationalAssetsMap
+  reitsMap
 }: IDashboardComponent) {
   const [sliderMap, setSliderMap] = useState<ISliderMap[]>([] as ISliderMap[])
 
@@ -73,16 +65,18 @@ export default function DashboardComponent({
   usePieChartData({
     sharesMap,
     reitsMap,
-    bondsMap,
-    internationalAssetsMap,
     setSliderMap
   })
 
   const { currentChartData, goalsChartData } = useBarChartData(totalValue)
 
-  useEffect(() => {
-    setTotalValue(currentChartData.reduce((acc, curr) => acc + curr.value, 0))
-  }, [currentChartData])
+  useEffect(
+    () =>
+      setTotalValue(
+        currentChartData.reduce((acc, curr) => acc + curr.value, 0)
+      ),
+    [currentChartData]
+  )
 
   return (
     <S.DashboardComponentWrapper>

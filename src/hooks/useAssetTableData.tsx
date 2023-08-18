@@ -48,7 +48,8 @@ export default function useAssetTableData(
         ...items.stocks.tableData,
         ...items.reits.tableData,
         ...items.bonds.tableData,
-        ...items.international.tableData
+        ...items.international.tableData,
+        ...items.crypto.tableData
       ])
 
       setColumns(columnsNames)
@@ -56,8 +57,24 @@ export default function useAssetTableData(
     }
   }, [data])
 
+  const stocks = (rows.filter((item) => item.type === 'stocks') ||
+    []) as ITableRow[]
+  const reits = (rows.filter((item) => item.type === 'reits') ||
+    []) as ITableRow[]
+  const bonds = (rows.filter((item) => item.type === 'bonds') ||
+    []) as ITableRow[]
+  const international = (rows.filter((item) => item.type === 'international') ||
+    []) as ITableRow[]
+  const crypto = (rows.filter((item) => item.type === 'crypto') ||
+    []) as ITableRow[]
+
   return {
-    rows,
+    allRows: rows,
+    stocks,
+    reits,
+    bonds,
+    international,
+    crypto,
     columns,
     mutate
   }

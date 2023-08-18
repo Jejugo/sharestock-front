@@ -31,7 +31,7 @@ export const AssetTable = React.memo(() => {
   const [rowsPerPage, setRowsPerPage] = React.useState(50)
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null) // Set this to the row's unique identifier
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const { rows, columns, mutate } = useAssetTableData(setIsLoading)
+  const { allRows, columns, mutate } = useAssetTableData(setIsLoading)
 
   useOutsideClick(menuContentRef, () => {
     setSelectedRow(null) // close the menu when a click outside is detected
@@ -77,7 +77,7 @@ export const AssetTable = React.memo(() => {
     }
   }
 
-  const balancedRows = rows.reduce((acc, curr) => {
+  const balancedRows = allRows.reduce((acc, curr) => {
     if (curr.isBalanced) {
       return acc + 1
     }
@@ -145,7 +145,7 @@ export const AssetTable = React.memo(() => {
           sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <Text color="white">Você possui {rows.length} ativos. </Text>
+            <Text color="white">Você possui {allRows.length} ativos. </Text>
             <S.UpdateIcon clickable onClick={onSync}>
               <CachedIcon />
             </S.UpdateIcon>
@@ -172,7 +172,7 @@ export const AssetTable = React.memo(() => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
+                {allRows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: ITableRow, index: number) => {
                     return (
@@ -215,7 +215,7 @@ export const AssetTable = React.memo(() => {
             sx={{ backgroundColor: '#1E1E1E', color: 'white' }}
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={rows.length}
+            count={allRows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

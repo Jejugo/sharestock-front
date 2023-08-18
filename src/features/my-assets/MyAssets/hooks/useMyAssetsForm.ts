@@ -21,7 +21,9 @@ export default function useMyAssetsForm({
 }) {
   const { authUser } = useAuth() as IAuthUserContext
   const tabKey =
-    tabName === 'bonds' || tabName === 'international' ? 'value' : 'quantity'
+    tabName === 'bonds' || tabName === 'international' || tabName === 'crypto'
+      ? 'value'
+      : 'quantity'
 
   const methods = useForm({
     defaultValues: initialState || {
@@ -34,7 +36,11 @@ export default function useMyAssetsForm({
   })
 
   const onSubmit = async (data: any) => {
-    if (tabName !== 'bonds') {
+    if (
+      tabName !== 'bonds' &&
+      tabName !== 'international' &&
+      tabName !== 'crypto'
+    ) {
       try {
         await Firestore().setListByKey({
           id: authUser.uid,

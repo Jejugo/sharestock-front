@@ -41,7 +41,7 @@ export default function MyAssetsContent({
           value={value.selectedAsset}
         ></Select>
       </div>
-      {name === 'bonds' || name === 'international' ? (
+      {name === 'bonds' || name === 'international' || name === 'crypto' ? (
         <S.AddCompanyInput
           placeholder="Valor"
           type="number"

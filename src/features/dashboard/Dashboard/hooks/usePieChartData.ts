@@ -17,33 +17,28 @@ interface IArrayToObject<T> {
 interface IUseRowsData {
   sharesMap: IArrayToObject<IStockItem>
   reitsMap: IArrayToObject<IReitItem>
-  bondsMap: IArrayToObject<{
-    value: number
-  }>
-  internationalAssetsMap: IArrayToObject<{
-    value: number
-  }>
   setSliderMap: React.Dispatch<React.SetStateAction<ISliderMap[]>>
 }
 
 export default function usePieChartData({
   sharesMap,
   reitsMap,
-  bondsMap,
-  internationalAssetsMap,
   setSliderMap
 }: IUseRowsData) {
-  const { rows } = useAssetTableData()
+  const {
+    stocks: stockRows,
+    reits: reitRows,
+    bonds: bondRows,
+    international: internationalRows,
+    crypto: cryptoRows
+  } = useAssetTableData()
   const {
     stocks: stockGoals,
     reits: reitGoals,
     bonds: bondGoals,
-    international: internationalGoals
+    international: internationalGoals,
+    crypto: cryptoGoals
   } = useGoalsdata()
-  const stockRows = rows.filter((item) => item.type === 'stocks')
-  const reitRows = rows.filter((item) => item.type === 'reits')
-  const bondRows = rows.filter((item) => item.type === 'bonds')
-  const internationalRows = rows.filter((item) => item.type === 'international')
 
   const [stockSectors, setStockSectors] = useState<
     { name: string; sector: string; value: number }[]
@@ -56,6 +51,8 @@ export default function usePieChartData({
   const [bondsSectors, setBondsSectors] = useState<any>([])
 
   const [internationalSectors, setInternationalSectors] = useState<any>([])
+
+  const [cryptoSectors, setCryptoSectors] = useState<any>([])
 
   const [stockPieChartData, setStockPieChartData] = useState<IPieData[]>([
     {
@@ -79,6 +76,12 @@ export default function usePieChartData({
   ])
 
   const [internationalPieData, setInternationalPieData] = useState<IPieData[]>([
+    {
+      name: '',
+      value: 0
+    }
+  ])
+  const [cryptoPieData, setCryptoPieData] = useState<IPieData[]>([
     {
       name: '',
       value: 0
@@ -138,7 +141,7 @@ export default function usePieChartData({
   }, [reitsMap, totalValue])
 
   useEffect(() => {
-    if (bondsMap && totalValue > 0) {
+    if (totalValue > 0) {
       const totalValue = bondRows.reduce(
         (acc, curr) => acc + curr.currentValue,
         0
@@ -155,10 +158,10 @@ export default function usePieChartData({
       setBondsSectors(bondsSectors)
       setBondsPieData(pieChartData)
     }
-  }, [bondsMap, totalValue])
+  }, [totalValue])
 
   useEffect(() => {
-    if (internationalAssetsMap && totalValue > 0) {
+    if (totalValue > 0) {
       const totalValue = internationalRows.reduce(
         (acc, curr) => acc + curr.currentValue,
         0
@@ -178,7 +181,28 @@ export default function usePieChartData({
       setInternationalSectors(internationalSectors)
       setInternationalPieData(pieChartData)
     }
-  }, [internationalAssetsMap, totalValue])
+  }, [totalValue])
+
+  useEffect(() => {
+    if (totalValue > 0) {
+      const totalValue = cryptoRows.reduce(
+        (acc, curr) => acc + curr.currentValue,
+        0
+      )
+      const cryptoSectors = cryptoRows.map((crypto: any) => crypto.asset).sort()
+
+      const pieChartData = cryptoRows
+        .map((crypto: any) => ({
+          name: crypto.asset,
+          value: crypto.currentValue,
+          percentage: crypto.currentValue / totalValue
+        }))
+        .sort((a: any, b: any) => a.name.localeCompare(b.name))
+
+      setCryptoSectors(cryptoSectors)
+      setCryptoPieData(pieChartData)
+    }
+  }, [totalValue])
 
   useEffect(() => {
     if (
@@ -213,6 +237,12 @@ export default function usePieChartData({
           goals: internationalGoals,
           data: internationalPieData,
           sectors: internationalSectors
+        },
+        {
+          title: 'Crypto',
+          goals: cryptoGoals,
+          data: cryptoPieData,
+          sectors: cryptoSectors
         }
       ])
     }

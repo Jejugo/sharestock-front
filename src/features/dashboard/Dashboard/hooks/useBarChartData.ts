@@ -19,14 +19,14 @@ const calculateTotalByAssetType = (arr: ITableRow[]) =>
   }, {})
 
 export default function useBarChartData(totalValue: number) {
-  const { rows } = useAssetTableData()
+  const { allRows } = useAssetTableData()
   const [currentChartData, setCurrentChartData] = useState<IBarData[]>([])
   const [goalsChartData, setGoalsChartData] = useState<IBarData[]>([])
   const { overview } = useGoalsdata()
 
   useEffect(() => {
-    if (rows?.length && overview?.length) {
-      const totalValues = calculateTotalByAssetType(rows)
+    if (allRows?.length && overview?.length) {
+      const totalValues = calculateTotalByAssetType(allRows)
 
       const chartData = Object.keys(totalValues).map((totalKey: string) => ({
         name: totalKey,
@@ -44,7 +44,7 @@ export default function useBarChartData(totalValue: number) {
         }))
       )
     }
-  }, [rows, overview])
+  }, [allRows, overview])
 
   return {
     currentChartData,

@@ -6,7 +6,7 @@ export default function AssetTypeTabContent({
   tabsList,
   children
 }: {
-  defaultTab: Partial<AssetTypes>
+  defaultTab: any
   tabsList: any[]
   children: (activeTab: Partial<AssetTypes>) => React.ReactElement
 }) {

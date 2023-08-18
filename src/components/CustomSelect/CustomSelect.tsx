@@ -116,7 +116,10 @@ const CustomSelect: React.FC<Props> = ({
                     {option.name}
                   </S.OptionDiv>
                   {option.showDeleteIcon && (
-                    <Delete onClick={() => handleRemoveItem(option.id)} />
+                    <Delete
+                      onClick={() => handleRemoveItem(option.id)}
+                      style={{ cursor: 'pointer' }}
+                    />
                   )}
                 </Flex>
               ))}

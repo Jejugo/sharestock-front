@@ -1,8 +1,6 @@
 import { sortArrayAlphabetically } from 'builders/arrays'
 import Firestore from './Firestore'
 
-type AssetTypes = 'stocks' | 'reits' | 'bonds' | 'international' | 'overview'
-
 export const getStrategyStatements = async (
   authUser: IUser
 ): Promise<Record<AssetTypes, IStatement[]>> =>

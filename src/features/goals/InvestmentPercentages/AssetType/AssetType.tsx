@@ -3,25 +3,25 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { Tooltip } from 'recharts'
 
 import * as S from '../styles'
-import { useFormContext } from 'react-hook-form'
 import PieChartComponent from 'components/charts/PieChart/PieChart'
 import CustomSelect from 'components/CustomSelect/CustomSelect'
-import { v4 as uuidv4 } from 'uuid'
+
 import { Sector, Option } from '../interfaces'
+import useAssetSectors from '../hooks/useAssetSectors'
 
 interface IAssetType {
-  value: string
-  id: number
+  value: number
+  id: string
   name: string
 }
 
 interface IAssetTypeParams {
   title: string
-  name: string
+  name: AssetTypes
   dropdownItems?: Sector[]
   colors: string[]
-  onAddNewDropdownItem: (item: string, name: string) => Promise<void>
-  onRemoveDropdownItem: (itemId: string, name: string) => Promise<void>
+  onAddNewDropdownItem: (item: string, name: AssetTypes) => Promise<void>
+  onRemoveDropdownItem: (itemId: string, name: AssetTypes) => Promise<void>
 }
 
 export default function AssetType({
@@ -32,78 +32,22 @@ export default function AssetType({
   onAddNewDropdownItem,
   onRemoveDropdownItem
 }: IAssetTypeParams) {
-  const { setValue, getValues } = useFormContext()
+  const initialValue: IAssetType[] = []
 
-  const value = getValues()[name] || {}
-
-  const setAssetType = (
-    values: IAssetType[],
-    assetOption: Option,
-    index: number
-  ) => {
-    const oldValues = [...values].filter((value: any) => value.index !== index)
-    const newValues = [
-      ...oldValues,
-      {
-        id: assetOption.id,
-        name: assetOption.name,
-        value: 0,
-        default: dropdownItems.find((item) => item.id === assetOption.id)
-          ?.default,
-        index
-      }
-    ]
-    setValue(name, newValues)
-  }
-
-  const handleAssetType = (option: Option, index: number) => {
-    if (
-      value.find(
-        (stock: IAssetType) =>
-          stock.name.toLowerCase() === option.name.toLowerCase()
-      )
-    ) {
-      alert('Voce ja possui esse ativo!')
-      return
-    }
-    const newValues = value.filter((stock: IAssetType) => stock.id !== index)
-
-    setAssetType(newValues, option, index)
-  }
-
-  const removeAssetItem = (id: number) => {
-    const newValues = value.filter((stock: IAssetType) => stock.id !== id)
-    setValue(name, newValues)
-  }
-
-  const addEmptyItem = () => {
-    setValue(name, [
-      ...value,
-      { id: uuidv4(), name: '', value: 0, index: value.length }
-    ])
-  }
+  const {
+    value,
+    handleAssetSector,
+    removeAssetSector,
+    addEmptySector,
+    handleAssetPercentage
+  } = useAssetSectors(name, initialValue)
 
   const checkIfPercentagesSum100 = (arr: IAssetType[]) => {
     const sum = arr.reduce((acc, curr) => {
-      return parseInt(curr.value) + acc
+      return curr.value + acc
     }, 0)
     return sum === 100
   }
-
-  const handleAssetPercentage = (e: Event, id: number) => {
-    setValue(
-      name,
-      value.map((stock: IAssetType) =>
-        stock.id === id
-          ? {
-              ...stock,
-              value: (e.target as HTMLInputElement).value
-            }
-          : stock
-      )
-    )
-  }
-
   return (
     <section>
       <S.PercentageWrapper>
@@ -131,13 +75,13 @@ export default function AssetType({
             )}
             {value.length > 0 &&
               value.map((stock: IAssetType, index: number) => (
-                <S.PercentageListItem key={index}>
+                <S.PercentageListItem key={stock.id}>
                   <S.PercentageHeader>
                     <CustomSelect
                       value={stock.name}
                       placeholder="Adicione ativo"
                       onSelectItem={(option: Option) => {
-                        handleAssetType(option, index)
+                        handleAssetSector(option, stock.id, index)
                       }}
                       onAddItem={(item) => onAddNewDropdownItem(item, name)}
                       onRemoveItem={(itemId) =>
@@ -156,7 +100,7 @@ export default function AssetType({
                     ></CustomSelect>
 
                     <S.PercentageItemRemove
-                      onClick={(e) => removeAssetItem(stock.id)}
+                      onClick={(e) => removeAssetSector(stock.id)}
                     >
                       <DeleteIcon />
                     </S.PercentageItemRemove>
@@ -169,14 +113,14 @@ export default function AssetType({
                       step={5}
                       valueLabelDisplay="auto"
                       onChange={(e) => handleAssetPercentage(e, stock.id)}
-                      value={parseInt(stock.value)}
+                      value={stock.value}
                       customColor={colors[index]}
                     />
                     <S.PercentageValue>{stock.value}%</S.PercentageValue>
                   </S.PercentageSlider>
                 </S.PercentageListItem>
               ))}
-            <S.AddItem onClick={addEmptyItem}>+</S.AddItem>
+            <S.AddItem onClick={addEmptySector}>+</S.AddItem>
           </S.PercentageList>
         </S.Percentages>
       </S.PercentageWrapper>
