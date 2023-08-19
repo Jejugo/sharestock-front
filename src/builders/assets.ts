@@ -35,7 +35,7 @@ export const walletReitSectors = (
   reitsMap: reitsMap
 ): IAssetSectors[] =>
   rows.map((row) => {
-    const sector = reitsMap[row.symbol].segmento
+    const sector = reitsMap[row.symbol]?.segmento
     return {
       name: row.symbol,
       sector,

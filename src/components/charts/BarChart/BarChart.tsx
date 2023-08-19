@@ -1,15 +1,5 @@
 import React from 'react'
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer
-} from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts'
 
 import { IBarData } from './interfaces'
 
@@ -29,7 +19,7 @@ export default function BarCharComponent({
   barColor
 }: IBarChart) {
   return (
-    <ResponsiveContainer width="50%" height={300}>
+    <ResponsiveContainer width="50%" height="100%">
       <BarChart
         width={200}
         height={100}

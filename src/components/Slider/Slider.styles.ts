@@ -4,6 +4,7 @@ export const SliderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `
 
 export const Arrow = styled.button`
@@ -22,4 +23,5 @@ export const Arrow = styled.button`
 
 export const Slide = styled.div`
   transition: opacity 0.3s ease;
+  width: 100%;
 `

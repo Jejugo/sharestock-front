@@ -60,17 +60,18 @@ export const PercentageWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
 `
 export const ChartComponent = styled.div`
-  flex: 1 1 auto;
-  min-width: 400px;
-  flex-basis: auto;
+  height: 400px;
+  width: 30vw;
 `
 
 export const Percentages = styled.div`
-  flex: 2 1 auto;
-  min-width: 800px;
-  flex-basis: 800px;
+  width: 40vw;
 `
 
 export const ButtonWrapper = styled.div`

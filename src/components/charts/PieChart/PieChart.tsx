@@ -21,13 +21,9 @@ const COLORS = [
 interface IPieChart {
   data: IPieData[]
   children?: React.ReactNode
-  size: {
-    height: number
-    width: number
-  }
 }
 
-const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
+const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
   const [filteredNames, setFilteredNames] = useState<string[]>([])
   const handlePieClick = (data: any) => {
     console.log('clicked', data)
@@ -67,7 +63,7 @@ const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
   return (
     <>
       {data.length ? (
-        <S.ResponsiveContainerMargin width={size.width} height={size.height}>
+        <S.ResponsiveContainerMargin width="70%" height="100%">
           <PieChart>
             <Legend
               height={36}
@@ -84,10 +80,7 @@ const PieChartComponent = ({ data, children: toolTip, size }: IPieChart) => {
               dataKey="value"
               isAnimationActive={true}
               data={filteredData}
-              cy="40%"
-              outerRadius={100}
               fill="#8884d8"
-              style={{ fontWeight: '600' }}
             >
               {data.map((entry: any, index: number) => (
                 <Cell

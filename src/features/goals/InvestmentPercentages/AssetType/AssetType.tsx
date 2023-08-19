@@ -53,7 +53,7 @@ export default function AssetType({
       <S.PercentageWrapper>
         <S.ChartComponent>
           <S.InvestTypeTitle>{title}</S.InvestTypeTitle>
-          <PieChartComponent size={{ width: 800, height: 300 }} data={value}>
+          <PieChartComponent data={value}>
             <Tooltip
               isAnimationActive={true}
               animationDuration={2}
