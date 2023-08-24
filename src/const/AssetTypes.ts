@@ -21,7 +21,7 @@ export default {
   },
   international: {
     name: 'international',
-    title: 'Ativos Internacionais'
+    title: 'Internacional'
   },
   bonds: {
     name: 'bonds',

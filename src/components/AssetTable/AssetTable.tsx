@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import useAssetTableData from 'hooks/useAssetTableData'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -9,20 +9,77 @@ import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 
-import NorthIcon from '@mui/icons-material/North'
-import SouthIcon from '@mui/icons-material/South'
 import CachedIcon from '@material-ui/icons/Cached'
 import { ITableColumn, ITableRow } from './interfaces'
-import { isCheapStock } from './utils/helpers'
 
 import Text from 'components/Text/Text'
 
 import * as S from './AssetTable.styles'
 import useOutsideClick from './hooks/useOutsideClick'
-import axios from 'axios'
 import { useAuth } from 'context/AuthUserContext'
 import Loading from 'components/Loading/Loading'
 import Flex from 'components/container/Flex/Flex'
+import { Select, MenuItem, SelectChangeEvent } from '@mui/material'
+import { getTextColor, isCheapStock } from './utils/helpers'
+import NorthIcon from '@mui/icons-material/North'
+import SouthIcon from '@mui/icons-material/South'
+import assetTypes from 'const/AssetTypes'
+
+const getContent = (
+  column: ITableColumn,
+  value: any,
+  recommendedPercentage: number,
+  totalPercentage: number
+): React.ReactNode => {
+  // format columns if they have the format function defined in src/const/assetsTable.ts
+  if (column.format && typeof value === 'number') {
+    return column.format(value)
+  }
+
+  switch (column.id) {
+    case 'cheapStockScore':
+      return <>{isCheapStock(value)}</>
+    case 'adjustment': {
+      const adjustmentIcon =
+        recommendedPercentage > totalPercentage ? (
+          <NorthIcon style={{ fontSize: 'medium', color: 'green' }} />
+        ) : (
+          <SouthIcon style={{ fontSize: 'medium', color: 'red' }} />
+        )
+      return (
+        <>
+          {adjustmentIcon}
+          {value}
+        </>
+      )
+    }
+    case 'type':
+      return assetTypes[value].title
+    case 'symbol':
+      return value.toUpperCase()
+    default:
+      return value
+  }
+}
+
+const renderRow = (row: ITableRow, column: ITableColumn) => {
+  const value = row[column?.id as keyof ITableRow]
+  const recommendedPercentage = row.recommended
+  const totalPercentage = row.total
+  const textColor = getTextColor(column, row)
+  const content = getContent(
+    column,
+    value,
+    recommendedPercentage,
+    totalPercentage
+  )
+
+  return (
+    <TableCell key={column.id} align={column.align} sx={{ color: textColor }}>
+      {content}
+    </TableCell>
+  )
+}
 
 export const AssetTable = React.memo(() => {
   const { authUser } = useAuth()
@@ -33,8 +90,10 @@ export const AssetTable = React.memo(() => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const { allRows, columns, mutate } = useAssetTableData(setIsLoading)
 
+  const [assetTypeFilter, setAssetTypeFilter] = React.useState<string>('all')
+
   useOutsideClick(menuContentRef, () => {
-    setSelectedRow(null) // close the menu when a click outside is detected
+    setSelectedRow(null)
   })
 
   const handleChangePage = useCallback(
@@ -56,6 +115,8 @@ export const AssetTable = React.memo(() => {
   )
 
   const handleDeleteItem = async (e: any, row: any) => {
+    console.log(row)
+
     try {
       const result = window.confirm(
         'Are you sure you want to delete this item?'
@@ -63,14 +124,17 @@ export const AssetTable = React.memo(() => {
       if (result) {
         e.preventDefault()
 
-        const data = await axios.delete(
-          `${process.env.NEXT_PUBLIC_SHARE_API}/bonds/${row.symbol}`,
+        await fetch(
+          `${process.env.NEXT_PUBLIC_SHARE_API}/assets/${row.type}/${row.symbol}`,
           {
+            method: 'DELETE',
             headers: {
               Authorization: `Bearer ${authUser.accessToken}`
             }
           }
         )
+
+        mutate()
       }
     } catch (err) {
       console.log(err)
@@ -84,45 +148,6 @@ export const AssetTable = React.memo(() => {
     return acc
   }, 0)
 
-  const renderRow = (row: ITableRow, column: ITableColumn) => {
-    const value = row[column?.id as keyof ITableRow]
-    const recommendedPercentage = row.recommended
-    const totalPercentage = row.total
-
-    const textColor =
-      column.id === 'currentValue'
-        ? row.isBalanced
-          ? 'green'
-          : 'red'
-        : 'white'
-
-    let content: any = value
-    if (column.id === 'cheapStockScore') {
-      content = <>{isCheapStock(value as any)}</>
-    } else if (column.format && typeof value === 'number') {
-      content = column.format(value)
-    } else if (column.id === 'adjustment') {
-      const adjustmentIcon =
-        recommendedPercentage > totalPercentage ? (
-          <NorthIcon style={{ fontSize: 'medium', color: 'green' }} />
-        ) : (
-          <SouthIcon style={{ fontSize: 'medium', color: 'red' }} />
-        )
-      content = (
-        <>
-          {adjustmentIcon}
-          {value}
-        </>
-      )
-    }
-
-    return (
-      <TableCell key={column.id} align={column.align} sx={{ color: textColor }}>
-        {content}
-      </TableCell>
-    )
-  }
-
   const onSync = async () => {
     await fetch(
       `${process.env.NEXT_PUBLIC_SHARE_API}/sync/user/${authUser.uid}`,
@@ -135,6 +160,14 @@ export const AssetTable = React.memo(() => {
     )
     mutate()
   }
+
+  const filteredAssets = allRows.filter((row: ITableRow) =>
+    assetTypeFilter === 'all' ? true : row.type === assetTypeFilter
+  )
+
+  const totalInvested = filteredAssets.reduce((acc, curr) => {
+    return acc + curr.currentValue
+  }, 0)
 
   return (
     <>
@@ -155,6 +188,31 @@ export const AssetTable = React.memo(() => {
             {balancedRows} deles estão balanceados!
           </Text>
 
+          <Flex justifyContent="space-between">
+            <Select
+              value={assetTypeFilter}
+              onChange={(e: SelectChangeEvent<string>) =>
+                setAssetTypeFilter(e.target.value)
+              }
+              variant="outlined"
+              sx={{ backgroundColor: 'white', margin: '10px 0', width: 200 }}
+            >
+              <MenuItem value="all">Todos</MenuItem>
+              <MenuItem value="reits">Fundos Imobiliários</MenuItem>
+              <MenuItem value="stocks">Ações</MenuItem>
+              <MenuItem value="bonds">Renda Fixa</MenuItem>
+              <MenuItem value="international">Internacional</MenuItem>
+              <MenuItem value="crypto">Crypto</MenuItem>
+            </Select>
+            <Text color="lightGreen">
+              {assetTypeFilter === 'all'
+                ? `Ao todo, você possui R$${totalInvested.toFixed(2)}`
+                : `Você possui R$${totalInvested.toFixed(
+                    2
+                  )} em ${assetTypeFilter}`}
+            </Text>
+          </Flex>
+
           <S.TableContainerStyle>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -172,7 +230,7 @@ export const AssetTable = React.memo(() => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {allRows
+                {filteredAssets
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: ITableRow, index: number) => {
                     return (
@@ -185,18 +243,17 @@ export const AssetTable = React.memo(() => {
                           renderRow(row, column)
                         )}
                         <S.MenuItem
-                          onClick={() =>
-                            setSelectedRow(selectedRow === index ? null : index)
-                          }
+                          onClick={() => {
+                            setSelectedRow((prevState) => {
+                              return prevState === index ? null : index
+                            })
+                          }}
                         >
                           &#xFE19;
                         </S.MenuItem>
                         {selectedRow === index && (
-                          <S.MenuContent>
+                          <S.MenuContent ref={menuContentRef}>
                             <S.MenuContentList>
-                              <S.MenuContentListItem>
-                                Edit
-                              </S.MenuContentListItem>
                               <S.MenuContentListItem
                                 onClick={(e) => handleDeleteItem(e, row)}
                               >

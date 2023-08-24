@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import useAssetTableData from 'hooks/useAssetTableData'
 import useGoalsdata from '../hooks/useGoalsdata'
 import { ITableRow } from 'components/AssetTable/interfaces'
+import { sortArrayAlphabetically } from 'builders/arrays'
+import assetTypes from 'const/AssetTypes'
 
 const calculateTotalByAssetType = (arr: ITableRow[]) =>
   arr.reduce((acc: any, item: ITableRow) => {
@@ -28,14 +30,16 @@ export default function useBarChartData(totalValue: number) {
     if (allRows?.length && overview?.length) {
       const totalValues = calculateTotalByAssetType(allRows)
 
-      const chartData = Object.keys(totalValues).map((totalKey: string) => ({
-        name: totalKey,
-        value: totalValues[totalKey],
-        percentage: parseFloat(
-          ((totalValues[totalKey] / totalValue) * 10 ** 2).toFixed(2)
-        )
-      }))
-
+      const chartData = sortArrayAlphabetically(
+        Object.keys(totalValues).map((totalKey: string) => ({
+          name: assetTypes[totalKey].title,
+          value: totalValues[totalKey],
+          percentage: parseFloat(
+            ((totalValues[totalKey] / totalValue) * 10 ** 2).toFixed(2)
+          )
+        })),
+        'name'
+      )
       setCurrentChartData(chartData)
       setGoalsChartData(
         overview.map((overviewItem: { name: string; value: number }) => ({

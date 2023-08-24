@@ -2,7 +2,12 @@ import { ITableColumn } from 'components/AssetTable/interfaces'
 
 export const columnsNames: ITableColumn[] = [
   { id: 'type', label: 'Tipo', minWidth: 50 },
-  { id: 'asset', label: 'Ativo', minWidth: 50 },
+  { id: 'asset', label: 'Nome', minWidth: 50 },
+  {
+    id: 'symbol',
+    label: 'Símbolo',
+    minWidth: 50
+  },
   {
     id: 'currentValue',
     label: 'Valor Atual',

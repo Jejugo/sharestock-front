@@ -1,7 +1,6 @@
 import TableRow from '@mui/material/TableRow'
 import TableContainer from '@mui/material/TableContainer'
 import styled from 'styled-components'
-import { MouseEventHandler } from 'react'
 
 export const TableContainerStyle = styled(TableContainer)`
   max-height: 70vh;
@@ -36,6 +35,11 @@ export const MenuItem = styled.div<IMenuItem>`
   position: absolute;
   right: 10px;
   top: 30%;
+  color: white;
+
+  &:hover {
+    color: black;
+  }
 `
 
 export const MenuContent = styled.div`
@@ -57,7 +61,7 @@ export const MenuContentList = styled.ul`
 export const MenuContentListItem = styled.li`
   border: 1px solid #ccc;
   padding: 3px 30px;
-  width: 100%:
+  width: 100%;
   background-color: white;
   cursor: pointer;
 
@@ -88,3 +92,5 @@ export const UpdateIcon = styled.div<UpdateIcon>`
     font-size: 1.6em;
   }
 `
+
+export const TableFilter = styled.section``
