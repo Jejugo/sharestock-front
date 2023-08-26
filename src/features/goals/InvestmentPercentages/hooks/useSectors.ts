@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { deleteDropdownItem, setNewDropdownItem } from '../requests'
 import { GoalsForm, Sector } from '../interfaces'
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 import { UseFormReturn } from 'react-hook-form'
 
 type UseSectorsProps = Record<AssetTypes, Sector[]>

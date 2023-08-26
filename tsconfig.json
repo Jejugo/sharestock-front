@@ -19,19 +19,32 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "sourceMap": true,
-    "baseUrl": "./src",
+    "baseUrl": "./",
+    "types": ["node", "jest", "@testing-library/jest-dom", "@types/jest"],
     "paths": {
-      "components/*": ["components/*"],
-      "const/*": ["const/*"],
-      "interfaces/*": ["interfaces/*"],
-      "context/*": ["context/*"],
-      "validations/*": ["validations/*"],
-      "skeleton/*": ["skeleton/*"],
-      "builders/*": ["builders/*"],
-      "firebase/*": ["firebase/*"]
+      "@components/*": ["src/components/*"],
+      "@features/*": ["src/features/*"],
+      "@const/*": ["src/const/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@context/*": ["src/context/*"],
+      "@validations/*": ["src/validations/*"],
+      "@skeleton/*": ["src/skeleton/*"],
+      "@builders/*": ["src/builders/*"],
+      "firebase/*": ["src/firebase/*"],
+      "@styles/*": ["src/styles/*"],
+      "@layout/*": ["src/layout/*"],
+      "@hooks/*": ["src/hooks/*"]
     },
+
     "noEmit": true
   },
-  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "include": [
+    "src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    "jest.config.js"
+  ],
   "exclude": ["node_modules"]
 }

@@ -9,7 +9,7 @@ import { OverridableComponent } from '@material-ui/core/OverridableComponent'
 import { SvgIconTypeMap } from '@material-ui/core'
 
 export interface INavbarItem {
-  icon: OverridableComponent<SvgIconTypeMap<any, 'svg'>> & {
+  icon: OverridableComponent<SvgIconTypeMap<object, 'svg'>> & {
     muiName: string
   }
   text: string
@@ -57,4 +57,4 @@ export default [
     text: 'Definições',
     href: '/definitions'
   }
-]
+] as INavbarItem[]

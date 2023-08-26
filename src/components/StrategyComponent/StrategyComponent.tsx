@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 
-import AssetTypeTabContent from 'features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
-import assetTypes from 'const/AssetTypes'
+import AssetTypeTabContent from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
+import assetTypes from '@const/AssetTypes'
 import StrategyTabContent from './StrategyTabContent/StrategyTabContent'
 
 type SupportedAssets = 'stocks' | 'reits' | 'international'

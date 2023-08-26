@@ -1,12 +1,12 @@
 import React from 'react'
 
-import assetTypes from 'const/AssetTypes'
-import MyAssetsForm from 'features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
-import Template from 'layout/Template/Template'
-import Tabs from 'components/Tabs/Tabs'
+import assetTypes from '@const/AssetTypes'
+import MyAssetsForm from '@features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
+import Template from '@layout/Template/Template'
+import Tabs from '@components/Tabs/Tabs'
 import Router from 'next/router'
-import InvestContextProvider from 'context/InvestContext'
-import { Sector } from 'features/goals/InvestmentPercentages/interfaces'
+import InvestContextProvider from '@context/InvestContext'
+import { Sector } from '@features/goals/InvestmentPercentages/interfaces'
 
 interface IAddAssets {
   dropdownCrypto: IDropdownList

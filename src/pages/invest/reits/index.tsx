@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAuth } from '../../../context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 
-import assetTypes from 'const/AssetTypes'
-import MyAssetsForm from 'features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
+import assetTypes from '@const/AssetTypes'
+import MyAssetsForm from '@features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
 import axios from 'axios'
-import Template from 'layout/Template/Template'
-import Tabs from 'components/Tabs/Tabs'
+import Template from '@layout/Template/Template'
+import Tabs from '@components/Tabs/Tabs'
 import Router from 'next/router'
-import InvestContextProvider from 'context/InvestContext'
-import { convertArrayToObject, normalizeArrayToDropdown } from 'builders/arrays'
+import InvestContextProvider from '@context/InvestContext'
+import {
+  convertArrayToObject,
+  normalizeArrayToDropdown
+} from '@builders/arrays'
 
 interface IArrayToObject<T> {
   [key: string]: T
@@ -39,7 +42,6 @@ export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
           })
           .then((res) => res.data.items)
 
-        console.log('setting strategy reits', data)
         setAssetStrategyData(data)
       }
     }

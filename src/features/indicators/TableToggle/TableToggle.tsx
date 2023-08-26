@@ -1,7 +1,7 @@
 import SettingsModal from '../SettingsModal/SettingsModal'
 import React, { useEffect, useState } from 'react'
-import Rows from '../../../components/TableLists/Rows/Rows'
-import Frames from '../../../components/TableLists/Frames/Frames'
+import Rows from '@components/TableLists/Rows/Rows'
+import Frames from '@components/TableLists/Frames/Frames'
 import SettingsIcon from '@mui/icons-material/Settings'
 import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify'
 import ViewModuleIcon from '@material-ui/icons/ViewModule'
@@ -9,8 +9,8 @@ import CachedIcon from '@material-ui/icons/Cached'
 import axios from 'axios'
 import * as S from './styles'
 
-import Loading from 'components/Loading/Loading'
-import { useAuth } from 'context/AuthUserContext'
+import Loading from '@components/Loading/Loading'
+import { useAuth } from '@context/AuthUserContext'
 
 interface TableProps {
   assets: IStockItem[] | IReitItem[]

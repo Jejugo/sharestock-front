@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Slider from '@mui/material/Slider'
 
-import { colors, fonts, spacings } from 'styles/constants'
+import { colors, fonts, spacings } from '@styles/constants'
 
 export const MainSection = styled.section``
 

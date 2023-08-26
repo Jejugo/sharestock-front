@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react'
-import useFirebaseAuth from '../hooks/useFirebaseAuth'
+import useFirebaseAuth from '@hooks/useFirebaseAuth'
 import { useRouter } from 'next/router'
 
 const initialState: IAuthUserContext = {

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Box, Modal, Typography } from '@material-ui/core'
-import SettingsIndicatorItem from 'features/indicators/SettingsIndicatorItem/SettingsIndicatorItem'
+import SettingsIndicatorItem from '@features/indicators/SettingsIndicatorItem/SettingsIndicatorItem'
 import { useForm } from 'react-hook-form'
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 
 import * as S from './styles'
 

@@ -1,4 +1,4 @@
-import { sortArrayAlphabetically } from 'builders/arrays'
+import { sortArrayAlphabetically } from '@builders/arrays'
 import Firestore from './Firestore'
 
 export const getStrategyStatements = async (

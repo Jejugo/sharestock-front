@@ -2,13 +2,15 @@ import React, { useState } from 'react'
 import { GetServerSideProps } from 'next'
 import fetch from 'isomorphic-unfetch'
 import Router from 'next/router'
-import TableToggle from 'features/indicators/TableToggle/TableToggle'
-import SearchBar from 'components/SearchBar/SearchBar'
-import config from 'configs'
-import Template from 'layout/Template/Template'
-import WishListPopUp from 'features/indicators/WishListPopUp/WishListPopUp'
-import WishListProvider from 'context/WishList'
-import { tableColumnsReits } from 'features/indicators/constants'
+import TableToggle from '@features/indicators/TableToggle/TableToggle'
+import SearchBar from '@components/SearchBar/SearchBar'
+
+import Template from '@layout/Template/Template'
+import WishListPopUp from '@features/indicators/WishListPopUp/WishListPopUp'
+import WishListProvider from '@context/WishList'
+import { tableColumnsReits } from '@features/indicators/constants'
+
+import config from '../../../configs'
 import styled from 'styled-components'
 
 const { STATUS_INVEST_HOST } = config

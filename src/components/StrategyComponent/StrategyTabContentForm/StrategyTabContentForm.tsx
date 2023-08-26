@@ -3,7 +3,7 @@ import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import initialFormValues, {
   IStategyFormAsset
-} from 'features/strategy/StrategyForm/initialFormValues'
+} from '@features/strategy/StrategyForm/initialFormValues'
 import StrategyTabContent from '../StrategyTabContent/StrategyTabContent'
 
 type SupportedStrategy = 'stocks' | 'reits' | 'international'

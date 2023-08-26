@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 
-import { stockShareAnalysis as steps } from 'const/definitions'
+import { stockShareAnalysis as steps } from '@const/definitions'
 
 interface IStepsProvider {
   children: React.ReactNode

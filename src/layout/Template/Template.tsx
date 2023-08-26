@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react'
 import Head from 'next/head'
-import Navbar from 'components/Navbar/Navbar'
+import Navbar from '@components/Navbar/Navbar'
 import * as S from './styles'
 
 interface TemplateProps {

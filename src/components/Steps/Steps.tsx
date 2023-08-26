@@ -1,8 +1,8 @@
-import { StockShareAnalysis } from 'const/definitions'
+import { StockShareAnalysis } from '@const/definitions'
 import React from 'react'
 import ArrowStep from '../ArrowStep/ArrowStep'
 import * as S from './styles'
-import { useStepsContext } from 'context/StepsProvider'
+import { useStepsContext } from '@context/StepsProvider'
 
 interface StepsProps {
   steps: StockShareAnalysis[]

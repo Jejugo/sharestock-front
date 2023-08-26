@@ -1,9 +1,9 @@
 import React from 'react'
 
-import AssetsTableController from 'components/AssetTableController/AssetsTableController'
+import AssetsTableController from '@components/AssetTableController/AssetsTableController'
 
 import * as S from './styles'
-import Title from 'components/Title/Title'
+import Title from '@components/Title/Title'
 
 export default function MyAssetsComponent() {
   return (

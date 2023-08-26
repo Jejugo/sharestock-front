@@ -1,7 +1,7 @@
 import React from 'react'
-import Template from 'layout/Template/Template'
+import Template from '@layout/Template/Template'
 
-import MyAssetsComponent from 'features/my-assets/MyAssets/MyAssetsComponent'
+import MyAssetsComponent from '@features/my-assets/MyAssets/MyAssetsComponent'
 
 interface IArrayToObject<T> {
   [key: string]: T

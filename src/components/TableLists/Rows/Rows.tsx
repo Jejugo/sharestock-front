@@ -1,7 +1,7 @@
 import RowItem from './RowItem/RowItem'
 import React, { useContext, useEffect, useState } from 'react'
-import { IWishListContext, WishListContext } from '../../../context/WishList'
-import { useAuth } from '../../../context/AuthUserContext'
+import { IWishListContext, WishListContext } from '@context/WishList'
+import { useAuth } from '@context/AuthUserContext'
 import Firestore from '../../../firebase/Firestore'
 import * as S from './styles'
 

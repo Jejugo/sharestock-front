@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Tabs from 'components/Tabs/Tabs'
+import Tabs from '@components/Tabs/Tabs'
 
 export default function AssetTypeTabContent({
   defaultTab,

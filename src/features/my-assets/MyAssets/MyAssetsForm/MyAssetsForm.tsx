@@ -5,7 +5,7 @@ import MyAssetsContent from '../MyAssetsContent/MyAssetsContent'
 import * as S from './MyAssetsForm.style'
 import { IArrayToObject } from 'firebase/interfaces'
 import Router from 'next/router'
-import config from 'configs'
+import config from '../../../../configs'
 
 const getStatusInvestLink: Record<'stocks' | 'reits', string> = {
   stocks: 'acoes',

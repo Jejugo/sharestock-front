@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { fonts } from 'styles/constants'
+import { fonts } from '@styles/constants'
 
 export const Text = styled.h1`
   color: ${(props) => props.color || 'white'};

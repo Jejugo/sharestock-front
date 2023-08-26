@@ -22,6 +22,12 @@ export default function useFirebaseAuth() {
 
     setAuthUser(authState as any)
     setLoading(false)
+
+    const accessToken = await auth.currentUser?.getIdToken()
+    if (accessToken) {
+      // Save the access token to a cookie
+      document.cookie = `accessToken=${accessToken};max-age=3600;path=/`
+    }
   }
 
   // listen for Firebase state change

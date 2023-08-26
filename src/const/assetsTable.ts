@@ -1,4 +1,4 @@
-import { ITableColumn } from 'components/AssetTable/interfaces'
+import { ITableColumn } from '@components/AssetTable/interfaces'
 
 export const columnsNames: ITableColumn[] = [
   { id: 'type', label: 'Tipo', minWidth: 50 },

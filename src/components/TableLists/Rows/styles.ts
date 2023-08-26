@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { IRowHeaderStyle } from './RowItem/interfaces'
-import { colors } from 'styles/constants'
+import { colors } from '@styles/constants'
 
 export const RowHeader = styled.div<IRowHeaderStyle>`
   flex-basis: 20%;

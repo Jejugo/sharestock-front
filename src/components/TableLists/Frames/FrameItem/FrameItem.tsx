@@ -1,4 +1,3 @@
-import indicatorsValidator from 'validations/stocks/indicators'
 import React from 'react'
 import * as S from './styles'
 

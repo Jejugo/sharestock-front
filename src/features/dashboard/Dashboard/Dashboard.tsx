@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import PieChartComponent from 'components/charts/PieChart/PieChart'
-import BarCharComponent from 'components/charts/BarChart/BarChart'
-import TableComponent from 'components/AssetTable/AssetTable'
-import Text from 'components/Text/Text'
-import Slider from 'components/Slider/Slider'
+import PieChartComponent from '@components/charts/PieChart/PieChart'
+import BarCharComponent from '@components/charts/BarChart/BarChart'
+import TableComponent from '@components/AssetTable/AssetTable'
+import Text from '@components/Text/Text'
+import Slider from '@components/Slider/Slider'
 
 import { Tooltip } from 'recharts'
 
-import CustomTooltip from 'components/charts/PieChart/CustomTooltip/CustomTooltip'
-import CustomTooltipBarChart from 'components/charts/BarChart/CustomTooltip/CustomTooltip'
+import CustomTooltip from '@components/charts/PieChart/CustomTooltip/CustomTooltip'
+import CustomTooltipBarChart from '@components/charts/BarChart/CustomTooltip/CustomTooltip'
 import * as S from './styles'
 
-import Title from 'components/Title/Title'
+import Title from '@components/Title/Title'
 
 import usePieChartData from './hooks/usePieChartData'
 import useBarChartData from './hooks/useBarChartData'
-import Flex from 'components/container/Flex/Flex'
-import Loading from 'components/Loading/Loading'
+import Flex from '@components/container/Flex/Flex'
+import Loading from '@components/Loading/Loading'
 
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'

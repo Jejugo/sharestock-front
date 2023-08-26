@@ -3,8 +3,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { Tooltip } from 'recharts'
 
 import * as S from '../styles'
-import PieChartComponent from 'components/charts/PieChart/PieChart'
-import CustomSelect from 'components/CustomSelect/CustomSelect'
+import PieChartComponent from '@components/charts/PieChart/PieChart'
+import CustomSelect from '@components/CustomSelect/CustomSelect'
 
 import { Sector, Option } from '../interfaces'
 import useAssetSectors from '../hooks/useAssetSectors'

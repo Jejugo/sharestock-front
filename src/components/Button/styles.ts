@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { fonts } from 'styles/constants'
+import { fonts } from '@styles/constants'
 
 export type ButtonTypes = 'button' | 'submit' | 'reset'
 export type ButtonSizes = 'small' | 'medium' | 'large'

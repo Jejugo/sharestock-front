@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { columnsNames } from 'const/assetsTable'
-import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
-import { useAuth } from 'context/AuthUserContext'
+import { columnsNames } from '@const/assetsTable'
+import { ITableColumn, ITableRow } from '@components/AssetTable/interfaces'
+import { useAuth } from '@context/AuthUserContext'
 import useSWR from 'swr'
 
 const domain = process.env.NEXT_PUBLIC_SHARE_API
@@ -40,7 +40,9 @@ export default function useAssetTableData(
     return useMemo(() => rows.filter((item) => item?.type === type), [rows])
   }
 
-  useEffect(() => setIsLoading(isLoading), [isLoading])
+  useEffect(() => {
+    setIsLoading(isLoading)
+  }, [isLoading])
 
   useEffect(() => {
     if (data) {

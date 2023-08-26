@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 module.exports = {
   env: {
     FIREBASE_API_KEY: 'AIzaSyApV5D3FLttjYjlA7PExm-E7dTrf1BimBM',

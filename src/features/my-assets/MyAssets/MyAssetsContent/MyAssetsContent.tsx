@@ -1,5 +1,5 @@
 import React from 'react'
-import StockCheckList from 'components/StockChekList/StockCheckList'
+import StockCheckList from '@components/StockChekList/StockCheckList'
 import { useController } from 'react-hook-form'
 import Select from 'react-select'
 import * as S from './MyAssetContent.style'

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { WishListContext } from 'context/WishList'
-import { useAuth } from 'context/AuthUserContext'
+import { WishListContext } from '@context/WishList'
+import { useAuth } from '@context/AuthUserContext'
 import Firestore from 'firebase/Firestore'
-import WishList from 'features/indicators/WishList/WishList'
+import WishList from '@features/indicators/WishList/WishList'
 
 const WishListPopUp = () => {
   const [visible, setVisible] = useState(false)

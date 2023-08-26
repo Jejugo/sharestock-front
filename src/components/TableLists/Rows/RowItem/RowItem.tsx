@@ -1,5 +1,5 @@
 import React from 'react'
-import indicatorsValidator from 'validations/stocks/indicators'
+import indicatorsValidator from '@validations/stocks/indicators'
 import * as S from './styles'
 
 interface RowItemColum {

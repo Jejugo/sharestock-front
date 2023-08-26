@@ -6,10 +6,10 @@ import {
 } from 'firebase/utils'
 import React, { useEffect } from 'react'
 import Switch from 'react-switch'
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 import Firestore from 'firebase/Firestore'
 import * as S from './styles'
-import { sortArrayAlphabetically } from 'builders/arrays'
+import { sortArrayAlphabetically } from '@builders/arrays'
 
 interface IAssetValue {
   value: string

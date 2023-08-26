@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Firestore from 'firebase/Firestore'
-import { useAuth } from 'context/AuthUserContext'
-import { sortArrayAlphabetically } from 'builders/arrays'
+import { useAuth } from '@context/AuthUserContext'
+import { sortArrayAlphabetically } from '@builders/arrays'
 
 export default function useGoalsdata() {
   const [goals, setGoals] = useState<any>({} as any)

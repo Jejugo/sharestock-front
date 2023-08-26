@@ -1,7 +1,7 @@
 import React from 'react'
-import Template from '../layout/Template/Template'
-import InvestmentPercentages from 'features/goals/InvestmentPercentages/InvestmentPercentages'
-import { Sector } from 'features/goals/InvestmentPercentages/interfaces'
+import Template from '@layout/Template/Template'
+import InvestmentPercentages from '@features/goals/InvestmentPercentages/InvestmentPercentages'
+import { Sector } from '@features/goals/InvestmentPercentages/interfaces'
 
 interface IGoals {
   stockSectors: Sector[]

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import TableLayout from '../layout/TableLayout/TableLayout'
-import SearchBar from '../components/SearchBar/SearchBar'
-import { definitionsList, Definitions } from '../const/definitions'
-import Template from '../layout/Template/Template'
-import DefinitionList from '../features/definitions/DefinitionList/DefinitionList'
+import TableLayout from '@layout/TableLayout/TableLayout'
+import SearchBar from '@components/SearchBar/SearchBar'
+import { definitionsList, Definitions } from '@const/definitions'
+import Template from '@layout/Template/Template'
+import DefinitionList from '@features/definitions/DefinitionList/DefinitionList'
 
 const DefinitionsComponent = () => {
   const [defList, setDefList] = useState<Definitions[]>(definitionsList)

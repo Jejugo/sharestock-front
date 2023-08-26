@@ -1,6 +1,6 @@
 import React from 'react'
-import LandingPageLayout from 'layout/LandingPageLayout'
-import LoginComponent from 'features/login/Login'
+import LandingPageLayout from '@layout/LandingPageLayout'
+import LoginComponent from '@features/login/Login'
 
 const Login = () => {
   return (

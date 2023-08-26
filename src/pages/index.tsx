@@ -1,7 +1,7 @@
 import React from 'react'
-import Template from 'layout/Template/Template'
-import DashboardComponent from 'features/dashboard/Dashboard/Dashboard'
-import { convertArrayToObject } from 'builders/arrays'
+import Template from '@layout/Template/Template'
+import DashboardComponent from '@features/dashboard/Dashboard/Dashboard'
+import { convertArrayToObject } from '@builders/arrays'
 interface IArrayToObject<T> {
   [key: string]: T
 }
@@ -28,11 +28,11 @@ export default function Dashboard({ sharesMap, reitsMap }: IDashboard) {
 }
 
 export async function getServerSideProps(context: any) {
-  const acessToken = context.req.cookies.accessToken
+  const accessToken = context.req.cookies.accessToken
 
   const authorization = {
     headers: {
-      Authorization: `Bearer ${acessToken}`
+      Authorization: `Bearer ${accessToken}`
     }
   }
 
@@ -50,6 +50,7 @@ export async function getServerSideProps(context: any) {
     ])
 
     const { items: sharesList } = await shares.json()
+
     sharesMap = convertArrayToObject(sharesList as IStockItem[], 'papel')
 
     const { items: reitsList } = await reits.json()

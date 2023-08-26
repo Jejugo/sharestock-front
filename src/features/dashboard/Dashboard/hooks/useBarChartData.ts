@@ -1,10 +1,10 @@
-import { IBarData } from 'components/charts/BarChart/interfaces'
+import { IBarData } from '@components/charts/BarChart/interfaces'
 import React, { useState, useEffect } from 'react'
-import useAssetTableData from 'hooks/useAssetTableData'
+import useAssetTableData from '@hooks/useAssetTableData'
 import useGoalsdata from '../hooks/useGoalsdata'
-import { ITableRow } from 'components/AssetTable/interfaces'
-import { sortArrayAlphabetically } from 'builders/arrays'
-import assetTypes from 'const/AssetTypes'
+import { ITableRow } from '@components/AssetTable/interfaces'
+import { sortArrayAlphabetically } from '@builders/arrays'
+import assetTypes from '@const/AssetTypes'
 
 const calculateTotalByAssetType = (arr: ITableRow[]) =>
   arr.reduce((acc: any, item: ITableRow) => {

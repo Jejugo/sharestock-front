@@ -1,10 +1,10 @@
 import Firestore from 'firebase/Firestore'
 import { useEffect } from 'react'
 import { formatSubmitData, formatGetData } from '../utils'
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 import { useForm } from 'react-hook-form'
 import initialFormState, { IStrategyForm } from '../initialFormValues'
-import { convertObjectKeysToList } from 'builders/arrays'
+import { convertObjectKeysToList } from '@builders/arrays'
 
 export default function useStrategyForm() {
   const { authUser } = useAuth() as IAuthUserContext

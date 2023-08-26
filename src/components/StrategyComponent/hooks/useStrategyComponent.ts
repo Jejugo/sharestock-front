@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import { TabName } from 'features/strategy/StrategyForm/initialFormValues'
+import { TabName } from '@features/strategy/StrategyForm/initialFormValues'
 
 const TRIM_ZEROES_STRING = /^0+(\d)|(\d)0+$/gm
 

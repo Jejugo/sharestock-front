@@ -1,6 +1,6 @@
 import React from 'react'
 import * as S from './styles'
-import { Definitions } from 'const/definitions'
+import { Definitions } from '@const/definitions'
 interface DefinitionListProps {
   items: Definitions[]
   handleDef?: (e: any) => void

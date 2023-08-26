@@ -1,9 +1,9 @@
 import React from 'react'
 import App from 'next/app'
-import GlobalStyles from '../styles/GlobalStyles'
-import { AuthUserProvider } from '../context/AuthUserContext'
+import GlobalStyles from '@styles/GlobalStyles'
+import { AuthUserProvider } from '@context/AuthUserContext'
 import initFirebase from '../firebase'
-import Fonts from '../components/Fonts'
+import Fonts from '@components/Fonts'
 import { NextComponentType, NextPageContext } from 'next/types'
 import { FirebaseApp } from 'firebase/app'
 

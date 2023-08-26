@@ -1,8 +1,8 @@
-import { convertObjectToArray } from 'builders/arrays'
+import { convertObjectToArray } from '@builders/arrays'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Firestore from 'firebase/Firestore'
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)

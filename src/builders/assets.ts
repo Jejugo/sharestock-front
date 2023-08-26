@@ -1,4 +1,4 @@
-import { ITableRow } from 'components/AssetTable/interfaces'
+import { ITableRow } from '@components/AssetTable/interfaces'
 
 export interface IAssetSectors {
   name: string

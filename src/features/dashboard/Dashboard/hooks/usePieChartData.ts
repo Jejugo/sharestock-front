@@ -1,10 +1,10 @@
-import { sortArrayAlphabetically } from 'builders/arrays'
+import { sortArrayAlphabetically } from '@builders/arrays'
 import {
   getTotalValueBySector,
   walletStockSectors,
   walletReitSectors
-} from 'builders/assets'
-import useAssetTableData from 'hooks/useAssetTableData'
+} from '@builders/assets'
+import useAssetTableData from '@hooks/useAssetTableData'
 import { useEffect, useState } from 'react'
 import { IPieData, IStockSector } from '../interfaces'
 import { ISliderMap } from '../Dashboard'

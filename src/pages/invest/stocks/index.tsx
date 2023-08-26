@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 
-import assetTypes from 'const/AssetTypes'
-import MyAssetsForm from 'features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
+import assetTypes from '@const/AssetTypes'
+import MyAssetsForm from '@features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
 import axios from 'axios'
-import Template from 'layout/Template/Template'
-import { convertArrayToObject } from 'builders/arrays'
-import { normalizeArrayToDropdown } from '../../../builders/arrays'
-import Tabs from 'components/Tabs/Tabs'
+import Template from '@layout/Template/Template'
+import { convertArrayToObject } from '@builders/arrays'
+import { normalizeArrayToDropdown } from '@builders/arrays'
+import Tabs from '@components/Tabs/Tabs'
 import Router from 'next/router'
-import InvestContextProvider from 'context/InvestContext'
+import InvestContextProvider from '@context/InvestContext'
 
 interface IArrayToObject<T> {
   [key: string]: T

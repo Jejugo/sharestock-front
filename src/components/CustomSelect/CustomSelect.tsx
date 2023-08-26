@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import * as S from './CustomSelect.styles'
-import Flex from 'components/container/Flex/Flex'
-import Button from 'components/Button/Button'
+import Flex from '@components/container/Flex/Flex'
+import Button from '@components/Button/Button'
 import { Delete } from '@material-ui/icons'
 
 interface Option {

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react'
-import useAssetTableData from 'hooks/useAssetTableData'
+import React, { useCallback } from 'react'
+import useAssetTableData from '@hooks/useAssetTableData'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -12,18 +12,18 @@ import TableRow from '@mui/material/TableRow'
 import CachedIcon from '@material-ui/icons/Cached'
 import { ITableColumn, ITableRow } from './interfaces'
 
-import Text from 'components/Text/Text'
+import Text from '@components/Text/Text'
 
 import * as S from './AssetTable.styles'
 import useOutsideClick from './hooks/useOutsideClick'
-import { useAuth } from 'context/AuthUserContext'
-import Loading from 'components/Loading/Loading'
-import Flex from 'components/container/Flex/Flex'
+import { useAuth } from '@context/AuthUserContext'
+import Loading from '@components/Loading/Loading'
+import Flex from '@components/container/Flex/Flex'
 import { Select, MenuItem, SelectChangeEvent } from '@mui/material'
 import { getTextColor, isCheapStock } from './utils/helpers'
 import NorthIcon from '@mui/icons-material/North'
 import SouthIcon from '@mui/icons-material/South'
-import assetTypes from 'const/AssetTypes'
+import assetTypes from '@const/AssetTypes'
 
 const getContent = (
   column: ITableColumn,
@@ -115,8 +115,6 @@ export const AssetTable = React.memo(() => {
   )
 
   const handleDeleteItem = async (e: any, row: any) => {
-    console.log(row)
-
     try {
       const result = window.confirm(
         'Are you sure you want to delete this item?'

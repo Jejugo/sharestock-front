@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { useAuth } from 'context/AuthUserContext'
+import { useAuth } from '@context/AuthUserContext'
 
 import * as S from './styles'
-import Button from 'components/Button/Button'
+import Button from '@components/Button/Button'
 import AssetTypeTabContent from './AssetTypeTabContent/AssetTypeTabContent'
 import AssetType from './AssetType/AssetType'
-import assetTypes from 'const/AssetTypes'
+import assetTypes from '@const/AssetTypes'
 import { GoalsForm, Sector } from './interfaces'
 
 import { getFirestoreGoals, setFirestoreGoalsData } from './requests'
