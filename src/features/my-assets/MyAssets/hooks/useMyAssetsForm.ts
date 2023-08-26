@@ -8,6 +8,9 @@ function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+const noStrategyTabs = (tabName: AssetTypes) =>
+  ['bonds', 'international', 'crypto'].includes(tabName)
+
 export default function useMyAssetsForm({
   initialState,
   tabName,
@@ -20,27 +23,14 @@ export default function useMyAssetsForm({
   assetMap?: any
 }) {
   const { authUser } = useAuth() as IAuthUserContext
-  const tabKey =
-    tabName === 'bonds' || tabName === 'international' || tabName === 'crypto'
-      ? 'value'
-      : 'quantity'
+  const tabKey = noStrategyTabs(tabName) ? 'value' : 'quantity'
 
   const methods = useForm({
-    defaultValues: initialState || {
-      [tabName]: {
-        statements: [],
-        selectedAsset: '',
-        [tabKey]: ''
-      }
-    }
+    defaultValues: initialState
   })
 
   const onSubmit = async (data: any) => {
-    if (
-      tabName !== 'bonds' &&
-      tabName !== 'international' &&
-      tabName !== 'crypto'
-    ) {
+    if (noStrategyTabs(tabName)) {
       try {
         await Firestore().setListByKey({
           id: authUser.uid,

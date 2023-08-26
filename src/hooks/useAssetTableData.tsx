@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { columnsNames } from 'const/assetsTable'
 import { ITableColumn, ITableRow } from 'components/AssetTable/interfaces'
 import { useAuth } from 'context/AuthUserContext'
@@ -36,45 +36,30 @@ export default function useAssetTableData(
     fetcher
   )
 
+  const filterRowsByType = (type: string) => {
+    return useMemo(() => rows.filter((item) => item?.type === type), [rows])
+  }
+
   useEffect(() => setIsLoading(isLoading), [isLoading])
 
   useEffect(() => {
     if (data) {
-      setIsLoading(true)
-
-      const { items } = data
-
-      setRows([
-        ...(items.stocks?.tableData || []),
-        ...(items.reits?.tableData || []),
-        ...(items.bonds?.tableData || []),
-        ...(items.international?.tableData || []),
-        ...(items.crypto?.tableData || [])
-      ])
+      const allRows = Object.values(data.items)
+        .flatMap((item: any) => item.tableData)
+        .filter((a) => a)
+      setRows(allRows)
 
       setColumns(columnsNames)
-      setIsLoading(false)
     }
   }, [data])
 
-  const stocks = (rows.filter((item) => item.type === 'stocks') ||
-    []) as ITableRow[]
-  const reits = (rows.filter((item) => item.type === 'reits') ||
-    []) as ITableRow[]
-  const bonds = (rows.filter((item) => item.type === 'bonds') ||
-    []) as ITableRow[]
-  const international = (rows.filter((item) => item.type === 'international') ||
-    []) as ITableRow[]
-  const crypto = (rows.filter((item) => item.type === 'crypto') ||
-    []) as ITableRow[]
-
   return {
     allRows: rows,
-    stocks,
-    reits,
-    bonds,
-    international,
-    crypto,
+    stocks: filterRowsByType('stocks'),
+    reits: filterRowsByType('reits'),
+    bonds: filterRowsByType('bonds'),
+    international: filterRowsByType('international'),
+    crypto: filterRowsByType('crypto'),
     columns,
     mutate
   }

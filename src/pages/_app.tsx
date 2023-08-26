@@ -48,4 +48,3 @@ class MyApp extends App<IApp, any> {
 }
 
 export default MyApp
-//export default wrapper.withRedux(MyApp);
