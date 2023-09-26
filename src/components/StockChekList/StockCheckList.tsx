@@ -1,4 +1,9 @@
-import { firestore, strategyStatementsToArray } from 'firebase/utils'
+import {
+  getStrategyStatements,
+  strategyStatementsToArray,
+  getStocksStrategy,
+  getReitsStrategy
+} from 'firebase/utils'
 import React, { useEffect } from 'react'
 import Switch from 'react-switch'
 import { useAuth } from '@context/AuthUserContext'
@@ -26,7 +31,7 @@ export default function StockCheckList({
 }: IStockCheckList) {
   const { authUser } = useAuth()
 
-  const getFirestoreUserStrategy = async (): Promise<IStatement[]> => {
+  const updatedStrategyStatements = async (): Promise<IStatement[]> => {
     if (authUser) {
       const firestoreStatements = (await Firestore().getData({
         collection: 'userStrategy',
@@ -72,13 +77,13 @@ export default function StockCheckList({
     }
   }
 
-  const getFirestoreAssetStrategy = async () => {
+  const getStrategy = async () => {
     if (authUser) {
       switch (assetType) {
         case 'stocks':
-          return firestore.getStocksStrategy(authUser)
+          return getStocksStrategy(authUser)
         case 'reits':
-          return firestore.getReitsStrategy(authUser)
+          return getReitsStrategy(authUser)
         default:
           return null
       }
@@ -89,9 +94,9 @@ export default function StockCheckList({
   useEffect(() => {
     const getFirebaseStrategyStatements = async () => {
       if (assetValue.value && authUser) {
-        const assetListStatements = await getFirestoreAssetStrategy()
+        const assetListStatements = await getStrategy()
 
-        const updatedStatements = await getFirestoreUserStrategy()
+        const updatedStatements = await updatedStrategyStatements()
 
         if (assetListStatements && assetValue.value in assetListStatements) {
           const assetStatements = Object.values(
@@ -123,9 +128,7 @@ export default function StockCheckList({
   useEffect(() => {
     const getAllStatements = async () => {
       if (authUser) {
-        const strategyStatements = await firestore.getStrategyStatements(
-          authUser
-        )
+        const strategyStatements = await getStrategyStatements(authUser)
 
         const formattedData = strategyStatementsToArray(
           strategyStatements[assetType]
