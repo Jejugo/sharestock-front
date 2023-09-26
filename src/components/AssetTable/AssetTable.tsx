@@ -152,7 +152,7 @@ export const AssetTable = React.memo(() => {
       {
         method: 'POST',
         headers: {
-          Authorization: authUser.accessToken
+          Authorization: `Bearer ${authUser.accessToken}`
         }
       }
     )
