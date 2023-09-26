@@ -93,7 +93,7 @@ export default function StockCheckList({
 
   useEffect(() => {
     const getFirebaseStrategyStatements = async () => {
-      if (assetValue && authUser) {
+      if (assetValue.value && authUser) {
         const assetListStatements = await getStrategy()
 
         const updatedStatements = await updatedStrategyStatements()
@@ -123,7 +123,7 @@ export default function StockCheckList({
     getFirebaseStrategyStatements().catch((err) =>
       console.error('error: ', err)
     )
-  }, [assetValue])
+  }, [assetValue.value])
 
   useEffect(() => {
     const getAllStatements = async () => {

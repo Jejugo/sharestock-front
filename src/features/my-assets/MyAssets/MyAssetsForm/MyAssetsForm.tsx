@@ -12,8 +12,11 @@ const getStatusInvestLink: Record<'stocks' | 'reits', string> = {
   reits: 'fundos-imobiliarios'
 }
 
-const initialState = (tabName: string) => {
-  const tabKey = tabName === 'bonds' ? 'value' : 'quantity'
+const noStrategyTabs = (tabName: AssetTypes) =>
+  ['bonds', 'international', 'crypto'].includes(tabName)
+
+const initialState = (tabName: AssetTypes) => {
+  const tabKey = noStrategyTabs(tabName) ? 'value' : 'quantity'
   return {
     statements: [],
     selectedAsset: '',
@@ -75,7 +78,10 @@ export default function MyAssetsForm({
             </S.StatusInvestBtn>
             <div>
               <S.AddAssetBtn type="submit">Salvar</S.AddAssetBtn>
-              <S.AddAssetBtn onClick={() => Router.push(`/invest`)}>
+              <S.AddAssetBtn
+                type="button"
+                onClick={() => Router.push(`/invest`)}
+              >
                 Voltar
               </S.AddAssetBtn>
             </div>

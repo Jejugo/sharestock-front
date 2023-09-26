@@ -173,7 +173,7 @@ export const AssetTable = React.memo(() => {
         <Loading />
       ) : (
         <Paper
-          sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#151515' }}
+          sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#111' }}
         >
           <Flex justifyContent="space-between" alignItems="center">
             <Text color="white">Você possui {allRows.length} ativos. </Text>
@@ -217,7 +217,7 @@ export const AssetTable = React.memo(() => {
                 <TableRow>
                   {columns.map((column: ITableColumn) => (
                     <TableCell
-                      sx={{ backgroundColor: '#3E3E3E', color: 'white' }}
+                      sx={{ backgroundColor: '#222', color: 'white' }}
                       key={column.id}
                       align={column.align}
                       style={{ minWidth: column.minWidth }}

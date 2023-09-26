@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { fonts } from '@styles/constants'
 
 export const Text = styled.h1`
-  color: ${(props) => props.color || 'white'};
+  color: ${(props) => props.color};
   font-size: ${fonts.title}px;
   margin: 5% 0px;
 `

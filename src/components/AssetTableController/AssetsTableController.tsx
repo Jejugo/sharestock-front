@@ -15,8 +15,9 @@ export default function AssetsTableController() {
         <Title text="Meus Ativos" />
         <Button
           onClick={redirectToAddAsset}
-          text="Adicionar Ativo"
+          text="Adicionar ou Alterar Ativo"
           width="medium"
+          height={50}
         />
       </S.TableTopActions>
       <AssetTable />

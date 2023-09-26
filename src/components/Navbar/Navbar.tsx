@@ -34,7 +34,11 @@ const Navbar = ({ isNavbarOpen, setIsNavbarOpen }: INavbar) => {
         <S.NavigationIcon
           onClick={() => setIsNavbarOpen((previousState) => !previousState)}
         >
-          {isNavbarOpen ? <CloseIcon /> : <MenuOpenIcon />}
+          {isNavbarOpen ? (
+            <CloseIcon style={{ color: 'white' }} />
+          ) : (
+            <MenuOpenIcon style={{ color: 'white' }} />
+          )}
         </S.NavigationIcon>
 
         <S.NavbarItemList>

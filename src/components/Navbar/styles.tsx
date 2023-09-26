@@ -8,7 +8,7 @@ export const Navigation = styled.nav<INavigation>`
   left: 0;
   width: ${(props) => (props.isNavbarOpen ? '200px' : '60px')};
   padding: 20px 0;
-  background-color: #ddd;
+  background-color: #222;
   display: flex;
   flex-direction: column;
   transition: 0.5s ease;
@@ -16,7 +16,7 @@ export const Navigation = styled.nav<INavigation>`
   z-index: 999;
 
   a {
-    color: #000;
+    color: #fff;
   }
 `
 
@@ -26,7 +26,7 @@ export const NavigationIcon = styled.div`
   margin: 20px;
 
   a {
-    color: black;
+    color: #fff;
   }
 `
 

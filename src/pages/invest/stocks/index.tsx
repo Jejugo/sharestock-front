@@ -38,6 +38,8 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
           })
           .then((res) => res.data.items)
 
+        console.log(data)
+
         setAssetStrategyData(data)
       }
     }

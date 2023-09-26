@@ -20,6 +20,7 @@ export const Button = styled.button<Size>`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 15px;
   width: ${(props) =>
     sizeValues[props.width as ButtonSizes] || `${props.width}px`};
   height: ${(props) => `${props.height}px` || 'auto'};

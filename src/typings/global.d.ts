@@ -85,6 +85,10 @@ declare global {
     quantity: string
   }
 
+  type IUserReitItem = IReitItem & {
+    quantity: string
+  }
+
   interface IStockItemResponse {
     status: number
     message: string
@@ -138,8 +142,12 @@ declare global {
     [key: string]: IStockItem
   }
 
-  export interface IFirestoreGetAllUserAssets {
+  export interface IFirestoreGetUserStocks {
     [key: string]: IUserStockItem
+  }
+
+  export interface IFirestoreGetUserReits {
+    [key: string]: IUserReitItem
   }
 
   interface IFirebaseUserAssetStrategy {

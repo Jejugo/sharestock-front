@@ -9,7 +9,7 @@ export const TableContainerStyle = styled(TableContainer)`
 export const TableRowStyle = styled(TableRow)`
   position: relative;
   &:hover {
-    background-color: #eee;
+    background-color: #333;
 
     p,
     span,
@@ -20,8 +20,7 @@ export const TableRowStyle = styled(TableRow)`
     h4,
     h5,
     td {
-      color: black;
-      font-weight: 600;
+      color: white;
     }
   }
 `

@@ -30,6 +30,10 @@ export default function useMyAssetsForm({
   })
 
   const onSubmit = async (data: any) => {
+    if (data[tabName].selectedAsset === '') {
+      throw new Error('No asset selected')
+    }
+
     if (noStrategyTabs(tabName)) {
       try {
         await Firestore().setListByKey({

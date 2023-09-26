@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
   html {
     margin: 0;
     color: white;
-    background-color: #151515;
+    background-color: #111  ;
     font-family: 'Metropolis Light', sans-serif;
     line-height: 3vh;
   }
