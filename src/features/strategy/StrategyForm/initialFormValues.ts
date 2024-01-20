@@ -11,12 +11,17 @@ interface FormAsset {
 export interface IStrategyForm {
   stocks: FormAsset
   reits: FormAsset
-  international: FormAsset & {
-    type: string
-  }
+  international: Record<
+    AssetTypes,
+    FormAsset & {
+      type: string
+    }
+  >
   bonds: FormAsset & {
     type: string
   }
+  overview: FormAsset
+  crypto: FormAsset
 }
 
 export type TabName =

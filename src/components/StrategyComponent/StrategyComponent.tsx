@@ -4,17 +4,19 @@ import AssetTypeTabContent from '@features/goals/InvestmentPercentages/AssetType
 import assetTypes from '@const/AssetTypes'
 import StrategyTabContent from './StrategyTabContent/StrategyTabContent'
 
-type SupportedAssets = 'stocks' | 'reits' | 'international'
+type OnDeleteItem = (
+  e: React.MouseEvent<HTMLElement>,
+  index: number,
+  statement: string,
+  name: AssetTypes
+) => Promise<void>
+
+type StrategyComponentProps = {
+  onDeleteItem: OnDeleteItem
+}
 export default function StrategyComponent({
   onDeleteItem
-}: {
-  onDeleteItem: (
-    e: React.MouseEvent<HTMLElement>,
-    index: number,
-    statement: string,
-    name: SupportedAssets
-  ) => Promise<void>
-}) {
+}: StrategyComponentProps) {
   const tabsList = useRef(
     Object.keys(assetTypes)
       .map((assetType) => assetType)

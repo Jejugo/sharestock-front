@@ -231,11 +231,15 @@ export const AssetTable = React.memo(() => {
                 {filteredAssets
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: ITableRow, index: number) => {
+                    const isHighlighted =
+                      !row.isBalanced && row.recommended > row.total
+
                     return (
                       <S.TableRowStyle
                         role="checkbox"
                         tabIndex={-1}
                         key={index}
+                        isHighlighted={isHighlighted}
                       >
                         {columns.map((column: ITableColumn) =>
                           renderRow(row, column)

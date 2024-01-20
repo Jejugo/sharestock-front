@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { columnsNames } from '@const/assetsTable'
+import { columnsNames } from '@const/columns'
 import { ITableColumn, ITableRow } from '@components/AssetTable/interfaces'
 import { useAuth } from '@context/AuthUserContext'
 import useSWR from 'swr'

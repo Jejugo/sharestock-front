@@ -6,7 +6,17 @@ export const TableContainerStyle = styled(TableContainer)`
   max-height: 70vh;
 `
 
+interface TableRowStyleProps {
+  isHighlighted: boolean
+}
+
 export const TableRowStyle = styled(TableRow)`
+  ${(props: TableRowStyleProps) => {
+    return props.isHighlighted
+      ? 'background-color: rgba(250, 238, 156, 0.2);'
+      : ''
+  }}
+
   position: relative;
   &:hover {
     background-color: #333;
