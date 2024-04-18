@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Payload } from 'recharts/types/component/DefaultTooltipContent'
 import * as S from './CustomTooltip.styles'
-import { IBarData } from '../interfaces'
+import { IBarData } from '@components/charts/BarChart/interfaces'
 
 interface ICustomizedTooltip {
   payload?: Payload<number, string>[]
   decimals: number
   totalValue: number
+  goalsData: IBarData[]
 }
 
 export default function CustomTooltip({
   payload,
   decimals,
+  goalsData,
   totalValue
 }: ICustomizedTooltip) {
+  const selectedGoal = goalsData
+    .find(
+      (goal) => goal.name.toLowerCase() === payload?.[0]?.name?.toLowerCase()
+    )
+    ?.value.toString()
+
   const value = parseFloat((payload?.[0]?.value ?? 0).toFixed(2))
 
   return (
@@ -30,7 +38,7 @@ export default function CustomTooltip({
         {payload?.[0]?.value
           ? `${((payload?.[0]?.value / totalValue) * 10 ** decimals).toFixed(
               2
-            )}%`
+            )}% ${selectedGoal ? `(${selectedGoal}%)` : ''}`
           : null}
       </S.TooltipTitle>
       <S.TooltipList></S.TooltipList>

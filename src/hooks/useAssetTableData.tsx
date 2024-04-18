@@ -45,7 +45,7 @@ export default function useAssetTableData(
   }, [isLoading])
 
   useEffect(() => {
-    if (data) {
+    if (data && data.items) {
       const allRows = Object.values(data.items)
         .flatMap((item: any) => item.tableData)
         .filter((a) => a)

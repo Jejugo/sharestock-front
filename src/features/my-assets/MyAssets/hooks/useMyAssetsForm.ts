@@ -34,7 +34,7 @@ export default function useMyAssetsForm({
       throw new Error('No asset selected')
     }
 
-    if (noStrategyTabs(tabName)) {
+    if (!noStrategyTabs(tabName)) {
       try {
         await Firestore().setListByKey({
           id: authUser.uid,

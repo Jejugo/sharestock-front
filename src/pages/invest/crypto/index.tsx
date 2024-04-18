@@ -7,15 +7,16 @@ import Tabs from '@components/Tabs/Tabs'
 import Router from 'next/router'
 import InvestContextProvider from '@context/InvestContext'
 import { Sector } from '@features/goals/InvestmentPercentages/interfaces'
+import { ITabsList } from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
 
 interface IAddAssets {
   dropdownCrypto: IDropdownList
 }
 
 export default function InternationInvest({ dropdownCrypto }: IAddAssets) {
-  const assetTypesList = Object.keys(assetTypes)
-    .map((assetType) => assetType)
-    .filter((assetType) => assetType !== 'overview') as Partial<AssetTypes>[]
+  const assetTypesList = Object.entries(assetTypes).filter(
+    (assetType) => assetType[0] !== 'overview'
+  ) as ITabsList[]
 
   return (
     <Template tabTitle="Invest Crypto">

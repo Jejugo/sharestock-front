@@ -11,12 +11,9 @@ interface FormAsset {
 export interface IStrategyForm {
   stocks: FormAsset
   reits: FormAsset
-  international: Record<
-    AssetTypes,
-    FormAsset & {
-      type: string
-    }
-  >
+  international: FormAsset & {
+    type: string
+  }
   bonds: FormAsset & {
     type: string
   }

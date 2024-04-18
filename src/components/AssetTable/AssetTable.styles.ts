@@ -103,3 +103,13 @@ export const UpdateIcon = styled.div<UpdateIcon>`
 `
 
 export const TableFilter = styled.section``
+
+export const PaperWrapperStyles = {
+  width: '100%',
+  overflow: 'hidden',
+  backgroundColor: '#222',
+  borderRadius: '15px',
+  boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+}
+
+export const PaperContentStyles = { padding: '20px', backgroundColor: '#222' }

@@ -7,7 +7,7 @@ import {
 import useAssetTableData from '@hooks/useAssetTableData'
 import { useEffect, useState } from 'react'
 import { IPieData, IStockSector } from '../interfaces'
-import { ISliderMap } from '../Dashboard'
+import { ISliderMap } from '@features/dashboard/Dashboard/types'
 import useGoalsdata from '../hooks/useGoalsdata'
 
 interface IArrayToObject<T> {

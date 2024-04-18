@@ -5,6 +5,7 @@ interface TextProps {
   size?: string
   weight?: string
   style?: CSSObject
+  noMargin?: boolean
 }
 
 export const StyledText = styled.p<TextProps>`
@@ -12,4 +13,5 @@ export const StyledText = styled.p<TextProps>`
   font-size: ${({ size }) => size || '16px'};
   font-weight: ${({ weight }) => weight || 'normal'};
   ${({ style }) => style};
+  ${({ noMargin }) => noMargin && 'margin: 0;'}
 `

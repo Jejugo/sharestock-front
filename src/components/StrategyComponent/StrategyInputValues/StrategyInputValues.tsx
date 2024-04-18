@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as S from './StrategyInputValues.style'
 import { useFormContext } from 'react-hook-form'
 import Select, { SingleValue } from 'react-select'
@@ -29,8 +29,6 @@ export default function StrategyInputValues({
   const { setValue, getValues, watch, reset } = useFormContext()
 
   const formState = watch()
-  console.log('formState', formState)
-
   const value = getValues()[name as AssetTypes] || {}
 
   const handleInputStatement = (e: React.ChangeEvent<HTMLInputElement>) => {

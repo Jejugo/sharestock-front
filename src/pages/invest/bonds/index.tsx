@@ -6,15 +6,16 @@ import Template from '@layout/Template/Template'
 import Tabs from '@components/Tabs/Tabs'
 import Router from 'next/router'
 import InvestContextProvider from '@context/InvestContext'
+import { ITabsList } from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
 
 interface IAddAssets {
   dropdownBonds: IDropdownList
 }
 
 export default function StockInvest({ dropdownBonds }: IAddAssets) {
-  const assetTypesList = Object.keys(assetTypes)
-    .map((assetType) => assetType)
-    .filter((assetType) => assetType !== 'overview') as Partial<AssetTypes>[]
+  const assetTypesList = Object.entries(assetTypes).filter(
+    (assetType) => assetType[0] !== 'overview'
+  ) as ITabsList[]
 
   return (
     <Template tabTitle="Invest Bonds">

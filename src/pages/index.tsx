@@ -2,16 +2,16 @@ import React from 'react'
 import Template from '@layout/Template/Template'
 import DashboardComponent from '@features/dashboard/Dashboard/Dashboard'
 import { convertArrayToObject } from '@builders/arrays'
-interface IArrayToObject<T> {
+interface IAssetObject<T> {
   [key: string]: T
 }
 interface IDashboard {
-  sharesMap: IArrayToObject<IStockItem>
-  reitsMap: IArrayToObject<IReitItem>
-  bondsMap: IArrayToObject<{
+  sharesMap: IAssetObject<IStockItem>
+  reitsMap: IAssetObject<IReitItem>
+  bondsMap: IAssetObject<{
     value: number
   }>
-  internationalAssetsMap: IArrayToObject<{
+  internationalAssetsMap: IAssetObject<{
     value: number
   }>
 }
@@ -36,9 +36,6 @@ export async function getServerSideProps(context: any) {
     }
   }
 
-  let sharesMap = {}
-  let reitsMap = {}
-
   try {
     const [shares, reits] = await Promise.all([
       await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/shares`, {
@@ -51,10 +48,10 @@ export async function getServerSideProps(context: any) {
 
     const { items: sharesList } = await shares.json()
 
-    sharesMap = convertArrayToObject(sharesList as IStockItem[], 'papel')
+    const sharesMap = convertArrayToObject(sharesList as IStockItem[], 'papel')
 
     const { items: reitsList } = await reits.json()
-    reitsMap = convertArrayToObject(reitsList as IStockItem[], 'papel')
+    const reitsMap = convertArrayToObject(reitsList as IStockItem[], 'papel')
 
     return {
       props: {

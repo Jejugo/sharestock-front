@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { useAuth } from './AuthUserContext'
 
 interface InvestContextProviderProps {
@@ -28,17 +28,16 @@ const InvestContext = createContext(initialState)
 export const useInvestContext = () => useContext(InvestContext)
 
 const InvestContextProvider = ({ children }: InvestContextProviderProps) => {
-  const { authUser } = useAuth() as IAuthUserContext
-
   const [assetStrategy, setAssetStrategy] = useState<IAssetStrategy>({
     statements: [],
     selectedAsset: '',
     quantity: ''
   } as IAssetStrategy)
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     alert('Data saved successfully')
   }
+
   return (
     <InvestContext.Provider
       value={{ onSubmit, assetStrategy, setAssetStrategy }}

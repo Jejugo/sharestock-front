@@ -20,10 +20,11 @@ const calculateTotalByAssetType = (arr: ITableRow[]) =>
     return acc
   }, {})
 
-export default function useBarChartData(totalValue: number) {
+export default function useBarChartData() {
   const { allRows } = useAssetTableData()
   const [currentChartData, setCurrentChartData] = useState<IBarData[]>([])
   const [goalsChartData, setGoalsChartData] = useState<IBarData[]>([])
+  const [totalValue, setTotalValue] = useState(0)
   const { overview } = useGoalsdata()
 
   useEffect(() => {
@@ -50,8 +51,13 @@ export default function useBarChartData(totalValue: number) {
     }
   }, [allRows, overview])
 
+  useEffect(() => {
+    setTotalValue(currentChartData.reduce((acc, curr) => acc + curr.value, 0))
+  }, [currentChartData])
+
   return {
     currentChartData,
-    goalsChartData
+    goalsChartData,
+    totalValue
   }
 }

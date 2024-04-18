@@ -11,6 +11,7 @@ import { normalizeArrayToDropdown } from '@builders/arrays'
 import Tabs from '@components/Tabs/Tabs'
 import Router from 'next/router'
 import InvestContextProvider from '@context/InvestContext'
+import { ITabsList } from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
 
 interface IArrayToObject<T> {
   [key: string]: T
@@ -23,9 +24,9 @@ interface IAddAssets {
 export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
   const { authUser } = useAuth() as IAuthUserContext
   const [assetStrategyData, setAssetStrategyData] = useState([] as any)
-  const assetTypesList = Object.keys(assetTypes)
-    .map((assetType) => assetType)
-    .filter((assetType) => assetType !== 'overview') as Partial<AssetTypes>[]
+  const assetTypesList = Object.entries(assetTypes).filter(
+    (assetType) => assetType[0] === 'stocks' || assetType[0] === 'reits'
+  ) as ITabsList[]
 
   useEffect(() => {
     const getAssetsFromFirebase = async () => {
@@ -37,8 +38,6 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
             }
           })
           .then((res) => res.data.items)
-
-        console.log(data)
 
         setAssetStrategyData(data)
       }

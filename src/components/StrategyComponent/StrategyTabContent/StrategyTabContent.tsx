@@ -4,17 +4,16 @@ import StrategyInputValues from '../StrategyInputValues/StrategyInputValues'
 import * as S from './StrategyTabContent.style'
 import useStrategyComponent from '../hooks/useStrategyComponent'
 
-type SupportedAssets = 'stocks' | 'reits' | 'international'
 export default function StrategyTabContent({
   tabName,
   onDeleteItem
 }: {
   tabName: Omit<AssetTypes, 'overview'>
   onDeleteItem: (
-    e: React.MouseEvent<HTMLElement>,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
     index: number,
     statement: string,
-    name: SupportedAssets
+    name: 'stocks' | 'reits'
   ) => Promise<void>
 }) {
   const { addStatement, calculateTotalPoints, handleWeightChange } =

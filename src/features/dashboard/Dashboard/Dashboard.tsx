@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PieChartComponent from '@components/charts/PieChart/PieChart'
-import BarCharComponent from '@components/charts/BarChart/BarChart'
 import TableComponent from '@components/AssetTable/AssetTable'
-import Text from '@components/Text/Text'
 import Slider from '@components/Slider/Slider'
 
 import { Tooltip } from 'recharts'
@@ -12,6 +10,7 @@ import CustomTooltipBarChart from '@components/charts/BarChart/CustomTooltip/Cus
 import * as S from './styles'
 
 import Title from '@components/Title/Title'
+import Text from '@components/Text/Text'
 
 import usePieChartData from './hooks/usePieChartData'
 import useBarChartData from './hooks/useBarChartData'
@@ -20,46 +19,23 @@ import Loading from '@components/Loading/Loading'
 
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import { ISliderMap } from './types'
+import styled from 'styled-components'
 
-interface IArrayToObject<T> {
-  [key: string]: T
-}
 interface IDashboardComponent {
   sharesMap: IArrayToObject<IStockItem>
   reitsMap: IArrayToObject<IReitItem>
 }
 
-export interface IGoal {
-  id: number
-  name: string
-  value: number
-}
-
-export interface ISliderMap {
-  title: string
-  goals: {
-    id: number
-    name: string
-    value: number
-  }[]
-  data: {
-    name: string
-    value: number
-  }[]
-  sectors: {
-    name: string
-    sector: string
-    value: number
-  }[]
-}
+const StyledFlex = styled(Flex)`
+  height: 100%;
+`
 
 export default function DashboardComponent({
   sharesMap,
   reitsMap
 }: IDashboardComponent) {
   const [sliderMap, setSliderMap] = useState<ISliderMap[]>([] as ISliderMap[])
-
-  const [totalValue, setTotalValue] = useState(0)
   const [hideTotalValue, setHideTotalValue] = useState(false)
 
   usePieChartData({
@@ -68,15 +44,12 @@ export default function DashboardComponent({
     setSliderMap
   })
 
-  const { currentChartData, goalsChartData } = useBarChartData(totalValue)
+  const { currentChartData, goalsChartData, totalValue } = useBarChartData()
 
-  useEffect(
-    () =>
-      setTotalValue(
-        currentChartData.reduce((acc, curr) => acc + curr.value, 0)
-      ),
-    [currentChartData]
-  )
+  const isLoading =
+    sliderMap.length === 0 ||
+    currentChartData.length === 0 ||
+    goalsChartData.length === 0
 
   return (
     <>
@@ -115,93 +88,95 @@ export default function DashboardComponent({
             />
           </Flex>
         </Flex>
-        {currentChartData.length === 0 ||
-        goalsChartData.length === 0 ||
-        sliderMap.length === 0 ? (
+        {isLoading ? (
           <Loading />
         ) : (
-          <>
-            <S.BarChartComponents>
-              {currentChartData.length > 0 && (
-                <>
-                  <Text color="white">Current Value</Text>
-                  <BarCharComponent data={currentChartData} barColor="#8884d8">
-                    <Tooltip
-                      cursor={{ fill: '#ccc', opacity: '0.1' }}
-                      content={
-                        <CustomTooltipBarChart
-                          decimals={2}
-                          totalValue={totalValue}
-                        />
-                      }
+          <S.Grid>
+            {currentChartData.length > 0 && (
+              <S.GoalsPieChart>
+                <PieChartComponent data={currentChartData} width="50%">
+                  <Tooltip
+                    cursor={{ fill: '#ccc', opacity: '0.1' }}
+                    content={
+                      <CustomTooltipBarChart
+                        decimals={2}
+                        totalValue={totalValue}
+                        goalsData={goalsChartData}
+                      />
+                    }
+                  />
+                </PieChartComponent>
+              </S.GoalsPieChart>
+            )}
+
+            <S.DataSummary>
+              <StyledFlex
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {currentChartData.map((asset) => (
+                  <>
+                    <Text color="white" noMargin>
+                      {asset.name}
+                    </Text>
+                    <Title
+                      text={`R$${asset.value.toString()}`}
+                      color="#82ca9d"
+                      noMargin
                     />
-                  </BarCharComponent>
-                </>
-              )}
-              {goalsChartData.length > 0 && (
-                <>
-                  <Text color="white">Goals</Text>
-                  <BarCharComponent data={goalsChartData} barColor="#82ca9d">
-                    <Tooltip cursor={{ fill: '#ccc', opacity: '0.1' }} />
-                  </BarCharComponent>
-                </>
-              )}
-            </S.BarChartComponents>
+                  </>
+                ))}
+              </StyledFlex>
+            </S.DataSummary>
+
             {sliderMap.length ? (
-              <Slider>
-                {sliderMap.map((slideItem) => {
-                  return (
-                    <S.SliderItem key={slideItem.title}>
-                      <Title text={slideItem.title} />
-                      <S.PieDashboardWrapper>
-                        <PieChartComponent data={slideItem.data}>
-                          <Tooltip
-                            isAnimationActive={true}
-                            animationDuration={2}
-                            animationEasing="ease"
-                            formatter={(data: string) =>
-                              `${(parseInt(data) * 100).toString()}%`
-                            }
-                            content={
-                              <CustomTooltip
-                                simpleAsset={
-                                  slideItem.title === 'Bonds' ||
-                                  slideItem.title === 'International'
+              <S.SliderWrapper>
+                <Slider>
+                  {sliderMap.map((slideItem) => {
+                    return (
+                      <>
+                        <Title text={slideItem.title} />
+                        <S.SliderItem key={slideItem.title}>
+                          <S.PieDashboardWrapper>
+                            <PieChartComponent
+                              data={slideItem.data}
+                              width="100%"
+                            >
+                              <Tooltip
+                                isAnimationActive={true}
+                                animationDuration={2}
+                                animationEasing="ease"
+                                formatter={(data: string) =>
+                                  `${(parseInt(data) * 100).toString()}%`
                                 }
-                                assetSectors={slideItem.sectors}
-                                decimals={2}
+                                content={
+                                  <CustomTooltip
+                                    simpleAsset={
+                                      slideItem.title === 'Bonds' ||
+                                      slideItem.title === 'International'
+                                    }
+                                    assetGoals={slideItem.goals}
+                                    assetSectors={slideItem.sectors}
+                                    decimals={2}
+                                  />
+                                }
                               />
-                            }
-                          />
-                        </PieChartComponent>
-                        {[slideItem.goals]?.length > 0 ? (
-                          <PieChartComponent data={slideItem.goals}>
-                            <Tooltip
-                              isAnimationActive={true}
-                              animationDuration={2}
-                              animationEasing="ease"
-                              content={
-                                <CustomTooltip
-                                  simpleAsset={false}
-                                  assetSectors={slideItem.sectors}
-                                  decimals={0}
-                                />
-                              }
-                            />
-                          </PieChartComponent>
-                        ) : null}
-                      </S.PieDashboardWrapper>
-                    </S.SliderItem>
-                  )
-                })}
-              </Slider>
+                            </PieChartComponent>
+                          </S.PieDashboardWrapper>
+                        </S.SliderItem>
+                      </>
+                    )
+                  })}
+                </Slider>
+              </S.SliderWrapper>
             ) : null}
-          </>
+          </S.Grid>
         )}
       </S.DashboardComponentWrapper>
 
       <S.WalletAssets>
-        <TableComponent />
+        <TableComponent hideTotalValue={hideTotalValue} />
       </S.WalletAssets>
     </>
   )

@@ -134,7 +134,7 @@ export default function StockCheckList({
           strategyStatements[assetType]
         )
 
-        setStatements(formattedData)
+        setStatements(sortArrayAlphabetically(formattedData, 'statement'))
       }
     }
 
