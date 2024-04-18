@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { columnsNames } from '@const/assetsTable'
+import { columnsNames } from '@const/columns'
 import { ITableColumn, ITableRow } from '@components/AssetTable/interfaces'
 import { useAuth } from '@context/AuthUserContext'
 import useSWR from 'swr'
@@ -45,7 +45,7 @@ export default function useAssetTableData(
   }, [isLoading])
 
   useEffect(() => {
-    if (data) {
+    if (data && data.items) {
       const allRows = Object.values(data.items)
         .flatMap((item: any) => item.tableData)
         .filter((a) => a)

@@ -11,6 +11,7 @@ import { GoalsForm, Sector } from './interfaces'
 
 import { getFirestoreGoals, setFirestoreGoalsData } from './requests'
 import { useSectors } from './hooks/useSectors'
+import { ITabsList } from '@components/StrategyComponent/StrategyComponent'
 
 const COLORS = [
   '#0088FE',
@@ -113,15 +114,19 @@ export default function InvestmentPercentages({
             Defina a parcela de investimento nos tipos de negócio:
           </S.PercentagesTitle>
           <AssetTypeTabContent
-            tabsList={Object.keys(assetTypes).map(
-              (assetType) => assetTypes[assetType].title
-            )}
+            tabsList={
+              Object.entries(assetTypes).map(
+                (assetType) => assetType
+              ) as ITabsList[]
+            }
             defaultTab="Porcentagens Gerais"
           >
             {(activeTab) => {
+              console.log('activeTab', activeTab)
+
               const formattedTab =
                 Object.keys(assetTypes).find(
-                  (key) => assetTypes[key].title === activeTab
+                  (key) => assetTypes[key].name === activeTab
                 ) || ''
 
               return (

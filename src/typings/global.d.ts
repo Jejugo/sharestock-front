@@ -1,6 +1,10 @@
 export {}
 
 declare global {
+  interface IArrayToObject<T> {
+    [key: string]: T
+  }
+
   // API
 
   interface IStockItem {

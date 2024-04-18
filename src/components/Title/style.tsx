@@ -1,8 +1,13 @@
 import styled from 'styled-components'
 import { fonts } from '@styles/constants'
 
-export const Text = styled.h1`
+interface TitleProps {
+  color?: string
+  noMargin?: boolean
+}
+
+export const Text = styled.h1<TitleProps>`
   color: ${(props) => props.color};
   font-size: ${fonts.title}px;
-  margin: 5% 0px;
+  margin: ${(props) => (props.noMargin ? '0' : '20px 0px')};
 `

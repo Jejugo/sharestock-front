@@ -29,6 +29,7 @@ export default function useStrategyComponent({
     }
 
     setValue(name.toString(), {
+      ...getValues()[name.toString()],
       weight: '',
       statement: '',
       statements: [

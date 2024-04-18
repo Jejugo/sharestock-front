@@ -9,6 +9,13 @@ export const columnsNames: ITableColumn[] = [
     minWidth: 50
   },
   {
+    id: 'quantity',
+    label: 'Quantidade',
+    minWidth: 50,
+    align: 'left',
+    format: (value: number) => value
+  },
+  {
     id: 'currentValue',
     label: 'Valor Atual',
     minWidth: 50,
@@ -48,13 +55,6 @@ export const columnsNames: ITableColumn[] = [
     minWidth: 50,
     align: 'left',
     format: (value: number) => value.toFixed(2)
-  },
-  {
-    id: 'quantity',
-    label: 'Quantidade',
-    minWidth: 50,
-    align: 'left',
-    format: (value: number) => value
   },
   {
     id: 'cheapStockScore',

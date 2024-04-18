@@ -17,6 +17,8 @@ export interface IStrategyForm {
   bonds: FormAsset & {
     type: string
   }
+  overview: FormAsset
+  crypto: FormAsset
 }
 
 export type TabName =

@@ -31,7 +31,6 @@ const getContent = (
   recommendedPercentage: number,
   totalPercentage: number
 ): React.ReactNode => {
-  // format columns if they have the format function defined in src/const/assetsTable.ts
   if (column.format && typeof value === 'number') {
     return column.format(value)
   }
@@ -81,206 +80,221 @@ const renderRow = (row: ITableRow, column: ITableColumn) => {
   )
 }
 
-export const AssetTable = React.memo(() => {
-  const { authUser } = useAuth()
-  const menuContentRef = React.useRef<HTMLDivElement | null>(null)
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(50)
-  const [selectedRow, setSelectedRow] = React.useState<number | null>(null) // Set this to the row's unique identifier
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const { allRows, columns, mutate } = useAssetTableData(setIsLoading)
+export const AssetTable = React.memo(
+  ({ hideTotalValue }: { hideTotalValue?: boolean }) => {
+    const { authUser } = useAuth()
+    const menuContentRef = React.useRef<HTMLDivElement | null>(null)
+    const [page, setPage] = React.useState(0)
+    const [rowsPerPage, setRowsPerPage] = React.useState(50)
+    const [selectedRow, setSelectedRow] = React.useState<number | null>(null) // Set this to the row's unique identifier
+    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const { allRows, columns, mutate } = useAssetTableData(setIsLoading)
 
-  const [assetTypeFilter, setAssetTypeFilter] = React.useState<string>('all')
+    const [assetTypeFilter, setAssetTypeFilter] = React.useState<string>('all')
 
-  useOutsideClick(menuContentRef, () => {
-    setSelectedRow(null)
-  })
+    useOutsideClick(menuContentRef, () => {
+      setSelectedRow(null)
+    })
 
-  const handleChangePage = useCallback(
-    (
-      _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
-      newPage: number
-    ) => {
-      setPage(newPage)
-    },
-    []
-  )
-
-  const handleChangeRowsPerPage = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setRowsPerPage(parseInt(event.target.value, 10))
-      setPage(0)
-    },
-    []
-  )
-
-  const handleDeleteItem = async (e: any, row: any) => {
-    try {
-      const result = window.confirm(
-        'Are you sure you want to delete this item?'
-      )
-      if (result) {
-        e.preventDefault()
-
-        await fetch(
-          `${process.env.NEXT_PUBLIC_SHARE_API}/assets/${row.type}/${row.symbol}`,
-          {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${authUser.accessToken}`
-            }
-          }
-        )
-
-        mutate()
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const balancedRows = allRows.reduce((acc, curr) => {
-    if (curr.isBalanced) {
-      return acc + 1
-    }
-    return acc
-  }, 0)
-
-  const onSync = async () => {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/sync/user/${authUser.uid}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: authUser.accessToken
-        }
-      }
+    const handleChangePage = useCallback(
+      (
+        _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+        newPage: number
+      ) => {
+        setPage(newPage)
+      },
+      []
     )
-    mutate()
-  }
 
-  const filteredAssets = allRows.filter((row: ITableRow) =>
-    assetTypeFilter === 'all' ? true : row.type === assetTypeFilter
-  )
+    const handleChangeRowsPerPage = useCallback(
+      (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10))
+        setPage(0)
+      },
+      []
+    )
 
-  const totalInvested = filteredAssets.reduce((acc, curr) => {
-    return acc + curr.currentValue
-  }, 0)
+    const handleDeleteItem = async (e: any, row: any) => {
+      try {
+        const result = window.confirm(
+          'Are you sure you want to delete this item?'
+        )
+        if (result) {
+          e.preventDefault()
 
-  return (
-    <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <Paper
-          sx={{ width: '100%', overflow: 'hidden', backgroundColor: '#111' }}
-        >
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text color="white">Você possui {allRows.length} ativos. </Text>
-            <S.UpdateIcon clickable onClick={onSync}>
-              <CachedIcon />
-            </S.UpdateIcon>
-          </Flex>
-
-          <Text color="lightGreen">
-            {balancedRows} deles estão balanceados!
-          </Text>
-
-          <Flex justifyContent="space-between">
-            <Select
-              value={assetTypeFilter}
-              onChange={(e: SelectChangeEvent<string>) =>
-                setAssetTypeFilter(e.target.value)
+          await fetch(
+            `${process.env.NEXT_PUBLIC_SHARE_API}/assets/${row.type}/${row.symbol}`,
+            {
+              method: 'DELETE',
+              headers: {
+                Authorization: `Bearer ${authUser.accessToken}`
               }
-              variant="outlined"
-              sx={{ backgroundColor: 'white', margin: '10px 0', width: 200 }}
-            >
-              <MenuItem value="all">Todos</MenuItem>
-              <MenuItem value="reits">Fundos Imobiliários</MenuItem>
-              <MenuItem value="stocks">Ações</MenuItem>
-              <MenuItem value="bonds">Renda Fixa</MenuItem>
-              <MenuItem value="international">Internacional</MenuItem>
-              <MenuItem value="crypto">Crypto</MenuItem>
-            </Select>
-            <Text color="lightGreen">
-              {assetTypeFilter === 'all'
-                ? `Ao todo, você possui R$${totalInvested.toFixed(2)}`
-                : `Você possui R$${totalInvested.toFixed(
-                    2
-                  )} em ${assetTypeFilter}`}
-            </Text>
-          </Flex>
+            }
+          )
 
-          <S.TableContainerStyle>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column: ITableColumn) => (
-                    <TableCell
-                      sx={{ backgroundColor: '#222', color: 'white' }}
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredAssets
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: ITableRow, index: number) => {
-                    return (
-                      <S.TableRowStyle
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={index}
-                      >
-                        {columns.map((column: ITableColumn) =>
-                          renderRow(row, column)
-                        )}
-                        <S.MenuItem
-                          onClick={() => {
-                            setSelectedRow((prevState) => {
-                              return prevState === index ? null : index
-                            })
-                          }}
+          mutate()
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    const balancedRows = allRows.reduce((acc, curr) => {
+      if (curr.isBalanced) {
+        return acc + 1
+      }
+      return acc
+    }, 0)
+
+    const onSync = async () => {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_SHARE_API}/sync/user/${authUser.uid}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${authUser.accessToken}`
+          }
+        }
+      )
+      mutate()
+    }
+
+    const filteredAssets = allRows.filter((row: ITableRow) =>
+      assetTypeFilter === 'all' ? true : row.type === assetTypeFilter
+    )
+
+    const totalInvested = filteredAssets.reduce((acc, curr) => {
+      return acc + curr.currentValue
+    }, 0)
+
+    return (
+      <>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Paper sx={S.PaperWrapperStyles}>
+            <Paper sx={S.PaperContentStyles}>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Text color="white">Você possui {allRows.length} ativos. </Text>
+                <S.UpdateIcon clickable onClick={onSync}>
+                  <CachedIcon />
+                </S.UpdateIcon>
+              </Flex>
+
+              <Text color="lightGreen">
+                {balancedRows} deles estão balanceados!
+              </Text>
+
+              <Flex justifyContent="space-between">
+                <Select
+                  value={assetTypeFilter}
+                  onChange={(e: SelectChangeEvent<string>) =>
+                    setAssetTypeFilter(e.target.value)
+                  }
+                  variant="outlined"
+                  sx={{
+                    backgroundColor: 'white',
+                    margin: '10px 0',
+                    width: 200
+                  }}
+                >
+                  <MenuItem value="all">Todos</MenuItem>
+                  <MenuItem value="reits">Fundos Imobiliários</MenuItem>
+                  <MenuItem value="stocks">Ações</MenuItem>
+                  <MenuItem value="bonds">Renda Fixa</MenuItem>
+                  <MenuItem value="international">Internacional</MenuItem>
+                  <MenuItem value="crypto">Crypto</MenuItem>
+                </Select>
+                {!hideTotalValue && (
+                  <Text color="lightGreen">
+                    {assetTypeFilter === 'all'
+                      ? `Ao todo, você possui R$${totalInvested.toFixed(2)}`
+                      : `Você possui R$${totalInvested.toFixed(
+                          2
+                        )} em ${assetTypeFilter}`}
+                  </Text>
+                )}
+              </Flex>
+
+              <S.TableContainerStyle>
+                <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((column: ITableColumn) => (
+                        <TableCell
+                          sx={{ backgroundColor: '#222', color: 'white' }}
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth }}
                         >
-                          &#xFE19;
-                        </S.MenuItem>
-                        {selectedRow === index && (
-                          <S.MenuContent ref={menuContentRef}>
-                            <S.MenuContentList>
-                              <S.MenuContentListItem
-                                onClick={(e) => handleDeleteItem(e, row)}
-                              >
-                                Delete
-                              </S.MenuContentListItem>
-                            </S.MenuContentList>
-                          </S.MenuContent>
-                        )}
-                      </S.TableRowStyle>
-                    )
-                  })}
-              </TableBody>
-            </Table>
-          </S.TableContainerStyle>
-          <TablePagination
-            sx={{ backgroundColor: '#1E1E1E', color: 'white' }}
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={allRows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
-      )}
-    </>
-  )
-})
+                          {column.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredAssets
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row: ITableRow, index: number) => {
+                        const isHighlighted =
+                          !row.isBalanced && row.recommended > row.total
+
+                        return (
+                          <S.TableRowStyle
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={index}
+                            isHighlighted={isHighlighted}
+                          >
+                            {columns.map((column: ITableColumn) =>
+                              renderRow(row, column)
+                            )}
+                            <S.MenuItem
+                              onClick={() => {
+                                setSelectedRow((prevState) => {
+                                  return prevState === index ? null : index
+                                })
+                              }}
+                            >
+                              &#xFE19;
+                            </S.MenuItem>
+                            {selectedRow === index && (
+                              <S.MenuContent ref={menuContentRef}>
+                                <S.MenuContentList>
+                                  <S.MenuContentListItem
+                                    onClick={(e) => handleDeleteItem(e, row)}
+                                  >
+                                    Delete
+                                  </S.MenuContentListItem>
+                                </S.MenuContentList>
+                              </S.MenuContent>
+                            )}
+                          </S.TableRowStyle>
+                        )
+                      })}
+                  </TableBody>
+                </Table>
+              </S.TableContainerStyle>
+              <TablePagination
+                sx={{ backgroundColor: '#1E1E1E', color: 'white' }}
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={allRows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Paper>
+          </Paper>
+        )}
+      </>
+    )
+  }
+)
 
 export default AssetTable
 AssetTable.displayName = 'AssetTable'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as S from './StrategyInputValues.style'
 import { useFormContext } from 'react-hook-form'
 import Select, { SingleValue } from 'react-select'
@@ -26,11 +26,10 @@ export default function StrategyInputValues({
     { value: '3', label: 'Muito Relevante' }
   ]
 
-  const { setValue, getValues, watch } = useFormContext()
+  const { setValue, getValues, watch, reset } = useFormContext()
 
   const formState = watch()
-
-  const value = getValues()[name as 'stocks' | 'reits'] || {}
+  const value = getValues()[name as AssetTypes] || {}
 
   const handleInputStatement = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(`${name}.statement`, e.target.value)
@@ -46,13 +45,25 @@ export default function StrategyInputValues({
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(`${name}.type`, e.target.value)
+    reset({
+      ...getValues(),
+      [name.toString()]: {
+        statement: '',
+        weight: '',
+        type: e.target.value,
+        statements: []
+      }
+    })
   }
 
   return (
     <S.StrategyInputValues>
       {name === 'international' && (
         <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">
+          <FormLabel
+            id="demo-row-radio-buttons-group-label"
+            sx={{ color: 'white' }}
+          >
             Type of Asset
           </FormLabel>
           <RadioGroup
@@ -61,26 +72,34 @@ export default function StrategyInputValues({
             name="row-radio-buttons-group"
             value={value}
             onChange={handleRadioChange}
+            sx={{
+              color: 'white',
+              '&.Mui-checked': { color: 'white' }
+            }}
           >
             <FormControlLabel
               value="etf"
               control={<Radio sx={{ color: 'white' }} />}
               label="ETF"
+              checked={formState.international.type === 'etf'}
             />
             <FormControlLabel
               value="stock"
               control={<Radio sx={{ color: 'white' }} />}
               label="Stock"
+              checked={formState.international.type === 'stock'}
             />
             <FormControlLabel
               value="reit"
               control={<Radio sx={{ color: 'white' }} />}
               label="Reit"
+              checked={formState.international.type === 'reit'}
             />
             <FormControlLabel
               value="treasury"
-              control={<Radio />}
+              control={<Radio sx={{ color: 'white' }} />}
               label="Treasury"
+              checked={formState.international.type === 'treasury'}
             />
           </RadioGroup>
         </FormControl>

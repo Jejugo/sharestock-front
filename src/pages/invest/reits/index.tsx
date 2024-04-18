@@ -13,6 +13,7 @@ import {
   convertArrayToObject,
   normalizeArrayToDropdown
 } from '@builders/arrays'
+import { ITabsList } from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
 
 interface IArrayToObject<T> {
   [key: string]: T
@@ -27,9 +28,9 @@ export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   const { authUser } = useAuth() as IAuthUserContext
   const [assetStrategyData, setAssetStrategyData] = useState([] as any)
 
-  const assetTypesList = Object.keys(assetTypes)
-    .map((assetType) => assetType)
-    .filter((assetType) => assetType !== 'overview') as Partial<AssetTypes>[]
+  const assetTypesList = Object.entries(assetTypes).filter(
+    (assetType) => assetType[0] === 'stocks' || assetType[0] === 'reits'
+  ) as ITabsList[]
 
   useEffect(() => {
     const getAssetsFromFirebase = async () => {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Cell, Legend, Pie, PieChart } from 'recharts'
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-import * as S from './styles'
 import { IPieData } from './interfaces'
 
 const COLORS = [
@@ -20,13 +19,14 @@ const COLORS = [
 
 interface IPieChart {
   data: IPieData[]
+  width?: string
   children?: React.ReactNode
 }
 
-const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
+const PieChartComponent = ({ data, children: toolTip, width }: IPieChart) => {
   const [filteredNames, setFilteredNames] = useState<string[]>([])
-  const handlePieClick = (data: any) => {
-    console.log('clicked', data)
+  const handlePieClick = () => {
+    // TODO: do something when clicking on Pie
   }
 
   const filteredData = data.map((asset) => {
@@ -63,17 +63,17 @@ const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
   return (
     <>
       {data.length ? (
-        <S.ResponsiveContainerMargin width="70%" height="100%">
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Legend
-              height={36}
               iconType="circle"
               iconSize={10}
               onClick={handleLegend}
               formatter={formatLegend}
               layout="vertical"
-              verticalAlign="top"
+              verticalAlign="middle"
               align="right"
+              wrapperStyle={{ lineHeight: '30px' }}
             />
             <Pie
               onClick={handlePieClick}
@@ -81,6 +81,7 @@ const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
               isAnimationActive={true}
               data={filteredData}
               fill="#8884d8"
+              outerRadius={100}
             >
               {data.map((entry: any, index: number) => (
                 <Cell
@@ -91,7 +92,7 @@ const PieChartComponent = ({ data, children: toolTip }: IPieChart) => {
             </Pie>
             {toolTip}
           </PieChart>
-        </S.ResponsiveContainerMargin>
+        </ResponsiveContainer>
       ) : null}
     </>
   )

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import * as S from './Text.styles'
-import { CSSObject, CSSProperties } from 'styled-components'
+import { CSSObject } from 'styled-components'
 
 interface TextProps {
   children: React.ReactNode
@@ -8,6 +8,7 @@ interface TextProps {
   size?: string
   weight?: string
   style?: CSSObject
+  noMargin?: boolean
 }
 
 /**
@@ -24,12 +25,14 @@ const Text: FC<TextProps> = ({
   color = 'black',
   size = '16px',
   weight = 'normal',
+  noMargin = false,
   style
 }) => (
   <S.StyledText
     color={color}
     size={size}
     weight={weight}
+    noMargin={noMargin}
     style={style as CSSObject}
   >
     {children}

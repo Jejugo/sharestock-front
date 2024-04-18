@@ -59,6 +59,7 @@ export const PercentageItemRemove = styled.span`
 export const PercentageWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
 
   @media (max-width: 1200px) {
