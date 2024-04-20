@@ -11,7 +11,6 @@ import { GoalsForm, Sector } from './interfaces'
 
 import { getFirestoreGoals, setFirestoreGoalsData } from './requests'
 import { useSectors } from './hooks/useSectors'
-import { ITabsList } from '@components/StrategyComponent/StrategyComponent'
 
 const COLORS = [
   '#0088FE',
@@ -26,6 +25,8 @@ const COLORS = [
   '#fbbaf7',
   '#82a8f4'
 ]
+
+const tabsList = Object.values(assetTypes)
 
 interface IInvestmentPercentages {
   stockSectors: Sector[]
@@ -114,26 +115,17 @@ export default function InvestmentPercentages({
             Defina a parcela de investimento nos tipos de negócio:
           </S.PercentagesTitle>
           <AssetTypeTabContent
-            tabsList={
-              Object.entries(assetTypes).map(
-                (assetType) => assetType
-              ) as ITabsList[]
-            }
-            defaultTab="Porcentagens Gerais"
+            tabsList={tabsList}
+            defaultTab={{
+              title: 'Porcentagens Gerais',
+              name: 'overview'
+            }}
           >
-            {(activeTab) => {
-              console.log('activeTab', activeTab)
-
-              const formattedTab =
-                Object.keys(assetTypes).find(
-                  (key) => assetTypes[key].name === activeTab
-                ) || ''
-
+            {(activeTab: any) => {
               return (
                 <AssetType
-                  name={assetTypes[formattedTab]?.name as AssetTypes}
-                  title={assetTypes[formattedTab]?.title}
-                  dropdownItems={sectors[formattedTab as AssetTypes]}
+                  name={activeTab.name as AssetTypes}
+                  dropdownItems={sectors[activeTab.name as AssetTypes]}
                   colors={COLORS}
                   onAddNewDropdownItem={onAddNewDropdownItem}
                   onRemoveDropdownItem={removeDropdownItem}

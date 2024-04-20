@@ -1,19 +1,21 @@
 import React, { useState } from 'react'
 import Tabs from '@components/Tabs/Tabs'
-
-export type ITabsList = [Partial<AssetTypes>, { name: string; title: string }]
+import { IAssetTypesList } from '@const/AssetTypes'
 
 export default function AssetTypeTabContent({
   defaultTab,
   tabsList,
   children
 }: {
-  defaultTab: Partial<AssetTypes> | 'Porcentagens Gerais'
-  tabsList: ITabsList[]
-  children: (activeTab: Partial<AssetTypes>) => React.ReactElement
+  defaultTab?: IAssetTypesList
+  tabsList: IAssetTypesList[]
+  children: (activeTab: IAssetTypesList) => React.ReactElement
 }) {
-  const [activeTab, setActiveTab] = useState<Partial<AssetTypes>>(
-    defaultTab as Partial<AssetTypes>
+  const [activeTab, setActiveTab] = useState<IAssetTypesList>(
+    defaultTab ?? {
+      title: 'Ações',
+      name: 'stocks'
+    }
   )
 
   return (

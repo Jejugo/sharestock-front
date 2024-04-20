@@ -1,10 +1,17 @@
-interface IAssetTypes {
-  [key: string]: {
-    name: string
-    title: string
-    dropdownItems?: string[]
-  }
+export type IAssetTypesList = {
+  name: string
+  title: string
+  dropdownItems?: string[]
 }
+
+interface IAssetTypes {
+  [key: string]: IAssetTypesList
+}
+
+export type IAssetsObject = [
+  Partial<AssetTypes>,
+  { name: string; title: string }
+]
 
 export default {
   overview: {
