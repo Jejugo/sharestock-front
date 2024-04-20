@@ -10,8 +10,6 @@ interface TabsProps {
 }
 
 const Tabs: React.FC<TabsProps> = ({ assetTypes, activeTab, setActiveTab }) => {
-  console.log('assetTypes: ', assetTypes)
-
   return (
     <S.TabsHeader>
       {assetTypes.map((assetType: IAssetTypesList, index: number) => (

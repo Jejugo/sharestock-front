@@ -34,8 +34,6 @@ export default function StrategyComponent({
         defaultTab={{ title: 'Ações', name: 'stocks' }}
       >
         {(activeTab: any) => {
-          console.log('activeTab: ', activeTab)
-
           return (
             <StrategyTabContent tab={activeTab} onDeleteItem={onDeleteItem} />
           )
