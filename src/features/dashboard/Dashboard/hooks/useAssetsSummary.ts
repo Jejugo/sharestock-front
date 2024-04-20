@@ -145,48 +145,27 @@ export default function useAssetsSummary({
   useEffect(() => {
     if (totalValue <= 0) return
     setIsLoading(true)
-
-    calculateData(
-      bondRows,
-      (sectors: any) =>
-        dispatch({
-          type: 'SET_DATA',
-          payload: { bondsSectors: sectors }
-        }),
-      (pieData: any) =>
-        dispatch({
-          type: 'SET_DATA',
-          payload: { bondsPieData: pieData }
-        })
-    )
-
-    calculateData(
-      internationalRows,
-      (sectors: any) =>
-        dispatch({
-          type: 'SET_DATA',
-          payload: { internationalSectors: sectors }
-        }),
-      (pieData: any) =>
-        dispatch({
-          type: 'SET_DATA',
-          payload: { internationalPieData: pieData }
-        })
-    )
-
-    calculateData(
-      cryptoRows,
-      (sectors: any) =>
-        dispatch({
-          type: 'SET_DATA',
-          payload: { cryptoSectors: sectors }
-        }),
-      (pieData: any) =>
-        dispatch({
-          type: 'SET_DATA',
-          payload: { cryptoPieData: pieData }
-        })
-    )
+    // Set data for bonds, international and crypto
+    ;[
+      { label: 'bonds', data: bondRows },
+      { label: 'international', data: internationalRows },
+      { label: 'crypto', data: cryptoRows }
+    ].forEach((rows: any) => {
+      if (!rows.data) return
+      calculateData(
+        rows.data,
+        (sectors: any) =>
+          dispatch({
+            type: 'SET_DATA',
+            payload: { [`${rows.label}Sectors`]: sectors }
+          }),
+        (pieData: any) =>
+          dispatch({
+            type: 'SET_DATA',
+            payload: { [`${rows.label}PieData`]: pieData }
+          })
+      )
+    })
 
     setIsLoading(false)
   }, [totalValue, bondRows, internationalRows, cryptoRows])
