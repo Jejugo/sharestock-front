@@ -3,7 +3,6 @@ import { IContent } from './interfaces'
 
 export const Content = styled.section<IContent>`
   margin-left: ${(props) => (props.isNavbarOpen ? '200px' : '60px')};
-  width: calc(100vw - ${(props) => (props.isNavbarOpen ? '200px' : '60px')});
   transition: 0.5s ease;
 `
 
