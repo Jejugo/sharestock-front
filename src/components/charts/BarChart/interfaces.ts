@@ -1,8 +1,4 @@
-export interface IChartData {
-  [value: string]: number
-}
-
-export type IBarData = {
+export type IChartData = {
   name: string
   value: number
   percentage: number

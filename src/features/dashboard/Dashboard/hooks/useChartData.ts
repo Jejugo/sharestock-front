@@ -1,7 +1,7 @@
-import { IBarData } from '@components/charts/BarChart/interfaces'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { IChartData } from '@components/charts/BarChart/interfaces'
 import useAssetTableData from '@hooks/useAssetTableData'
-import useGoalsdata from '../hooks/useGoalsdata'
+import useGoalsdata from './useGoalsdata'
 import { ITableRow } from '@components/AssetTable/interfaces'
 import { sortArrayAlphabetically } from '@builders/arrays'
 import assetTypes from '@const/AssetTypes'
@@ -22,8 +22,8 @@ const calculateTotalByAssetType = (arr: ITableRow[]) =>
 
 export default function useBarChartData() {
   const { allRows } = useAssetTableData()
-  const [currentChartData, setCurrentChartData] = useState<IBarData[]>([])
-  const [goalsChartData, setGoalsChartData] = useState<IBarData[]>([])
+  const [currentChartData, setCurrentChartData] = useState<IChartData[]>([])
+  const [goalsChartData, setGoalsChartData] = useState<IChartData[]>([])
   const [totalValue, setTotalValue] = useState(0)
   const { overview } = useGoalsdata()
 
@@ -41,7 +41,9 @@ export default function useBarChartData() {
         })),
         'name'
       )
+
       setCurrentChartData(chartData)
+      setTotalValue(chartData.reduce((acc, curr) => acc + curr.value, 0))
       setGoalsChartData(
         overview.map((overviewItem: { name: string; value: number }) => ({
           name: overviewItem.name,
@@ -51,13 +53,15 @@ export default function useBarChartData() {
     }
   }, [allRows, overview])
 
-  useEffect(() => {
-    setTotalValue(currentChartData.reduce((acc, curr) => acc + curr.value, 0))
-  }, [currentChartData])
+  const isLoading = useMemo(
+    () => currentChartData.length === 0 || goalsChartData.length === 0,
+    [currentChartData, goalsChartData]
+  )
 
   return {
     currentChartData,
     goalsChartData,
-    totalValue
+    totalValue,
+    isLoading
   }
 }

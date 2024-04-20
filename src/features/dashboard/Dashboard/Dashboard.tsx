@@ -5,15 +5,15 @@ import Slider from '@components/Slider/Slider'
 
 import { Tooltip } from 'recharts'
 
-import CustomTooltip from '@components/charts/PieChart/CustomTooltip/CustomTooltip'
-import CustomTooltipBarChart from '@components/charts/BarChart/CustomTooltip/CustomTooltip'
+import CustomTooltipGoals from '@components/charts/PieChart/CustomTooltip/CustomTooltipGoals'
+import CustomTooltipSlider from '@components/charts/PieChart/CustomTooltip/CustomTooltipSlider'
 import * as S from './styles'
 
 import Title from '@components/Title/Title'
 import Text from '@components/Text/Text'
 
-import usePieChartData from './hooks/usePieChartData'
-import useBarChartData from './hooks/useBarChartData'
+import useAssetsSummary from './hooks/useAssetsSummary'
+import useChartData from './hooks/useChartData'
 import Flex from '@components/container/Flex/Flex'
 import Loading from '@components/Loading/Loading'
 
@@ -35,21 +35,21 @@ export default function DashboardComponent({
   sharesMap,
   reitsMap
 }: IDashboardComponent) {
-  const [sliderMap, setSliderMap] = useState<ISliderMap[]>([] as ISliderMap[])
   const [hideTotalValue, setHideTotalValue] = useState(false)
 
-  usePieChartData({
+  const { isLoading: isSliderMapLoading, sliderMap } = useAssetsSummary({
     sharesMap,
-    reitsMap,
-    setSliderMap
+    reitsMap
   })
 
-  const { currentChartData, goalsChartData, totalValue } = useBarChartData()
+  const {
+    currentChartData,
+    goalsChartData,
+    totalValue,
+    isLoading: isChardDataLoading
+  } = useChartData()
 
-  const isLoading =
-    sliderMap.length === 0 ||
-    currentChartData.length === 0 ||
-    goalsChartData.length === 0
+  const isLoading = isChardDataLoading || isSliderMapLoading
 
   return (
     <>
@@ -98,10 +98,9 @@ export default function DashboardComponent({
                   <Tooltip
                     cursor={{ fill: '#ccc', opacity: '0.1' }}
                     content={
-                      <CustomTooltipBarChart
-                        decimals={2}
+                      <CustomTooltipGoals
+                        assetGoals={goalsChartData}
                         totalValue={totalValue}
-                        goalsData={goalsChartData}
                       />
                     }
                   />
@@ -151,14 +150,14 @@ export default function DashboardComponent({
                                   `${(parseInt(data) * 100).toString()}%`
                                 }
                                 content={
-                                  <CustomTooltip
+                                  <CustomTooltipSlider
                                     simpleAsset={
-                                      slideItem.title === 'Bonds' ||
-                                      slideItem.title === 'International'
+                                      slideItem.title === 'Renda Fixa' ||
+                                      slideItem.title === 'Internacional' ||
+                                      slideItem.title === 'Crypto'
                                     }
                                     assetGoals={slideItem.goals}
                                     assetSectors={slideItem.sectors}
-                                    decimals={2}
                                   />
                                 }
                               />

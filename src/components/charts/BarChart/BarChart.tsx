@@ -1,10 +1,10 @@
 import React from 'react'
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts'
 
-import { IBarData } from './interfaces'
+import { IChartData } from './interfaces'
 
 interface IBarChart {
-  data: IBarData[]
+  data: IChartData[]
   children?: React.ReactNode
   size?: {
     height: number
