@@ -5,10 +5,10 @@ import * as S from './StrategyTabContent.style'
 import useStrategyComponent from '../hooks/useStrategyComponent'
 
 export default function StrategyTabContent({
-  tabName,
+  tab,
   onDeleteItem
 }: {
-  tabName: Omit<AssetTypes, 'overview'>
+  tab: any
   onDeleteItem: (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     index: number,
@@ -18,14 +18,14 @@ export default function StrategyTabContent({
 }) {
   const { addStatement, calculateTotalPoints, handleWeightChange } =
     useStrategyComponent({
-      name: tabName
+      name: tab.name
     })
 
   return (
     <>
-      {!!tabName && (
+      {!!tab.name && (
         <>
-          <StrategyInputValues name={tabName} />
+          <StrategyInputValues name={tab.name} />
           <S.StrategyFormHeaderIcons>
             <S.StrategyFormBtn onClick={addStatement}>
               Adicionar
@@ -38,7 +38,7 @@ export default function StrategyTabContent({
             <StrategyList
               handleWeightChange={handleWeightChange}
               handleRemoveStatement={onDeleteItem}
-              name={tabName}
+              name={tab.name}
             />
           </S.StrategyFormList>
           <S.StrategyFormBtnWrapper>

@@ -13,7 +13,6 @@ import {
   convertArrayToObject,
   normalizeArrayToDropdown
 } from '@builders/arrays'
-import { ITabsList } from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
 
 interface IArrayToObject<T> {
   [key: string]: T
@@ -24,13 +23,13 @@ interface IAddAssets {
   reitsMap: IArrayToObject<IReitItem>
 }
 
+const tabsList = Object.values(assetTypes).filter(
+  (assetType) => assetType.name === 'stocks' || assetType.name === 'reits'
+)
+
 export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   const { authUser } = useAuth() as IAuthUserContext
   const [assetStrategyData, setAssetStrategyData] = useState([] as any)
-
-  const assetTypesList = Object.entries(assetTypes).filter(
-    (assetType) => assetType[0] === 'stocks' || assetType[0] === 'reits'
-  ) as ITabsList[]
 
   useEffect(() => {
     const getAssetsFromFirebase = async () => {
@@ -55,9 +54,9 @@ export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   return (
     <Template tabTitle="Invest Reits">
       <Tabs
-        assetTypes={assetTypesList}
-        activeTab="reits"
-        setActiveTab={(tabName) => Router.push(`/invest/${tabName}`)}
+        assetTypes={tabsList}
+        activeTab={{ title: 'Fundos Imobiliários', name: 'reits' }}
+        setActiveTab={(tab) => Router.push(`/invest/${tab.name}`)}
       />
       <InvestContextProvider>
         <MyAssetsForm

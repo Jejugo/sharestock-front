@@ -16,7 +16,6 @@ interface IAssetType {
 }
 
 interface IAssetTypeParams {
-  title: string
   name: AssetTypes
   dropdownItems?: Sector[]
   colors: string[]
@@ -25,7 +24,6 @@ interface IAssetTypeParams {
 }
 
 export default function AssetType({
-  title,
   name,
   dropdownItems = [] as Sector[],
   colors,
