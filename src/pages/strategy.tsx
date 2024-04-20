@@ -4,7 +4,7 @@ import StrategyForm from '@features/strategy/StrategyForm/StrategyForm'
 
 const Strategy = () => {
   return (
-    <Template tabTitle="strategy">
+    <Template tabTitle="estratégia">
       <StrategyForm></StrategyForm>
     </Template>
   )

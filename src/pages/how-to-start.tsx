@@ -12,7 +12,7 @@ const HowToStart = () => {
 
   return (
     <>
-      <Template tabTitle="strategy">
+      <Template tabTitle="Como começar">
         <TextLayout>
           <StepsProvider>
             <Steps steps={steps}></Steps>

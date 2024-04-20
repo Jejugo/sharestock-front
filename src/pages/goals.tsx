@@ -21,7 +21,7 @@ export default function Goals({
   overviewSectors
 }: IGoals) {
   return (
-    <Template tabTitle="strategy">
+    <Template tabTitle="objetivos">
       <InvestmentPercentages
         {...{
           stockSectors,

@@ -32,7 +32,7 @@ const DefinitionsComponent = () => {
 
   return (
     <>
-      <Template tabTitle={'indicators'}>
+      <Template tabTitle="definições">
         <section>
           <SearchBar
             setSearchText={handleSearch}
