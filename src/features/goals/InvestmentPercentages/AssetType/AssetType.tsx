@@ -51,87 +51,90 @@ export default function AssetType({
     return sum === 100
   }
   return (
-    <section>
-      <S.PercentageWrapper>
-        <S.ChartComponent>
-          <PieChartComponent data={value} width="100%">
-            <Tooltip
-              isAnimationActive={true}
-              animationDuration={2}
-              animationEasing="ease"
-              formatter={(data: string) => `${data}%`}
-            />
-          </PieChartComponent>
-        </S.ChartComponent>
-        <S.Percentages>
-          <S.PercentageList>
-            {checkIfPercentagesSum100(value) ? (
-              <S.PercentagesFeedback color="green">
-                Os valores somam 100%!
-              </S.PercentagesFeedback>
-            ) : (
-              <S.PercentagesFeedback color="red">
-                Os valores tem que somar 100%.
-              </S.PercentagesFeedback>
-            )}
-            {value.length > 0 &&
-              value.map((asset: IAssetType, index: number) => (
-                <S.PercentageListItem key={asset.id}>
-                  <S.PercentageHeader>
-                    <CustomSelect
-                      value={asset.name}
-                      placeholder="Adicione ativo"
-                      onSelectItem={(option: Option) => {
-                        handleAssetSector(option, asset.id, index)
-                      }}
-                      onAddItem={(item) => onAddNewDropdownItem(item, name)}
-                      onRemoveItem={(itemId) =>
-                        onRemoveDropdownItem(itemId, name)
-                      }
-                      options={dropdownItems
-                        .filter(
-                          (item) =>
-                            !value.some((val: any) => val.name === item.name)
-                        )
-                        .map((item: Sector) => ({
-                          id: item.id,
-                          name: item.name,
-                          showDeleteIcon: !item.default
-                        }))}
-                      allowAddItem={
-                        name === 'international' ||
-                        name === 'bonds' ||
-                        name === 'crypto'
-                      }
-                    ></CustomSelect>
+    <S.PercentageWrapper>
+      <S.ChartComponent>
+        <PieChartComponent
+          data={value}
+          width="100%"
+          height="50%"
+          showLegend={false}
+        >
+          <Tooltip
+            isAnimationActive={true}
+            animationDuration={2}
+            animationEasing="ease"
+            formatter={(data: string) => `${data}%`}
+          />
+        </PieChartComponent>
+      </S.ChartComponent>
+      <S.Percentages>
+        <S.PercentageList>
+          {checkIfPercentagesSum100(value) ? (
+            <S.PercentagesFeedback color="green">
+              Os valores somam 100%!
+            </S.PercentagesFeedback>
+          ) : (
+            <S.PercentagesFeedback color="red">
+              Os valores tem que somar 100%.
+            </S.PercentagesFeedback>
+          )}
+          {value.length > 0 &&
+            value.map((asset: IAssetType, index: number) => (
+              <S.PercentageListItem key={asset.id}>
+                <S.PercentageHeader>
+                  <CustomSelect
+                    value={asset.name}
+                    placeholder="Adicione ativo"
+                    onSelectItem={(option: Option) => {
+                      handleAssetSector(option, asset.id, index)
+                    }}
+                    onAddItem={(item) => onAddNewDropdownItem(item, name)}
+                    onRemoveItem={(itemId) =>
+                      onRemoveDropdownItem(itemId, name)
+                    }
+                    options={dropdownItems
+                      .filter(
+                        (item) =>
+                          !value.some((val: any) => val.name === item.name)
+                      )
+                      .map((item: Sector) => ({
+                        id: item.id,
+                        name: item.name,
+                        showDeleteIcon: !item.default
+                      }))}
+                    allowAddItem={
+                      name === 'international' ||
+                      name === 'bonds' ||
+                      name === 'crypto'
+                    }
+                  ></CustomSelect>
 
-                    <S.PercentageItemRemove
-                      onClick={(e) => removeAssetSector(asset.id)}
-                    >
-                      <DeleteIcon />
-                    </S.PercentageItemRemove>
-                  </S.PercentageHeader>
-                  <S.PercentageSlider>
-                    <S.CustomSlider
-                      aria-label="Custom marks"
-                      defaultValue={0}
-                      aria-valuetext=""
-                      step={5}
-                      valueLabelDisplay="auto"
-                      onChange={(e) => handleAssetPercentage(e, asset.id)}
-                      value={asset.value}
-                      customColor={colors[index]}
-                    />
-                    <S.PercentageValue>{asset.value}%</S.PercentageValue>
-                  </S.PercentageSlider>
-                </S.PercentageListItem>
-              ))}
-            {assetTypesLeft.length ? (
-              <S.AddItem onClick={addEmptySector}>+</S.AddItem>
-            ) : null}
-          </S.PercentageList>
-        </S.Percentages>
-      </S.PercentageWrapper>
-    </section>
+                  <S.PercentageItemRemove
+                    onClick={(e) => removeAssetSector(asset.id)}
+                  >
+                    <DeleteIcon />
+                  </S.PercentageItemRemove>
+                </S.PercentageHeader>
+                <S.PercentageSlider>
+                  <S.CustomSlider
+                    aria-label="Custom marks"
+                    defaultValue={0}
+                    aria-valuetext=""
+                    step={5}
+                    valueLabelDisplay="auto"
+                    onChange={(e) => handleAssetPercentage(e, asset.id)}
+                    value={asset.value}
+                    customColor={colors[index]}
+                  />
+                  <S.PercentageValue>{asset.value}%</S.PercentageValue>
+                </S.PercentageSlider>
+              </S.PercentageListItem>
+            ))}
+          {assetTypesLeft.length ? (
+            <S.AddItem onClick={addEmptySector}>+</S.AddItem>
+          ) : null}
+        </S.PercentageList>
+      </S.Percentages>
+    </S.PercentageWrapper>
   )
 }

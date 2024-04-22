@@ -19,7 +19,6 @@ import Loading from '@components/Loading/Loading'
 
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
-import { ISliderMap } from './types'
 import styled from 'styled-components'
 
 interface IDashboardComponent {
@@ -94,7 +93,11 @@ export default function DashboardComponent({
           <S.Grid>
             {currentChartData.length > 0 && (
               <S.GoalsPieChart>
-                <PieChartComponent data={currentChartData} width="50%">
+                <PieChartComponent
+                  data={currentChartData}
+                  width="90%"
+                  height="50%"
+                >
                   <Tooltip
                     cursor={{ fill: '#ccc', opacity: '0.1' }}
                     content={
@@ -109,13 +112,9 @@ export default function DashboardComponent({
             )}
 
             <S.DataSummary>
-              <StyledFlex
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                {currentChartData.map((asset) => (
-                  <>
+              <StyledFlex flexDirection="column" justifyContent="center">
+                {currentChartData.map((asset, index) => (
+                  <S.CurrentChartData key={index}>
                     <Text color="white" noMargin>
                       {asset.name}
                     </Text>
@@ -124,7 +123,7 @@ export default function DashboardComponent({
                       color="#82ca9d"
                       noMargin
                     />
-                  </>
+                  </S.CurrentChartData>
                 ))}
               </StyledFlex>
             </S.DataSummary>
@@ -132,15 +131,15 @@ export default function DashboardComponent({
             {sliderMap.length ? (
               <S.SliderWrapper>
                 <Slider>
-                  {sliderMap.map((slideItem) => {
+                  {sliderMap.map((slideItem, index) => {
                     return (
-                      <>
+                      <React.Fragment key={index}>
                         <Title text={slideItem.title} />
                         <S.SliderItem key={slideItem.title}>
                           <S.PieDashboardWrapper>
                             <PieChartComponent
                               data={slideItem.data}
-                              width="100%"
+                              width="80%"
                             >
                               <Tooltip
                                 isAnimationActive={true}
@@ -164,7 +163,7 @@ export default function DashboardComponent({
                             </PieChartComponent>
                           </S.PieDashboardWrapper>
                         </S.SliderItem>
-                      </>
+                      </React.Fragment>
                     )
                   })}
                 </Slider>
