@@ -121,7 +121,7 @@ export default function InvestmentPercentages({
               name: 'overview'
             }}
           >
-            {(activeTab: any) => {
+            {(activeTab: { title: string; name: string }) => {
               return (
                 <AssetType
                   name={activeTab.name as AssetTypes}

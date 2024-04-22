@@ -24,16 +24,18 @@ export const PercentagesFeedback = styled.h6`
 export const PercentageList = styled.ul`
   list-style: none;
   padding: 0;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 70vh;
+  overflow: auto;
+  margin: 0;
 `
 
 export const PercentageListItem = styled.li`
   margin: ${spacings.xsmall}px 0;
   display: flex;
-  width: 60%;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -56,23 +58,22 @@ export const PercentageItemRemove = styled.span`
   cursor: pointer;
 `
 
-export const PercentageWrapper = styled.div`
+export const PercentageWrapper = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-
-  @media (max-width: 1200px) {
-    flex-direction: column;
-  }
+  height: 70vh;
 `
 export const ChartComponent = styled.div`
-  height: 400px;
-  width: 30vw;
+  display: flex;
+  align-items: center;
+  width: 40%;
+  height: 100%;
 `
 
 export const Percentages = styled.div`
-  width: 40vw;
+  width: 50%;
 `
 
 export const ButtonWrapper = styled.div`
