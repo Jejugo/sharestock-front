@@ -5,12 +5,12 @@ export default function Loading() {
   return (
     <div
       style={{
-        position: 'fixed',
+        position: 'absolute',
         top: '0',
         left: '0',
-        width: '99vw',
+        width: '100vw',
         height: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
         zIndex: '5'
       }}
     >
@@ -18,8 +18,8 @@ export default function Loading() {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-          position: 'relative',
-          top: '40vh'
+          alignItems: 'center',
+          height: '100%'
         }}
       >
         <CircularProgress color="primary" />

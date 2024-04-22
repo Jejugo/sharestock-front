@@ -40,6 +40,10 @@ export default function AssetType({
     handleAssetPercentage
   } = useAssetSectors(name, initialValue)
 
+  const assetTypesLeft = dropdownItems.filter(
+    (item) => !value.some((val: any) => val.name === item.name)
+  )
+
   const checkIfPercentagesSum100 = (arr: IAssetType[]) => {
     const sum = arr.reduce((acc, curr) => {
       return curr.value + acc
@@ -71,24 +75,29 @@ export default function AssetType({
               </S.PercentagesFeedback>
             )}
             {value.length > 0 &&
-              value.map((stock: IAssetType, index: number) => (
-                <S.PercentageListItem key={stock.id}>
+              value.map((asset: IAssetType, index: number) => (
+                <S.PercentageListItem key={asset.id}>
                   <S.PercentageHeader>
                     <CustomSelect
-                      value={stock.name}
+                      value={asset.name}
                       placeholder="Adicione ativo"
                       onSelectItem={(option: Option) => {
-                        handleAssetSector(option, stock.id, index)
+                        handleAssetSector(option, asset.id, index)
                       }}
                       onAddItem={(item) => onAddNewDropdownItem(item, name)}
                       onRemoveItem={(itemId) =>
                         onRemoveDropdownItem(itemId, name)
                       }
-                      options={dropdownItems.map((item: Sector) => ({
-                        id: item.id,
-                        name: item.name,
-                        showDeleteIcon: !item.default
-                      }))}
+                      options={dropdownItems
+                        .filter(
+                          (item) =>
+                            !value.some((val: any) => val.name === item.name)
+                        )
+                        .map((item: Sector) => ({
+                          id: item.id,
+                          name: item.name,
+                          showDeleteIcon: !item.default
+                        }))}
                       allowAddItem={
                         name === 'international' ||
                         name === 'bonds' ||
@@ -97,7 +106,7 @@ export default function AssetType({
                     ></CustomSelect>
 
                     <S.PercentageItemRemove
-                      onClick={(e) => removeAssetSector(stock.id)}
+                      onClick={(e) => removeAssetSector(asset.id)}
                     >
                       <DeleteIcon />
                     </S.PercentageItemRemove>
@@ -109,15 +118,17 @@ export default function AssetType({
                       aria-valuetext=""
                       step={5}
                       valueLabelDisplay="auto"
-                      onChange={(e) => handleAssetPercentage(e, stock.id)}
-                      value={stock.value}
+                      onChange={(e) => handleAssetPercentage(e, asset.id)}
+                      value={asset.value}
                       customColor={colors[index]}
                     />
-                    <S.PercentageValue>{stock.value}%</S.PercentageValue>
+                    <S.PercentageValue>{asset.value}%</S.PercentageValue>
                   </S.PercentageSlider>
                 </S.PercentageListItem>
               ))}
-            <S.AddItem onClick={addEmptySector}>+</S.AddItem>
+            {assetTypesLeft.length ? (
+              <S.AddItem onClick={addEmptySector}>+</S.AddItem>
+            ) : null}
           </S.PercentageList>
         </S.Percentages>
       </S.PercentageWrapper>

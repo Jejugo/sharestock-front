@@ -74,6 +74,7 @@ export async function getServerSideProps(context: any) {
       }
     }
   } catch (err) {
+    console.error(err)
     return {
       props: {
         stockSectors: [],

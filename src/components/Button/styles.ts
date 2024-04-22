@@ -5,9 +5,9 @@ export type ButtonTypes = 'button' | 'submit' | 'reset'
 export type ButtonSizes = 'small' | 'medium' | 'large'
 
 interface Size {
-  width: ButtonSizes | number
+  width: ButtonSizes | number | string
   type: ButtonTypes
-  height?: number
+  height?: number | string
 }
 
 const sizeValues = {
@@ -20,10 +20,9 @@ export const Button = styled.button<Size>`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
   width: ${(props) =>
     sizeValues[props.width as ButtonSizes] || `${props.width}px`};
-  height: ${(props) => `${props.height}px` || 'auto'};
+  height: ${(props) => (props.height ? `${props.height}px` : '100%')};
   background-color: #ffcd00;
   cursor: pointer;
   border: none;
