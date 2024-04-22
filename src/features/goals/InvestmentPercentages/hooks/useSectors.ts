@@ -4,6 +4,7 @@ import { deleteDropdownItem, setNewDropdownItem } from '../requests'
 import { GoalsForm, Sector } from '../interfaces'
 import { useAuth } from '@context/AuthUserContext'
 import { UseFormReturn } from 'react-hook-form'
+import { capitalizeFirstWord } from '@builders/strings'
 
 type UseSectorsProps = Record<AssetTypes, Sector[]>
 type UseSectorsReturn = {
@@ -54,10 +55,16 @@ export const useSectors = (
 
   const onAddNewDropdownItem = async (item: string, name: AssetTypes) => {
     const uniqueId = uuidv4()
-    const sector = { id: uniqueId, name: item, default: false }
+    const newItem = capitalizeFirstWord(item)
+
+    const sector = {
+      id: uniqueId,
+      name: newItem,
+      default: false
+    }
 
     try {
-      await setNewDropdownItem(uniqueId, item, name, authUser.accessToken)
+      await setNewDropdownItem(uniqueId, newItem, name, authUser.accessToken)
       updateSector(name, [...sectors[name], sector])
     } catch (err) {
       console.log('There was an error adding the item: ', err)

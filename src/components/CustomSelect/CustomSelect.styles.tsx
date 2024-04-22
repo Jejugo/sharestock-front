@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import Flex from '@components/container/Flex/Flex'
+import { spacings } from '@styles/constants'
 
 export const DropdownContainer = styled.div`
   position: relative;
@@ -30,13 +32,21 @@ export const DropdownContent = styled.div`
 
 export const Input = styled.input`
   width: 100%;
-  padding: 12px;
+  height: 100%;
+  padding: 5px;
   box-sizing: border-box;
   background-color: #555;
   border: none;
   outline: none;
-  flex: 2;
   color: #eee;
+`
+
+export const InputWrapper = styled(Flex)`
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${spacings.xsmall}px;
 `
 
 export const OptionDiv = styled.li`

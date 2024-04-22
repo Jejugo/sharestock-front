@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import * as S from './CustomSelect.styles'
 import Flex from '@components/container/Flex/Flex'
+import * as S from './CustomSelect.styles'
 import Button from '@components/Button/Button'
 import { Delete } from '@material-ui/icons'
 
@@ -95,14 +95,37 @@ const CustomSelect: React.FC<Props> = ({
             <S.LoadingIcon>Loading...</S.LoadingIcon>
           ) : (
             <>
-              <S.Input
-                type="text"
-                value={searchText}
-                onChange={(e: any) => setSearchText(e.target.value)}
-                maxLength={50}
-                placeholder="Pesquisar"
-                onKeyDown={(e: any) => e.key === 'Enter' && handleAddNewItem()}
-              />
+              <S.InputWrapper>
+                <S.Input
+                  type="text"
+                  value={searchText}
+                  onChange={(e: any) => setSearchText(e.target.value)}
+                  maxLength={50}
+                  placeholder="Pesquisar"
+                  onKeyDown={(e: any) =>
+                    e.key === 'Enter' && handleAddNewItem()
+                  }
+                />
+              </S.InputWrapper>
+              {allowAddItem && (
+                <S.InputWrapper>
+                  <S.Input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e: any) => setInputValue(e.target.value)}
+                    maxLength={50}
+                    placeholder="Adicionar novo"
+                    onKeyDown={(e: any) =>
+                      e.key === 'Enter' && handleAddNewItem()
+                    }
+                  />
+                  <Button
+                    text="+"
+                    width="small"
+                    onClick={() => handleAddNewItem()}
+                  />
+                </S.InputWrapper>
+              )}
               {filteredOptions.map((option: Option, index: number) => (
                 <Flex
                   key={option.id}
@@ -123,26 +146,6 @@ const CustomSelect: React.FC<Props> = ({
                   )}
                 </Flex>
               ))}
-
-              {allowAddItem && (
-                <Flex>
-                  <S.Input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e: any) => setInputValue(e.target.value)}
-                    maxLength={50}
-                    placeholder="Adicionar novo"
-                    onKeyDown={(e: any) =>
-                      e.key === 'Enter' && handleAddNewItem()
-                    }
-                  />
-                  <Button
-                    text="+"
-                    width={50}
-                    onClick={() => handleAddNewItem()}
-                  />
-                </Flex>
-              )}
             </>
           )}
         </S.DropdownContent>

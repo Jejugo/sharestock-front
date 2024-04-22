@@ -77,6 +77,7 @@ export const Percentages = styled.div`
 
 export const ButtonWrapper = styled.div`
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: center;
 `
