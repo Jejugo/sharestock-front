@@ -10,6 +10,12 @@ export interface Option {
   showDeleteIcon: boolean
 }
 
+export interface GoalsFormAsset {
+  name: string
+  value: string
+  id: string
+  default?: boolean
+}
 export interface GoalsForm {
   stocks: { name: string; value: string; id: string; default: boolean }[]
   bonds: { name: string; value: string; id: string; default: boolean }[]

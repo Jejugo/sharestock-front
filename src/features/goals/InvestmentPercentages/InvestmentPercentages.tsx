@@ -7,7 +7,7 @@ import Button from '@components/Button/Button'
 import AssetTypeTabContent from './AssetTypeTabContent/AssetTypeTabContent'
 import AssetType from './AssetType/AssetType'
 import assetTypes from '@const/AssetTypes'
-import { GoalsForm, Sector } from './interfaces'
+import { GoalsForm, GoalsFormAsset, Sector } from './interfaces'
 
 import { getFirestoreGoals, setFirestoreGoalsData } from './requests'
 import { useSectors } from './hooks/useSectors'
@@ -37,6 +37,17 @@ interface IInvestmentPercentages {
   cryptoSectors: Sector[]
   overviewSectors: Sector[]
 }
+
+const isTotalEqualTo100 = (items: Array<GoalsFormAsset>) => {
+  const total = items.reduce(
+    (acc, item) => acc + parseFloat(item.value || '0'),
+    0
+  )
+  return total === 100
+}
+
+const hasEmptySectorNames = (items: Array<GoalsFormAsset>) =>
+  items.some((item) => item.name === '')
 
 export default function InvestmentPercentages({
   stockSectors,
@@ -88,6 +99,20 @@ export default function InvestmentPercentages({
       {}
     )
 
+    const hasErrorOnSubmit = Object.keys(data).some(
+      (key) =>
+        !isTotalEqualTo100(data[key as keyof GoalsForm]) ||
+        hasEmptySectorNames(data[key as keyof GoalsForm])
+    )
+
+    if (hasErrorOnSubmit) {
+      alert(
+        'Os valores de todas as abas devem somar 100% respectivamente e os setores devem ser válidos'
+      )
+      return
+    }
+
+    // If all validations pass, then save data
     await setFirestoreGoalsData(goalsData, authUser.uid)
     alert('Dados salvos com sucesso!')
   }
@@ -98,7 +123,9 @@ export default function InvestmentPercentages({
         setIsLoading(true)
         const allItems = await getFirestoreGoals(authUser.uid)
 
-        methods.reset({ ...defaultValues, ...allItems })
+        console.log('all items', allItems)
+
+        methods.reset({ ...allItems })
       } catch (error) {
         // TODO: Handle error, possibly show a user-friendly message
         console.error(error)

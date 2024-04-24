@@ -37,19 +37,14 @@ export default function AssetType({
     handleAssetSector,
     removeAssetSector,
     addEmptySector,
-    handleAssetPercentage
+    handleAssetPercentage,
+    isComplete
   } = useAssetSectors(name, initialValue)
 
   const assetTypesLeft = dropdownItems.filter(
     (item) => !value.some((val: any) => val.name === item.name)
   )
 
-  const checkIfPercentagesSum100 = (arr: IAssetType[]) => {
-    const sum = arr.reduce((acc, curr) => {
-      return curr.value + acc
-    }, 0)
-    return sum === 100
-  }
   return (
     <S.PercentageWrapper>
       <S.ChartComponent>
@@ -69,7 +64,7 @@ export default function AssetType({
       </S.ChartComponent>
       <S.Percentages>
         <S.PercentageList>
-          {checkIfPercentagesSum100(value) ? (
+          {isComplete() ? (
             <S.PercentagesFeedback color="green">
               Os valores somam 100%!
             </S.PercentagesFeedback>
