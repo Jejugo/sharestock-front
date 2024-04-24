@@ -12,6 +12,8 @@ import { tableColumnsReits } from '@features/indicators/constants'
 
 import config from '../../../configs'
 import styled from 'styled-components'
+import assetTypes from '@const/AssetTypes'
+import Tabs from '@components/Tabs/Tabs'
 
 const { STATUS_INVEST_HOST } = config
 
@@ -37,11 +39,17 @@ const Indicators = ({ reits, goodReits }: IndicatorsProps) => {
     router.push(`${STATUS_INVEST_HOST}/acoes/${share.toLowerCase()}`)
   }
 
+  const tabsList = Object.values(assetTypes).filter(
+    (assetType) => assetType.name === 'stocks' || assetType.name === 'reits'
+  )
+
   return (
     <Template tabTitle="all-reits">
-      <IndicatorsTitle>
-        Escolha os ativos de acordo com os indicadores
-      </IndicatorsTitle>
+      <Tabs
+        assetTypes={tabsList}
+        activeTab={{ title: 'Fundos Imobiliários', name: 'reits' }}
+        setActiveTab={(tab) => Router.push(`/indicators/${tab.name}`)}
+      />
       <SearchBar
         setSearchText={setSearchText}
         value={search}
@@ -71,14 +79,14 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
     }
   }
 
-  const shares = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`, {
+  const reits = await fetch(`${process.env.NEXT_PUBLIC_SHARE_API}/reits`, {
     ...authorization
   })
   const goodReits = await fetch(
     `${process.env.NEXT_PUBLIC_SHARE_API}/reits?optimized=true`,
     { ...authorization }
   )
-  const { items: reitItems } = (await shares.json()) as IStockItemResponse
+  const { items: reitItems } = (await reits.json()) as IStockItemResponse
   const { items: goodReitItems } =
     (await goodReits.json()) as IStockItemResponse
 

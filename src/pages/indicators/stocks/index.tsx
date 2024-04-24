@@ -10,6 +10,8 @@ import WishListProvider from '@context/WishList'
 import { tableColumnsStocks } from '@features/indicators/constants'
 import ErrorBoundary from '@components/ErrorBoundary/ErrorBoundary'
 import config from '../../../configs'
+import assetTypes from '@const/AssetTypes'
+import Tabs from '@components/Tabs/Tabs'
 
 const { STATUS_INVEST_HOST } = config
 
@@ -17,6 +19,10 @@ interface IndicatorsProps {
   shares: IStockItem[]
   goodShares: IStockItem[]
 }
+
+const tabsList = Object.values(assetTypes).filter(
+  (assetType) => assetType.name === 'stocks' || assetType.name === 'reits'
+)
 
 const Indicators = ({ shares, goodShares }: IndicatorsProps) => {
   const [search, setSearch] = useState<string>('')
@@ -34,6 +40,11 @@ const Indicators = ({ shares, goodShares }: IndicatorsProps) => {
   return (
     <Template tabTitle="all-shares">
       <ErrorBoundary>
+        <Tabs
+          assetTypes={tabsList}
+          activeTab={{ title: 'Ações', name: 'stocks' }}
+          setActiveTab={(tab) => Router.push(`/indicators/${tab.name}`)}
+        />
         <SearchBar
           setSearchText={setSearchText}
           value={search}

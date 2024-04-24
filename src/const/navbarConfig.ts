@@ -40,7 +40,7 @@ export default [
   {
     icon: TableChartIcon,
     text: 'Indicadores',
-    href: '/indicators/shares'
+    href: '/indicators/stocks'
   },
   {
     icon: PaidIcon,

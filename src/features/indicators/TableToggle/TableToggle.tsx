@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import SettingsModal from '../SettingsModal/SettingsModal'
 import React, { useEffect, useState } from 'react'
 import Rows from '@components/TableLists/Rows/Rows'
@@ -32,36 +33,28 @@ const TableToggle = ({
   const { authUser } = useAuth()
   const [listMode, setListMode] = useState<string>('table')
   const [loading, setLoading] = useState<boolean>(false)
-  const [filteredData, setFilteredData] = useState<IStockItem[] | IReitItem[]>(
-    []
-  )
+
   const [showModalSettings, setShowModalSettings] = useState<boolean>(false)
   const [fixTableHeader, setFixTableHeader] = useState<boolean>(false)
 
   const isTableHeaderFixed = (position: { top: number }) => position.top < 0
 
-  const handleScroll = () => {
-    const elem = document.getElementById('share-data')
-    const position = elem?.getBoundingClientRect()
-
-    position && setFixTableHeader(isTableHeaderFixed(position))
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    setFilteredData(assets)
-  }, [assets])
-
-  useEffect(() => {
-    setFilteredData(
-      (assets as any).filter((item: IStockItem | IReitItem) =>
+  const filteredData = useMemo(
+    () =>
+      assets.filter((item: IStockItem | IReitItem) =>
         item.papel.toUpperCase().includes(value.toUpperCase())
-      )
-    )
-  }, [value])
+      ),
+    [assets, value]
+  )
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      const elem = document.getElementById('share-data')
+      const position = elem?.getBoundingClientRect()
+
+      position && setFixTableHeader(isTableHeaderFixed(position))
+    })
+  }, [])
 
   const handleView = (e: any) => {
     e.preventDefault()

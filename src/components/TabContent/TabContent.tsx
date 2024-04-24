@@ -2,21 +2,16 @@ import React, { useState } from 'react'
 import Tabs from '@components/Tabs/Tabs'
 import { IAssetTypesList } from '@const/AssetTypes'
 
-export default function AssetTypeTabContent({
+export default function TabContent({
   defaultTab,
   tabsList,
   children
 }: {
-  defaultTab?: IAssetTypesList
+  defaultTab: IAssetTypesList
   tabsList: IAssetTypesList[]
   children: (activeTab: IAssetTypesList) => React.ReactElement
 }) {
-  const [activeTab, setActiveTab] = useState<IAssetTypesList>(
-    defaultTab ?? {
-      title: 'Ações',
-      name: 'stocks'
-    }
-  )
+  const [activeTab, setActiveTab] = useState<IAssetTypesList>(defaultTab)
 
   return (
     <>

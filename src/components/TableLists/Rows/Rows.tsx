@@ -6,7 +6,7 @@ import Firestore from '../../../firebase/Firestore'
 import * as S from './styles'
 
 interface RowsProps {
-  filteredItems: IStockItem[] | IReitItem[]
+  filteredItems: (IStockItem | IReitItem)[]
   fixTableHeader: boolean
   columns: any[]
 }
@@ -20,7 +20,7 @@ type SortState = {
 const Rows = ({ filteredItems, fixTableHeader, columns }: RowsProps) => {
   const { setWishList } = useContext(WishListContext) as IWishListContext
   const { authUser } = useAuth() as IAuthUserContext
-  const [sortedItems, setSortedItems] = useState<IStockItem[] | IReitItem[]>([])
+  const [sortedItems, setSortedItems] = useState<(IStockItem | IReitItem)[]>([])
   const [sortState, setSortState] = useState<SortState>({
     column: null,
     direction: 'asc'

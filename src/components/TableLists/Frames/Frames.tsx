@@ -3,7 +3,7 @@ import React from 'react'
 import FrameItem from './FrameItem/FrameItem'
 import * as S from './styles'
 interface FramesProps {
-  filteredItems: IStockItem[] | IReitItem[]
+  filteredItems: (IStockItem | IReitItem)[]
   goToFundamentus: (share: IStockItem | IReitItem) => void
 }
 

@@ -4,7 +4,7 @@ import { useAuth } from '@context/AuthUserContext'
 
 import * as S from './styles'
 import Button from '@components/Button/Button'
-import AssetTypeTabContent from './AssetTypeTabContent/AssetTypeTabContent'
+import TabContent from '@components/TabContent/TabContent'
 import AssetType from './AssetType/AssetType'
 import assetTypes from '@const/AssetTypes'
 import { GoalsForm, GoalsFormAsset, Sector } from './interfaces'
@@ -150,7 +150,7 @@ export default function InvestmentPercentages({
             <Loading />
           ) : (
             <>
-              <AssetTypeTabContent
+              <TabContent
                 tabsList={tabsList}
                 defaultTab={{
                   title: 'Porcentagens Gerais',
@@ -168,7 +168,7 @@ export default function InvestmentPercentages({
                     ></AssetType>
                   )
                 }}
-              </AssetTypeTabContent>
+              </TabContent>
 
               <S.ButtonWrapper>
                 <Button type="submit" text="Salvar" width="medium" />

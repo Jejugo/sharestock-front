@@ -1,5 +1,5 @@
 import React from 'react'
-import StrategyComponent from '@components/StrategyComponent/StrategyComponent'
+import StrategyComponent from '@features/strategy/StrategyComponent/StrategyComponent'
 
 import * as S from './styles'
 import { FormProvider } from 'react-hook-form'

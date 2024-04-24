@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-import AssetTypeTabContent from '@features/goals/InvestmentPercentages/AssetTypeTabContent/AssetTypeTabContent'
+import TabContent from '@components/TabContent/TabContent'
 import assetTypes from '@const/AssetTypes'
 import StrategyTabContent from './StrategyTabContent/StrategyTabContent'
 
@@ -29,7 +29,7 @@ export default function StrategyComponent({
 }: StrategyComponentProps) {
   return (
     <section>
-      <AssetTypeTabContent
+      <TabContent
         tabsList={tabsList}
         defaultTab={{ title: 'Ações', name: 'stocks' }}
       >
@@ -38,7 +38,7 @@ export default function StrategyComponent({
             <StrategyTabContent tab={activeTab} onDeleteItem={onDeleteItem} />
           )
         }}
-      </AssetTypeTabContent>
+      </TabContent>
     </section>
   )
 }

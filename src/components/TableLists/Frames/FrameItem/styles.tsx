@@ -33,7 +33,7 @@ export const FramePrice = styled.h1`
 
 export const FrameIndicator = styled.p<IFrameIndicator>`
   margin: 0;
-  ${(props) => {
+  color: ${(props) => {
     switch (props.status) {
       case 'good':
         return `${colors.success}`
@@ -44,5 +44,5 @@ export const FrameIndicator = styled.p<IFrameIndicator>`
       default:
         return ''
     }
-  }}
+  }};
 `
