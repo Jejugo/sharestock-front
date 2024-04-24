@@ -105,7 +105,7 @@ export default function AssetType({
                   ></CustomSelect>
 
                   <S.PercentageItemRemove
-                    onClick={(e) => removeAssetSector(asset.id)}
+                    onClick={() => removeAssetSector(asset.id)}
                   >
                     <DeleteIcon />
                   </S.PercentageItemRemove>

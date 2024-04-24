@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 
 export const MyAssets = styled.div`
-  padding: 0px 5%;
   display: flex;
   flex-direction: column;
   justify-contents: center;
-  gap: 50px;
+  margin-top: 30px;
 `
 
 export const MyAssetsHeader = styled.div`

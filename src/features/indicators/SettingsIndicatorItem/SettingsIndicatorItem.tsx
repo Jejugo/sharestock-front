@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,7 +13,7 @@ interface IIndicatorConfiguration {
   upperLimit?: string
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   selectStyle: {
     maxHeight: 100
   }

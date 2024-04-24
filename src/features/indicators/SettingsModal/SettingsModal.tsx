@@ -25,11 +25,6 @@ interface ISettingsModal {
   setShowModalSettings: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-interface IIndicatorConfiguration {
-  lowerLimit?: string
-  upperLimit?: string
-}
-
 export function SettingsModal({
   showModalSettings,
   setShowModalSettings
