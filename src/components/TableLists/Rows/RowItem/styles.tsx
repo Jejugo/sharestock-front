@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { IRowStyle, IRowItemStyle, IRowItemPlusStyle } from './interfaces'
+import { colors } from '@styles/constants'
 
 export const Row = styled.div<IRowStyle>`
   position: relative;
@@ -21,18 +22,18 @@ export const RowItem = styled.div<IRowItemStyle>`
   justify-content: center;
   align-items: center;
   font-size: 15px;
-  ${(props) => {
+  background-color: ${(props) => {
     switch (props.status) {
       case 'good':
-        return 'background-color: rgb(94, 194, 94);'
+        return `${colors.success}`
       case 'alert':
-        return 'background-color: rgba(255, 255, 92, 0.742);'
+        return `${colors.alert}`
       case 'bad':
-        return 'background-color: rgb(167, 60, 60);'
+        return `${colors.danger}`
       default:
         return ''
     }
-  }}
+  }};
 `
 
 export const RowItemPlus = styled.div<IRowItemPlusStyle>`

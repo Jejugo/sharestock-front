@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { IFrameIndicator } from './interfaces'
+import { colors } from '@styles/constants'
 
 export const FrameItem = styled.div`
   display: flex;
@@ -35,11 +36,11 @@ export const FrameIndicator = styled.p<IFrameIndicator>`
   ${(props) => {
     switch (props.status) {
       case 'good':
-        return 'color: rgb(94, 194, 94);'
+        return `${colors.success}`
       case 'alert':
-        return 'color: rgba(255, 255, 92, 0.742);'
+        return `${colors.alert}`
       case 'bad':
-        return 'color: rgb(167, 60, 60);'
+        return `${colors.danger}`
       default:
         return ''
     }

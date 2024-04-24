@@ -6,8 +6,8 @@ interface Style {
   bad: string
 }
 
-const indicatorsValidator = (
-  row: IStockItem & IReitItem,
+export const stocksIndicatorsValidator = (
+  row: IStockItem,
   value: string
 ): string | null => {
   const style: Style = {
@@ -18,7 +18,6 @@ const indicatorsValidator = (
   }
 
   switch (value) {
-    // STOCKS
     case 'crescimento5Anos':
       if (row[value] > Validator[value].good.lowerLimit) return style.good
       if (
@@ -108,24 +107,9 @@ const indicatorsValidator = (
         return style.bad
       break
 
-    // FIIS
-    case 'quantidadeDeImoveis':
-      if (row[value] > 5) return style.good
-      if (row[value] > 0 && row[value] <= 5) return style.alert
-      if (row[value] === 0) return style.bad
-      break
-
-    case 'vacanciaMedia':
-      if (row[value] <= 0.1) return style.good
-      if (row[value] > 0.1 && row[value] <= 0.2) return style.alert
-      if (row[value] > 0.2) return style.bad
-      break
-
     default:
       return style.normal
   }
 
   return null
 }
-
-export default indicatorsValidator
