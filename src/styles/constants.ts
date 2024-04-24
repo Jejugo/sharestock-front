@@ -21,5 +21,7 @@ export const colors = {
   lightGrey: '#777',
   blue: '#00a3ff',
   white: '#eee',
-  orange: '#FFBB28'
+  alert: '#FFBB28',
+  success: '#55B030',
+  danger: '#d04444'
 }
