@@ -12,7 +12,7 @@ export const spacings = {
   medium: 16,
   large: 20,
   xlarge: 24,
-  title: 32
+  xxlarge: 32
 }
 
 export const colors = {

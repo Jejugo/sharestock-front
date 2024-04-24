@@ -7,7 +7,7 @@ interface IButton {
   height?: number | string
   disabled?: boolean
   type?: S.ButtonTypes
-  onClick?: () => Promise<any> | VoidFunction
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 export default function Button({
   text,

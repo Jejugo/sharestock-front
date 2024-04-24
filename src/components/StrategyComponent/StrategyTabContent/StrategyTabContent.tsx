@@ -3,6 +3,7 @@ import StrategyList from '../StrategyList/StrategyList'
 import StrategyInputValues from '../StrategyInputValues/StrategyInputValues'
 import * as S from './StrategyTabContent.style'
 import useStrategyComponent from '../hooks/useStrategyComponent'
+import Button from '@components/Button/Button'
 
 export default function StrategyTabContent({
   tab,
@@ -27,9 +28,9 @@ export default function StrategyTabContent({
         <>
           <StrategyInputValues name={tab.name} />
           <S.StrategyFormHeaderIcons>
-            <S.StrategyFormBtn onClick={addStatement}>
-              Adicionar
-            </S.StrategyFormBtn>
+            <S.StrategyFormHeaderButton>
+              <Button text="Adicionar" width="medium" onClick={addStatement} />
+            </S.StrategyFormHeaderButton>
             <S.StrategyFormTotalPoints>
               Total de Pontos: {calculateTotalPoints()}
             </S.StrategyFormTotalPoints>
@@ -42,7 +43,7 @@ export default function StrategyTabContent({
             />
           </S.StrategyFormList>
           <S.StrategyFormBtnWrapper>
-            <S.StrategyFormBtn type="submit">Salvar</S.StrategyFormBtn>
+            <Button type="submit" text="Salvar" width="medium" />
           </S.StrategyFormBtnWrapper>
         </>
       )}

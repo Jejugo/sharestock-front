@@ -58,6 +58,7 @@ export default function useStrategyForm() {
 
   useEffect(() => {
     const fetchInitialData = async () => {
+      setIsLoading(true)
       // Fetch initial data from Firestore
       const data = await Firestore().getData({
         collection: 'userStrategy',
@@ -71,7 +72,9 @@ export default function useStrategyForm() {
       }
     }
 
-    fetchInitialData()
+    fetchInitialData().finally(() => {
+      setIsLoading(false)
+    })
   }, [])
 
   return {

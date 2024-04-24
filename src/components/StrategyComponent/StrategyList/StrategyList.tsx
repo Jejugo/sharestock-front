@@ -2,6 +2,7 @@ import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import * as S from './StrategyList.style'
 import { useFormContext } from 'react-hook-form'
+import Text from '@components/Text/Text'
 
 interface IStrategyList {
   handleWeightChange?: any
@@ -38,7 +39,9 @@ export default function StrategyList({
         ({ statement, weight }: IStatementsMap, index: number) => (
           <div key={index}>
             <S.StrategyFormListItem>
-              <p>{`${statement}`}</p>
+              <S.Statement>
+                <Text color="white">{statement}</Text>
+              </S.Statement>
               <S.StockCheckListWeight>
                 {dropdownWeights[weight]}
               </S.StockCheckListWeight>
