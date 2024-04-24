@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import { Sector, Option } from '../interfaces'
+import { GoalsFormAsset, Option } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
 
 interface IAssetType {
@@ -32,7 +32,7 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
   const handleAssetSector = (option: Option, id: string, listIndex: number) => {
     if (
       value.some(
-        (stock: Sector) =>
+        (stock: GoalsFormAsset) =>
           stock.name.toLowerCase() === option.name.toLowerCase()
       )
     ) {
@@ -40,7 +40,7 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
       return
     }
     setAssetType(
-      value.filter((stock: Sector) => stock.id !== id),
+      value.filter((stock: GoalsFormAsset) => stock.id !== id),
       option,
       id,
       listIndex
@@ -50,7 +50,7 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
   const removeAssetSector = (id: string) => {
     setValue(
       name,
-      value.filter((stock: Sector) => stock.id !== id)
+      value.filter((stock: GoalsFormAsset) => stock.id !== id)
     )
   }
 
@@ -61,7 +61,7 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
   const handleAssetPercentage = (e: Event, id: string) => {
     setValue(
       name,
-      value.map((stock: Sector) =>
+      value.map((stock: GoalsFormAsset) =>
         stock.id === id
           ? { ...stock, value: (e.target as HTMLInputElement).value }
           : stock
@@ -69,12 +69,20 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
     )
   }
 
+  const isComplete = () => {
+    const sum = value.reduce((acc: number, curr: GoalsFormAsset) => {
+      return parseInt(curr.value) + acc
+    }, 0)
+    return sum === 100
+  }
+
   return {
     value,
     handleAssetSector,
     removeAssetSector,
     addEmptySector,
-    handleAssetPercentage
+    handleAssetPercentage,
+    isComplete
   }
 }
 
