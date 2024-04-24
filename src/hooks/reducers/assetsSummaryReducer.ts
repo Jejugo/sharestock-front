@@ -1,5 +1,5 @@
-import { IStockSector } from '../interfaces'
-import { AssetsSummary } from './useAssetsSummary'
+import { IStockSector } from '../../features/dashboard/Dashboard/interfaces'
+import { AssetsSummary } from '../useAssetsSummary'
 
 export const assetsSummaryReducer = (
   prevState: AssetsSummary,

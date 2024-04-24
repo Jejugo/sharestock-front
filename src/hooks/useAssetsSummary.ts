@@ -6,10 +6,13 @@ import {
 } from '@builders/assets'
 import useAssetTableData from '@hooks/useAssetTableData'
 import { useEffect, useState, useReducer, useCallback } from 'react'
-import { IPieData, IStockSector } from '../interfaces'
+import {
+  IPieData,
+  IStockSector
+} from '../features/dashboard/Dashboard/interfaces'
 import { ISliderMap } from '@features/dashboard/Dashboard/types'
 import useGoalsdata from './useGoalsdata'
-import { assetsSummaryReducer } from './assetsSummaryReducer'
+import { assetsSummaryReducer } from './reducers/assetsSummaryReducer'
 
 interface IArrayToObject<T> {
   [key: string]: T

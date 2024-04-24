@@ -2,6 +2,7 @@ import React from 'react'
 import App from 'next/app'
 import GlobalStyles from '@styles/GlobalStyles'
 import { AuthUserProvider } from '@context/AuthUserContext'
+import { UserDataProvider } from '@context/UserDataContext'
 import initFirebase from '../firebase'
 import Fonts from '@components/Fonts'
 import { NextComponentType, NextPageContext } from 'next/types'
@@ -40,8 +41,10 @@ class MyApp extends App<IApp, any> {
     }
     return (
       <AuthUserProvider>
-        <GlobalStyles />
-        <Component {...props} />
+        <UserDataProvider>
+          <GlobalStyles />
+          <Component {...props} />
+        </UserDataProvider>
       </AuthUserProvider>
     )
   }

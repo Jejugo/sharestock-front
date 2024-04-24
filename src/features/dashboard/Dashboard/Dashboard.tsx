@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PieChartComponent from '@components/charts/PieChart/PieChart'
 import TableComponent from '@components/AssetTable/AssetTable'
 import Slider from '@components/Slider/Slider'
@@ -12,14 +12,13 @@ import * as S from './styles'
 import Title from '@components/Title/Title'
 import Text from '@components/Text/Text'
 
-import useAssetsSummary from './hooks/useAssetsSummary'
-import useChartData from './hooks/useChartData'
+import useAssetsSummary from '../../../hooks/useAssetsSummary'
+import useChartData from '../../../hooks/useChartData'
 import Flex from '@components/container/Flex/Flex'
 import Loading from '@components/Loading/Loading'
 
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import styled from 'styled-components'
+import { useUserDataContext } from '@context/UserDataContext'
 
 interface IDashboardComponent {
   sharesMap: IArrayToObject<IStockItem>
@@ -34,8 +33,7 @@ export default function DashboardComponent({
   sharesMap,
   reitsMap
 }: IDashboardComponent) {
-  const [hideTotalValue, setHideTotalValue] = useState(false)
-
+  const { userData } = useUserDataContext()
   const { isLoading: isSliderMapLoading, sliderMap } = useAssetsSummary({
     sharesMap,
     reitsMap
@@ -53,40 +51,6 @@ export default function DashboardComponent({
   return (
     <>
       <S.DashboardComponentWrapper>
-        <Flex justifyContent="space-between">
-          <Title text="Olá, Jeff" />
-          <Flex justifyContent="space-between" alignItems="center">
-            {hideTotalValue ? (
-              <VisibilityOffIcon
-                sx={{
-                  marginRight: 2,
-                  cursor: 'pointer'
-                }}
-                onClick={() => setHideTotalValue((prevState) => !prevState)}
-              />
-            ) : (
-              <VisibilityIcon
-                sx={{
-                  marginRight: 2,
-                  cursor: 'pointer'
-                }}
-                onClick={() => setHideTotalValue((prevState) => !prevState)}
-              />
-            )}
-
-            <Title
-              text={
-                !hideTotalValue
-                  ? totalValue.toLocaleString('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    })
-                  : `R$ 0,00`
-              }
-              color="#82ca9d"
-            />
-          </Flex>
-        </Flex>
         <S.Grid>
           {isLoading ? (
             <Loading />
@@ -99,15 +63,17 @@ export default function DashboardComponent({
                     width="90%"
                     height="50%"
                   >
-                    <Tooltip
-                      cursor={{ fill: '#ccc', opacity: '0.1' }}
-                      content={
-                        <CustomTooltipGoals
-                          assetGoals={goalsChartData}
-                          totalValue={totalValue}
-                        />
-                      }
-                    />
+                    {userData.showMoneyInvested && (
+                      <Tooltip
+                        cursor={{ fill: '#ccc', opacity: '0.1' }}
+                        content={
+                          <CustomTooltipGoals
+                            assetGoals={goalsChartData}
+                            totalValue={totalValue}
+                          />
+                        }
+                      />
+                    )}
                   </PieChartComponent>
                 </S.GoalsPieChart>
 
@@ -119,7 +85,14 @@ export default function DashboardComponent({
                           {asset.name}
                         </Text>
                         <Title
-                          text={`R$${asset.value.toString()}`}
+                          text={
+                            userData.showMoneyInvested
+                              ? `${asset.value.toLocaleString('pt-BR', {
+                                  style: 'currency',
+                                  currency: 'BRL'
+                                })}`
+                              : '-'
+                          }
                           color="#82ca9d"
                           noMargin
                         />
@@ -176,7 +149,7 @@ export default function DashboardComponent({
       </S.DashboardComponentWrapper>
 
       <S.WalletAssets>
-        <TableComponent hideTotalValue={hideTotalValue} />
+        <TableComponent />
       </S.WalletAssets>
     </>
   )
