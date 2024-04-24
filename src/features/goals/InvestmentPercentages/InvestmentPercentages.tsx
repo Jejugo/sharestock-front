@@ -38,13 +38,16 @@ interface IInvestmentPercentages {
   overviewSectors: Sector[]
 }
 
-const validateTotal = (items: Array<GoalsFormAsset>) => {
+const isTotalEqualTo100 = (items: Array<GoalsFormAsset>) => {
   const total = items.reduce(
     (acc, item) => acc + parseFloat(item.value || '0'),
     0
   )
   return total === 100
 }
+
+const hasEmptySectorNames = (items: Array<GoalsFormAsset>) =>
+  items.some((item) => item.name === '')
 
 export default function InvestmentPercentages({
   stockSectors,
@@ -97,11 +100,15 @@ export default function InvestmentPercentages({
     )
 
     const hasErrorOnSubmit = Object.keys(data).some(
-      (key) => !validateTotal(data[key as keyof GoalsForm])
+      (key) =>
+        !isTotalEqualTo100(data[key as keyof GoalsForm]) ||
+        hasEmptySectorNames(data[key as keyof GoalsForm])
     )
 
     if (hasErrorOnSubmit) {
-      alert('Os valores de todas as abas devem somar 100% respectivamente')
+      alert(
+        'Os valores de todas as abas devem somar 100% respectivamente e os setores devem ser válidos'
+      )
       return
     }
 

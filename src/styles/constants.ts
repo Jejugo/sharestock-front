@@ -19,5 +19,7 @@ export const colors = {
   darkGrey: 'rgba(28, 28, 28, 0.8)',
   grey: 'rgba(38, 38, 38, 0.8)',
   lightGrey: '#777',
-  blue: '#00a3ff'
+  blue: '#00a3ff',
+  white: '#eee',
+  orange: '#FFBB28'
 }
