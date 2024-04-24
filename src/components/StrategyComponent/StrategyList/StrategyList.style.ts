@@ -16,6 +16,10 @@ export const StrategyFormListItem = styled.li`
   cursor: pointer;
 `
 
+export const Statement = styled.div`
+  width: 57%;
+`
+
 export const StockCheckListWeight = styled.p`
   position: absolute;
   left: 60%;

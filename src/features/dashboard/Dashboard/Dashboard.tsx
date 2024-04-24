@@ -87,90 +87,92 @@ export default function DashboardComponent({
             />
           </Flex>
         </Flex>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <S.Grid>
-            {currentChartData.length > 0 && (
-              <S.GoalsPieChart>
-                <PieChartComponent
-                  data={currentChartData}
-                  width="90%"
-                  height="50%"
-                >
-                  <Tooltip
-                    cursor={{ fill: '#ccc', opacity: '0.1' }}
-                    content={
-                      <CustomTooltipGoals
-                        assetGoals={goalsChartData}
-                        totalValue={totalValue}
-                      />
-                    }
-                  />
-                </PieChartComponent>
-              </S.GoalsPieChart>
-            )}
-
-            <S.DataSummary>
-              <StyledFlex flexDirection="column" justifyContent="center">
-                {currentChartData.map((asset, index) => (
-                  <S.CurrentChartData key={index}>
-                    <Text color="white" noMargin>
-                      {asset.name}
-                    </Text>
-                    <Title
-                      text={`R$${asset.value.toString()}`}
-                      color="#82ca9d"
-                      noMargin
+        <S.Grid>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            currentChartData.length > 0 && (
+              <>
+                <S.GoalsPieChart>
+                  <PieChartComponent
+                    data={currentChartData}
+                    width="90%"
+                    height="50%"
+                  >
+                    <Tooltip
+                      cursor={{ fill: '#ccc', opacity: '0.1' }}
+                      content={
+                        <CustomTooltipGoals
+                          assetGoals={goalsChartData}
+                          totalValue={totalValue}
+                        />
+                      }
                     />
-                  </S.CurrentChartData>
-                ))}
-              </StyledFlex>
-            </S.DataSummary>
+                  </PieChartComponent>
+                </S.GoalsPieChart>
 
-            {sliderMap.length ? (
-              <S.SliderWrapper>
-                <Slider>
-                  {sliderMap.map((slideItem, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <Title text={slideItem.title} />
-                        <S.SliderItem key={slideItem.title}>
-                          <S.PieDashboardWrapper>
-                            <PieChartComponent
-                              data={slideItem.data}
-                              width="80%"
-                            >
-                              <Tooltip
-                                isAnimationActive={true}
-                                animationDuration={2}
-                                animationEasing="ease"
-                                formatter={(data: string) =>
-                                  `${(parseInt(data) * 100).toString()}%`
-                                }
-                                content={
-                                  <CustomTooltipSlider
-                                    simpleAsset={
-                                      slideItem.title === 'Renda Fixa' ||
-                                      slideItem.title === 'Internacional' ||
-                                      slideItem.title === 'Crypto'
+                <S.DataSummary>
+                  <StyledFlex flexDirection="column" justifyContent="center">
+                    {currentChartData.map((asset, index) => (
+                      <S.CurrentChartData key={index}>
+                        <Text color="white" noMargin>
+                          {asset.name}
+                        </Text>
+                        <Title
+                          text={`R$${asset.value.toString()}`}
+                          color="#82ca9d"
+                          noMargin
+                        />
+                      </S.CurrentChartData>
+                    ))}
+                  </StyledFlex>
+                </S.DataSummary>
+
+                {sliderMap.length ? (
+                  <S.SliderWrapper>
+                    <Slider>
+                      {sliderMap.map((slideItem, index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <Title text={slideItem.title} />
+                            <S.SliderItem key={slideItem.title}>
+                              <S.PieDashboardWrapper>
+                                <PieChartComponent
+                                  data={slideItem.data}
+                                  width="80%"
+                                >
+                                  <Tooltip
+                                    isAnimationActive={true}
+                                    animationDuration={2}
+                                    animationEasing="ease"
+                                    formatter={(data: string) =>
+                                      `${(parseInt(data) * 100).toString()}%`
                                     }
-                                    assetGoals={slideItem.goals}
-                                    assetSectors={slideItem.sectors}
+                                    content={
+                                      <CustomTooltipSlider
+                                        simpleAsset={
+                                          slideItem.title === 'Renda Fixa' ||
+                                          slideItem.title === 'Internacional' ||
+                                          slideItem.title === 'Crypto'
+                                        }
+                                        assetGoals={slideItem.goals}
+                                        assetSectors={slideItem.sectors}
+                                      />
+                                    }
                                   />
-                                }
-                              />
-                            </PieChartComponent>
-                          </S.PieDashboardWrapper>
-                        </S.SliderItem>
-                      </React.Fragment>
-                    )
-                  })}
-                </Slider>
-              </S.SliderWrapper>
-            ) : null}
-          </S.Grid>
-        )}
+                                </PieChartComponent>
+                              </S.PieDashboardWrapper>
+                            </S.SliderItem>
+                          </React.Fragment>
+                        )
+                      })}
+                    </Slider>
+                  </S.SliderWrapper>
+                ) : null}
+              </>
+            )
+          )}
+        </S.Grid>
       </S.DashboardComponentWrapper>
 
       <S.WalletAssets>

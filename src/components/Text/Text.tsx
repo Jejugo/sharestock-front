@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import * as S from './Text.styles'
 import { CSSObject } from 'styled-components'
+import useOverflowTooltip from './hooks/useOverflowTooltip'
 
 interface TextProps {
   children: React.ReactNode
@@ -11,15 +12,6 @@ interface TextProps {
   noMargin?: boolean
 }
 
-/**
- * A reusable component for rendering text.
- *
- * @param {string} [color] - the color of the text (default is black)
- * @param {string} [size] - the size of the text (default is 16px)
- * @param {string} [weight] - the weight of the text (default is normal)
- * @param {string} [style] - any additional styles to be applied to the text
- * @return {JSX.Element} - a React component for rendering text
- */
 const Text: FC<TextProps> = ({
   children,
   color = 'black',
@@ -27,16 +19,24 @@ const Text: FC<TextProps> = ({
   weight = 'normal',
   noMargin = false,
   style
-}) => (
-  <S.StyledText
-    color={color}
-    size={size}
-    weight={weight}
-    noMargin={noMargin}
-    style={style as CSSObject}
-  >
-    {children}
-  </S.StyledText>
-)
+}) => {
+  const [textRef, isOverflowing] = useOverflowTooltip()
+
+  return (
+    <S.TextContainer>
+      <S.StyledText
+        ref={textRef as never}
+        color={color}
+        size={size}
+        weight={weight}
+        noMargin={noMargin}
+        style={style as CSSObject}
+      >
+        {children}
+      </S.StyledText>
+      {isOverflowing && <S.Tooltip>{children}</S.Tooltip>}
+    </S.TextContainer>
+  )
+}
 
 export default Text

@@ -1,3 +1,4 @@
+import { spacings } from '@styles/constants'
 import styled from 'styled-components'
 
 export const StrategyFormBtn = styled.button`
@@ -18,6 +19,12 @@ export const StrategyFormBtn = styled.button`
 export const StrategyFormBtnWrapper = styled.div`
   display: flex;
   justify-content: center;
+  height: 50px;
+  margin: ${spacings.xxlarge}px 0;
+`
+
+export const StrategyFormHeaderButton = styled.div`
+  height: 50px;
 `
 
 export const StrategyFormTotalPoints = styled.p`

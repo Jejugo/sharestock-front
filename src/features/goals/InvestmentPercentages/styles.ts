@@ -81,6 +81,7 @@ export const ButtonWrapper = styled.div`
   height: 50px;
   display: flex;
   justify-content: center;
+  margin: ${spacings.xxlarge}px 0;
 `
 
 export const PercentageHeader = styled.div`

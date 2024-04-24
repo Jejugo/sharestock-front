@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useAuth } from '@context/AuthUserContext'
 
@@ -11,6 +11,7 @@ import { GoalsForm, Sector } from './interfaces'
 
 import { getFirestoreGoals, setFirestoreGoalsData } from './requests'
 import { useSectors } from './hooks/useSectors'
+import Loading from '@components/Loading/Loading'
 
 const COLORS = [
   '#0088FE',
@@ -46,6 +47,7 @@ export default function InvestmentPercentages({
   overviewSectors
 }: IInvestmentPercentages) {
   const { authUser } = useAuth() as IAuthUserContext
+  const [isLoading, setIsLoading] = useState(false)
 
   // Form values that will be saved to the Goals Firebase collection
   const defaultValues = {
@@ -93,12 +95,15 @@ export default function InvestmentPercentages({
   useEffect(() => {
     const getData = async () => {
       try {
+        setIsLoading(true)
         const allItems = await getFirestoreGoals(authUser.uid)
 
         methods.reset({ ...defaultValues, ...allItems })
       } catch (error) {
         // TODO: Handle error, possibly show a user-friendly message
         console.error(error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -114,28 +119,35 @@ export default function InvestmentPercentages({
           <S.PercentagesTitle>
             Defina a parcela de investimento nos tipos de negócio:
           </S.PercentagesTitle>
-          <AssetTypeTabContent
-            tabsList={tabsList}
-            defaultTab={{
-              title: 'Porcentagens Gerais',
-              name: 'overview'
-            }}
-          >
-            {(activeTab: { title: string; name: string }) => {
-              return (
-                <AssetType
-                  name={activeTab.name as AssetTypes}
-                  dropdownItems={sectors[activeTab.name as AssetTypes]}
-                  colors={COLORS}
-                  onAddNewDropdownItem={onAddNewDropdownItem}
-                  onRemoveDropdownItem={removeDropdownItem}
-                ></AssetType>
-              )
-            }}
-          </AssetTypeTabContent>
-          <S.ButtonWrapper>
-            <Button type="submit" text="Salvar" width="medium" />
-          </S.ButtonWrapper>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <AssetTypeTabContent
+                tabsList={tabsList}
+                defaultTab={{
+                  title: 'Porcentagens Gerais',
+                  name: 'overview'
+                }}
+              >
+                {(activeTab: { title: string; name: string }) => {
+                  return (
+                    <AssetType
+                      name={activeTab.name as AssetTypes}
+                      dropdownItems={sectors[activeTab.name as AssetTypes]}
+                      colors={COLORS}
+                      onAddNewDropdownItem={onAddNewDropdownItem}
+                      onRemoveDropdownItem={removeDropdownItem}
+                    ></AssetType>
+                  )
+                }}
+              </AssetTypeTabContent>
+
+              <S.ButtonWrapper>
+                <Button type="submit" text="Salvar" width="medium" />
+              </S.ButtonWrapper>
+            </>
+          )}
         </form>
       </FormProvider>
     </S.MainSection>
