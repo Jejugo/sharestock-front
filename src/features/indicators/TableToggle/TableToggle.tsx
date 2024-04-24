@@ -14,7 +14,7 @@ import Loading from '@components/Loading/Loading'
 import { useAuth } from '@context/AuthUserContext'
 
 interface TableProps {
-  assets: IStockItem[] | IReitItem[]
+  assets: (IStockItem | IReitItem)[]
   value: string
   isGoodAsset: boolean
   goToFundamentus: (share: any) => void
