@@ -37,6 +37,12 @@ export default function useStrategyForm() {
   ) => {
     const values = methods.getValues()[name]
 
+    const shouldDelete = window.confirm(
+      'Tem certeza que deseja remover essa estratégia? Essa ação removerá-la de todos os seus ativos que a utilizam'
+    )
+
+    if (!shouldDelete) return
+
     if (authUser) {
       try {
         setIsLoading(true)
@@ -48,7 +54,7 @@ export default function useStrategyForm() {
         })
       } catch (err) {
         console.error(
-          `There was en error deleting from ${name}Strategy and userStrategy: ${err}`
+          `There was an error deleting from ${name}Strategy and userStrategy: ${err}`
         )
       } finally {
         setIsLoading(false)
