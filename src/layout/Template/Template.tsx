@@ -35,7 +35,9 @@ function Template({ tabTitle, children }: TemplateProps) {
         </Head>
         <S.Main className="main">
           <S.Container>
-            {!['objetivos', 'estratégia', 'all-shares'].includes(tabTitle) && (
+            {!['objetivos', 'estratégia', 'all-shares', 'all-reits'].includes(
+              tabTitle
+            ) && (
               <Flex justifyContent="space-between">
                 <Title text="Olá, Jeff" />
                 <Flex justifyContent="space-between" alignItems="center">

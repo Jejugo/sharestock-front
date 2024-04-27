@@ -25,6 +25,7 @@ import { getTextColor, isCheapStock } from './utils/helpers'
 import NorthIcon from '@mui/icons-material/North'
 import SouthIcon from '@mui/icons-material/South'
 import assetTypes from '@const/AssetTypes'
+import Router from 'next/router'
 
 const getContent = (
   column: ITableColumn,
@@ -105,6 +106,12 @@ export const AssetTable = React.memo(() => {
   useOutsideClick(menuContentRef, () => {
     setSelectedRow(null)
   })
+
+  const goToAssetStrategy = (row: ITableRow) => {
+    if (row.type === 'stocks' || row.type === 'reits') {
+      Router.push(`/invest/${row.type}/${row.symbol.toUpperCase()}`)
+    }
+  }
 
   const handleChangePage = useCallback(
     (
@@ -255,6 +262,7 @@ export const AssetTable = React.memo(() => {
                           tabIndex={-1}
                           key={index}
                           isHighlighted={isHighlighted}
+                          onClick={() => goToAssetStrategy(row)}
                         >
                           {columns.map((column: ITableColumn) =>
                             renderRow(row, column, userData.showMoneyInvested)

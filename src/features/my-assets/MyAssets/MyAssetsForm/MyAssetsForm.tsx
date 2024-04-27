@@ -26,13 +26,15 @@ const initialState = (tabName: AssetTypes) => {
 
 interface IMyAssetsForm {
   tabName: AssetTypes
-  dropdownList: IDropdownList
+  asset: string | string[] | undefined
+  dropdownList: IDropdownItem[]
   assetStrategyData?: any
   assetMap?: IArrayToObject<any>
 }
 
 export default function MyAssetsForm({
   tabName = 'stocks',
+  asset,
   dropdownList,
   assetStrategyData,
   assetMap
@@ -42,7 +44,9 @@ export default function MyAssetsForm({
       [tabName]: initialState(tabName)
     },
     assetMap,
+    asset,
     tabName,
+    dropdownList,
     assetStrategyData
   })
   const selectedAsset = methods.watch(tabName).selectedAsset.value
@@ -89,6 +93,7 @@ export default function MyAssetsForm({
           <MyAssetsContent
             name={tabName}
             dropdownAssetList={dropdownList as IDropdownItem[]}
+            asset={asset}
           />
         </FormProvider>
       </form>

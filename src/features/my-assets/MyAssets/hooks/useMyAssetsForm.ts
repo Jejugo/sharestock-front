@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Firestore from 'firebase/Firestore'
 import { useAuth } from '@context/AuthUserContext'
+import { getAllAssetsByCategory } from '../firebase'
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
@@ -14,12 +15,16 @@ const noStrategyTabs = (tabName: AssetTypes) =>
 export default function useMyAssetsForm({
   initialState,
   tabName,
+  asset,
   assetStrategyData,
+  dropdownList,
   assetMap
 }: {
   initialState: any
+  asset: string | string[] | undefined
   tabName: AssetTypes
   assetStrategyData: any
+  dropdownList: IDropdownItem[]
   assetMap?: any
 }) {
   const { authUser } = useAuth() as IAuthUserContext
@@ -66,24 +71,49 @@ export default function useMyAssetsForm({
     }
 
     alert('Data saved successfully')
-    methods.reset()
   }
 
   useEffect(() => {
-    if (assetStrategyData?.[tabName]?.length) {
-      const formattedData = convertObjectToArray<IStatement>(
-        assetStrategyData[tabName]
-      )
+    const getInitialData = async () => {
+      if (
+        assetStrategyData?.[tabName]?.length &&
+        asset &&
+        typeof asset === 'string'
+      ) {
+        const tabKey = noStrategyTabs(tabName) ? 'value' : 'quantity'
 
-      methods.reset({
-        [tabName]: {
-          selectedAsset: '',
-          [tabKey]: '',
-          statements: formattedData
-        }
-      })
+        const formattedData = convertObjectToArray<IStatement>(
+          assetStrategyData[tabName]
+        )
+
+        const selectedItem = dropdownList.find(
+          (item: IDropdownItem) =>
+            item.value.toLowerCase() === asset?.toLowerCase()
+        )
+
+        const assets = await getAllAssetsByCategory(tabName, authUser)
+
+        const quantity = selectedItem
+          ? assets?.[selectedItem?.value]?.quantity
+          : ''
+
+        methods.reset({
+          [tabName]: {
+            selectedAsset: selectedItem
+              ? {
+                  value: selectedItem.value,
+                  label: selectedItem.label
+                }
+              : {},
+            [tabKey]: quantity,
+            statements: formattedData
+          }
+        })
+      }
     }
-  }, [assetStrategyData])
+
+    getInitialData()
+  }, [assetStrategyData, asset])
 
   return {
     methods,

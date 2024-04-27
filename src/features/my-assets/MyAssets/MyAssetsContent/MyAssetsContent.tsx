@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import StockCheckList from '@components/StockChekList/StockCheckList'
 import { useController } from 'react-hook-form'
 import { useAuth } from '@context/AuthUserContext'
@@ -12,15 +12,18 @@ import {
   getAllUserBonds,
   getAllUserCrypto
 } from 'firebase/utils'
+import Router from 'next/router'
 
 const noStrategyTabs = (tabName: AssetTypes) =>
   ['bonds', 'international', 'crypto'].includes(tabName)
 
 export default function MyAssetsContent({
   name,
+  asset,
   dropdownAssetList = []
 }: {
   name: AssetTypes
+  asset: string | string[] | undefined
   dropdownAssetList: IDropdownItem[]
 }) {
   const {
@@ -73,7 +76,7 @@ export default function MyAssetsContent({
         <Select
           options={dropdownAssetList}
           placeholder="Ativo"
-          onChange={(data) => setDropdown(data)}
+          onChange={(data) => Router.push(`/invest/${name}/${data.value}`)}
           value={value.selectedAsset}
         ></Select>
       </div>

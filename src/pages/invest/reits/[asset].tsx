@@ -6,33 +6,38 @@ import assetTypes from '@const/AssetTypes'
 import MyAssetsForm from '@features/my-assets/MyAssets/MyAssetsForm/MyAssetsForm'
 import axios from 'axios'
 import Template from '@layout/Template/Template'
-import { convertArrayToObject } from '@builders/arrays'
-import { normalizeArrayToDropdown } from '@builders/arrays'
 import Tabs from '@components/Tabs/Tabs'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import InvestContextProvider from '@context/InvestContext'
+import {
+  convertArrayToObject,
+  normalizeArrayToDropdown
+} from '@builders/arrays'
 
 interface IArrayToObject<T> {
   [key: string]: T
 }
 interface IAddAssets {
-  dropdownList: IDropdownList
-  stockMap: IArrayToObject<IStockItem>
+  setShowAddAsset: React.Dispatch<React.SetStateAction<boolean>>
+  dropdownList: IDropdownItem[]
+  reitsMap: IArrayToObject<IReitItem>
 }
 
 const tabsList = Object.values(assetTypes).filter(
   (assetType) => assetType.name === 'stocks' || assetType.name === 'reits'
 )
 
-export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
+export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   const { authUser } = useAuth() as IAuthUserContext
   const [assetStrategyData, setAssetStrategyData] = useState([] as any)
+  const router = useRouter()
+  const { asset } = router.query
 
   useEffect(() => {
     const getAssetsFromFirebase = async () => {
       if (authUser) {
         const data = await axios
-          .get(`${process.env.NEXT_PUBLIC_SHARE_API}/user/strategy`, {
+          .get(process.env.NEXT_PUBLIC_SHARE_API + '/user/strategy', {
             headers: {
               Authorization: `Bearer ${authUser.accessToken}`
             }
@@ -46,19 +51,20 @@ export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
     getAssetsFromFirebase().catch((err) =>
       console.log('error while grabbing strategies from firebase', err)
     )
-  }, [authUser])
+  }, [])
 
   return (
-    <Template tabTitle="Invest Stocks">
+    <Template tabTitle="Invest Reits">
       <Tabs
         assetTypes={tabsList}
-        activeTab={{ title: 'Ações', name: 'stocks' }}
+        activeTab={{ title: 'Fundos Imobiliários', name: 'reits' }}
         setActiveTab={(tab) => Router.push(`/invest/${tab.name}`)}
       />
       <InvestContextProvider>
         <MyAssetsForm
-          tabName="stocks"
-          assetMap={stockMap}
+          assetMap={reitsMap}
+          asset={asset}
+          tabName="reits"
           dropdownList={dropdownList}
           assetStrategyData={assetStrategyData}
         />
@@ -77,22 +83,21 @@ export async function getServerSideProps(context: any) {
   }
 
   try {
-    const sharesData = await fetch(
-      `${process.env.NEXT_PUBLIC_SHARE_API}/shares`,
+    const reitsData = await fetch(
+      `${process.env.NEXT_PUBLIC_SHARE_API}/reits`,
       { ...authorization }
     )
+    const reitsList = await reitsData.json()
 
-    const stockList = await sharesData.json()
+    const reitItems = reitsList.items
+    const reitsMap = convertArrayToObject(reitItems as IReitItem[], 'papel')
 
-    const stockItems = stockList.items
-
-    const stockMap = convertArrayToObject(stockItems as IReitItem[], 'papel')
-    const dropdownStocks = normalizeArrayToDropdown(stockItems as IReitItem[])
+    const dropdownReits = normalizeArrayToDropdown(reitItems as IReitItem[])
 
     return {
       props: {
-        stockMap: stockMap,
-        dropdownList: dropdownStocks
+        reitsMap: reitsMap,
+        dropdownList: dropdownReits
       }
     }
   } catch (error) {
@@ -100,7 +105,7 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
-        sharesMap: {},
+        reitsMap: {},
         dropdownList: []
       }
     }

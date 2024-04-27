@@ -33,6 +33,8 @@ export const TableRowStyle = styled(TableRow)`
       color: white;
     }
   }
+
+  cursor: pointer;
 `
 
 interface IMenuItem {
