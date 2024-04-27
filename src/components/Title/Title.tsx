@@ -9,9 +9,9 @@ interface TitleProps {
 
 const Title: FC<TitleProps> = ({ text, color = 'white', noMargin = false }) => {
   return (
-    <S.Text color={color} noMargin={noMargin}>
+    <S.TitleText color={color} noMargin={noMargin}>
       {text}
-    </S.Text>
+    </S.TitleText>
   )
 }
 

@@ -1,15 +1,25 @@
-import styled from 'styled-components'
+import { colors, radius } from '@styles/constants'
+import styled, { CSSObject } from 'styled-components'
 
-export const InputWrapper = styled.input`
+type InputStylesProps = {
+  styles?: CSSObject
+}
+
+export const InputStyles = styled.input<InputStylesProps>`
   padding: 10px;
+  background-color: ${colors.white}
   border-radius: 5px;
-  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border: none;
   font-size: 16px;
   font-weight: 400;
   width: 100%;
+  box-shadow: 0 0 10px #cecece;
+  outline: none;
+  border-radius: ${radius.small}px;
   &:focus {
-    outline: none;
     border-color: #0074d9;
-    box-shadow: 0 0 5px #0074d9;
   }
+
+  ${({ styles }) => styles}
 `

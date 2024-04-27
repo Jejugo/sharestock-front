@@ -63,12 +63,10 @@ export const useSectors = (
       default: false
     }
 
-    try {
-      await setNewDropdownItem(uniqueId, newItem, name, authUser.accessToken)
-      updateSector(name, [...sectors[name], sector])
-    } catch (err) {
-      console.log('There was an error adding the item: ', err)
-    }
+    if (sector.name === '') throw new Error('Name is empty')
+
+    await setNewDropdownItem(uniqueId, newItem, name, authUser.accessToken)
+    updateSector(name, [...sectors[name], sector])
   }
 
   return {

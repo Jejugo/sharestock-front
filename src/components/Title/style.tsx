@@ -6,8 +6,8 @@ interface TitleProps {
   noMargin?: boolean
 }
 
-export const Text = styled.h1<TitleProps>`
+export const TitleText = styled.h1<TitleProps>`
   color: ${(props) => props.color};
-  font-size: ${fonts.title}px;
+  font-size: ${fonts.xxlarge}px;
   margin: ${(props) => (props.noMargin ? '0' : '20px 0px')};
 `

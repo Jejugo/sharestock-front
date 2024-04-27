@@ -5,9 +5,12 @@ import { Tooltip } from 'recharts'
 import * as S from '../styles'
 import PieChartComponent from '@components/charts/PieChart/PieChart'
 import CustomSelect from '@components/CustomSelect/CustomSelect'
+import Text from '@components/Text/Text'
 
 import { Sector, Option } from '../interfaces'
 import useAssetSectors from '../hooks/useAssetSectors'
+import Flex from '@components/container/Flex/Flex'
+import AssetTypeModal from './AssetTypeModal'
 
 interface IAssetType {
   value: number
@@ -31,6 +34,8 @@ export default function AssetType({
   onRemoveDropdownItem
 }: IAssetTypeParams) {
   const initialValue: IAssetType[] = []
+  const [isCategoriesModalOpen, setIsCategoriesModalOpen] =
+    React.useState(false)
 
   const {
     value,
@@ -44,6 +49,9 @@ export default function AssetType({
   const assetTypesLeft = dropdownItems.filter(
     (item) => !value.some((val: any) => val.name === item.name)
   )
+
+  const allowAddItem =
+    name === 'international' || name === 'bonds' || name === 'crypto'
 
   return (
     <S.PercentageWrapper>
@@ -83,7 +91,6 @@ export default function AssetType({
                     onSelectItem={(option: Option) => {
                       handleAssetSector(option, asset.id, index)
                     }}
-                    onAddItem={(item) => onAddNewDropdownItem(item, name)}
                     onRemoveItem={(itemId) =>
                       onRemoveDropdownItem(itemId, name)
                     }
@@ -97,11 +104,6 @@ export default function AssetType({
                         name: item.name,
                         showDeleteIcon: !item.default
                       }))}
-                    allowAddItem={
-                      name === 'international' ||
-                      name === 'bonds' ||
-                      name === 'crypto'
-                    }
                   ></CustomSelect>
 
                   <S.PercentageItemRemove
@@ -125,9 +127,35 @@ export default function AssetType({
                 </S.PercentageSlider>
               </S.PercentageListItem>
             ))}
-          {assetTypesLeft.length ? (
-            <S.AddItem onClick={addEmptySector}>+</S.AddItem>
-          ) : null}
+
+          <Flex gap={10}>
+            {assetTypesLeft.length ? (
+              <S.AddItem onClick={addEmptySector}>
+                <Text color="white">Adicionar categoria</Text>
+              </S.AddItem>
+            ) : null}
+            {allowAddItem && (
+              <>
+                <S.AddItem onClick={() => setIsCategoriesModalOpen(true)}>
+                  <Text color="white">Criar categoria</Text>
+                </S.AddItem>
+                <AssetTypeModal
+                  isOpen={isCategoriesModalOpen}
+                  setIsOpen={setIsCategoriesModalOpen}
+                  onAddNewDropdownItem={async (item) => {
+                    try {
+                      await onAddNewDropdownItem(item, name)
+                      setIsCategoriesModalOpen(false)
+                      alert('Categoria adicionada com sucesso.')
+                    } catch (err) {
+                      alert('Houve um erro ao adicionar categoria')
+                      console.error('There was an error adding the item: ', err)
+                    }
+                  }}
+                />
+              </>
+            )}
+          </Flex>
         </S.PercentageList>
       </S.Percentages>
     </S.PercentageWrapper>
