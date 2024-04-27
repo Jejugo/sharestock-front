@@ -13,6 +13,7 @@ interface FlexProps {
     | 'space-evenly'
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline'
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
+  gap?: number
   children: React.ReactNode
 }
 
@@ -23,6 +24,7 @@ const StyledFlex = styled.div<FlexProps>`
   justify-content: ${(props) => props.justifyContent || 'flex-start'};
   align-items: ${(props) => props.alignItems || 'stretch'};
   flex-wrap: ${(props) => props.flexWrap || 'nowrap'};
+  ${(props) => props.gap && `gap: ${props.gap}px;`}
 `
 
 const Flex: React.FC<FlexProps> = (props) => {

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Slider from '@mui/material/Slider'
 
-import { colors, fonts, spacings } from '@styles/constants'
+import { colors, fonts, spacings, radius } from '@styles/constants'
 
 export const MainSection = styled.section``
 
@@ -115,12 +115,23 @@ export const AddItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
-  width: 60%;
-  height: 50px;
+  font-size: ${fonts.xxlarge}px;
+  padding: ${spacings.small}px ${spacings.large}px;
+  border-radius: ${radius.medium}px;
+  height: 30px;
   background-color: ${colors.darkGrey};
   cursor: pointer;
   &:hover {
     background-color: ${colors.grey};
   }
+`
+
+export const AssetTypeModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${spacings.large}px;
+  height: 200px;
+  margin: 0 ${spacings.xxlarge};
 `

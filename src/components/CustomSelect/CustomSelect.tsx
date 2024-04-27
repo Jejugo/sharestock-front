@@ -14,9 +14,7 @@ interface Props {
   options: Option[]
   placeholder?: string
   value: string
-  allowAddItem?: boolean
   onSelectItem: (option: Option) => void
-  onAddItem: (item: string) => void
   onRemoveItem: (itemId: string) => Promise<void>
 }
 
@@ -24,24 +22,14 @@ const CustomSelect: React.FC<Props> = ({
   value,
   options,
   placeholder,
-  allowAddItem = false,
   onSelectItem,
-  onAddItem,
   onRemoveItem
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
 
   const dropdownRef = useRef<HTMLDivElement>(null)
-
-  const handleAddNewItem = async () => {
-    setIsLoading(true)
-    await onAddItem(inputValue)
-    setInputValue('')
-    setIsLoading(false)
-  }
 
   const handleRemoveItem = async (id: string) => {
     setIsLoading(true)
@@ -102,30 +90,8 @@ const CustomSelect: React.FC<Props> = ({
                   onChange={(e: any) => setSearchText(e.target.value)}
                   maxLength={50}
                   placeholder="Pesquisar"
-                  onKeyDown={(e: any) =>
-                    e.key === 'Enter' && handleAddNewItem()
-                  }
                 />
               </S.InputWrapper>
-              {allowAddItem && (
-                <S.InputWrapper>
-                  <S.Input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e: any) => setInputValue(e.target.value)}
-                    maxLength={50}
-                    placeholder="Adicionar novo"
-                    onKeyDown={(e: any) =>
-                      e.key === 'Enter' && handleAddNewItem()
-                    }
-                  />
-                  <Button
-                    text="+"
-                    width="small"
-                    onClick={() => handleAddNewItem()}
-                  />
-                </S.InputWrapper>
-              )}
               {filteredOptions.map((option: Option, index: number) => (
                 <Flex
                   key={option.id}
