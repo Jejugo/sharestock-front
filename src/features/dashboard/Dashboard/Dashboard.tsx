@@ -55,7 +55,7 @@ export default function DashboardComponent({
           {isLoading ? (
             <Loading />
           ) : (
-            currentChartData.length > 0 && (
+            currentChartData && (
               <>
                 <S.GoalsPieChart>
                   <PieChartComponent
@@ -78,31 +78,39 @@ export default function DashboardComponent({
                 </S.GoalsPieChart>
 
                 <S.DataSummary>
-                  <StyledFlex flexDirection="column" justifyContent="center">
-                    {currentChartData.map((asset, index) => (
-                      <S.CurrentChartData key={index}>
-                        <Text color="white" noMargin>
-                          {asset.name}
-                        </Text>
-                        <Title
-                          text={
-                            userData.showMoneyInvested
-                              ? `${asset.value.toLocaleString('pt-BR', {
-                                  style: 'currency',
-                                  currency: 'BRL'
-                                })}`
-                              : '-'
-                          }
-                          color="#82ca9d"
-                          noMargin
-                        />
-                      </S.CurrentChartData>
-                    ))}
+                  <StyledFlex
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    {currentChartData.length ? (
+                      currentChartData.map((asset, index) => (
+                        <S.CurrentChartData key={index}>
+                          <Text color="white" noMargin>
+                            {asset.name}
+                          </Text>
+                          <Title
+                            text={
+                              userData.showMoneyInvested
+                                ? `${asset.value.toLocaleString('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                  })}`
+                                : '-'
+                            }
+                            color="#82ca9d"
+                            noMargin
+                          />
+                        </S.CurrentChartData>
+                      ))
+                    ) : (
+                      <div>No data</div>
+                    )}
                   </StyledFlex>
                 </S.DataSummary>
 
-                {sliderMap.length ? (
-                  <S.SliderWrapper>
+                <S.SliderWrapper>
+                  {sliderMap.length ? (
                     <Slider>
                       {sliderMap.map((slideItem, index) => {
                         return (
@@ -140,8 +148,12 @@ export default function DashboardComponent({
                         )
                       })}
                     </Slider>
-                  </S.SliderWrapper>
-                ) : null}
+                  ) : (
+                    <StyledFlex justifyContent="center" alignItems="center">
+                      <div>No data</div>
+                    </StyledFlex>
+                  )}
+                </S.SliderWrapper>
               </>
             )
           )}

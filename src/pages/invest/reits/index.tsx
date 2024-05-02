@@ -30,8 +30,6 @@ const tabsList = Object.values(assetTypes).filter(
 export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
   const { authUser } = useAuth() as IAuthUserContext
   const [assetStrategyData, setAssetStrategyData] = useState([] as any)
-  const router = useRouter()
-  const { asset } = router.query
 
   useEffect(() => {
     const getAssetsFromFirebase = async () => {
@@ -63,7 +61,6 @@ export default function StockInvest({ reitsMap, dropdownList }: IAddAssets) {
       <InvestContextProvider>
         <MyAssetsForm
           assetMap={reitsMap}
-          asset={asset}
           tabName="reits"
           dropdownList={dropdownList}
           assetStrategyData={assetStrategyData}

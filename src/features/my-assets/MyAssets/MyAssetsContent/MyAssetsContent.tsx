@@ -76,7 +76,11 @@ export default function MyAssetsContent({
         <Select
           options={dropdownAssetList}
           placeholder="Ativo"
-          onChange={(data) => Router.push(`/invest/${name}/${data.value}`)}
+          onChange={(data) => {
+            noStrategyTabs(name)
+              ? setDropdown(data)
+              : Router.push(`/invest/${name}/${data.value}`)
+          }}
           value={value.selectedAsset}
         ></Select>
       </div>

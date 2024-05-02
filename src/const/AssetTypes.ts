@@ -36,6 +36,6 @@ export default {
   },
   crypto: {
     name: 'crypto',
-    title: 'Crypto'
+    title: 'Criptomoedas'
   }
 } as IAssetTypes

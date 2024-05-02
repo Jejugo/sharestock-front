@@ -9,8 +9,8 @@ function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-const noStrategyTabs = (tabName: AssetTypes) =>
-  ['bonds', 'international', 'crypto'].includes(tabName)
+const strategyTabs = (tabName: AssetTypes) =>
+  ['stocks', 'reits'].includes(tabName)
 
 export default function useMyAssetsForm({
   initialState,
@@ -21,14 +21,14 @@ export default function useMyAssetsForm({
   assetMap
 }: {
   initialState: any
-  asset: string | string[] | undefined
+  asset?: string | string[] | undefined
   tabName: AssetTypes
   assetStrategyData: any
   dropdownList: IDropdownItem[]
   assetMap?: any
 }) {
   const { authUser } = useAuth() as IAuthUserContext
-  const tabKey = noStrategyTabs(tabName) ? 'value' : 'quantity'
+  const tabKey = strategyTabs(tabName) ? 'quantity' : 'value'
 
   const methods = useForm({
     defaultValues: initialState
@@ -39,7 +39,7 @@ export default function useMyAssetsForm({
       throw new Error('No asset selected')
     }
 
-    if (!noStrategyTabs(tabName)) {
+    if (strategyTabs(tabName)) {
       try {
         await Firestore().setListByKey({
           id: authUser.uid,
@@ -75,41 +75,39 @@ export default function useMyAssetsForm({
 
   useEffect(() => {
     const getInitialData = async () => {
-      if (
-        assetStrategyData?.[tabName]?.length &&
-        asset &&
-        typeof asset === 'string'
-      ) {
-        const tabKey = noStrategyTabs(tabName) ? 'value' : 'quantity'
+      let statementsData: IStatement[] = []
+      let selectedItem: IDropdownItem | undefined
+      let quantity: string | undefined
 
-        const formattedData = convertObjectToArray<IStatement>(
+      if (assetStrategyData?.[tabName]?.length) {
+        statementsData = convertObjectToArray<IStatement>(
           assetStrategyData[tabName]
         )
+      }
 
-        const selectedItem = dropdownList.find(
+      if (asset && typeof asset === 'string') {
+        selectedItem = dropdownList.find(
           (item: IDropdownItem) =>
             item.value.toLowerCase() === asset?.toLowerCase()
         )
 
         const assets = await getAllAssetsByCategory(tabName, authUser)
 
-        const quantity = selectedItem
-          ? assets?.[selectedItem?.value]?.quantity
-          : ''
-
-        methods.reset({
-          [tabName]: {
-            selectedAsset: selectedItem
-              ? {
-                  value: selectedItem.value,
-                  label: selectedItem.label
-                }
-              : {},
-            [tabKey]: quantity,
-            statements: formattedData
-          }
-        })
+        quantity = selectedItem ? assets?.[selectedItem?.value]?.quantity : ''
       }
+
+      methods.reset({
+        [tabName]: {
+          selectedAsset: selectedItem
+            ? {
+                value: selectedItem.value,
+                label: selectedItem.label
+              }
+            : {},
+          [tabKey]: quantity,
+          statements: statementsData
+        }
+      })
     }
 
     getInitialData()

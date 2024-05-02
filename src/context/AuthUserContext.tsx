@@ -37,12 +37,18 @@ function Unauthenticated() {
   return <div>{!authUser && !loading && 'Unauthenticated... Redirecting'}</div>
 }
 
+const allowUnauthenticated = ['/login', '/signup']
+
 export function AuthUserProvider({ children }: { children: React.ReactNode }) {
   const { authUser, loading } = useFirebaseAuth()
   const { pathname } = useRouter()
   return (
     <AuthUserContext.Provider value={{ authUser, loading }}>
-      {authUser || pathname === '/login' ? children : <Unauthenticated />}
+      {authUser || allowUnauthenticated.includes(pathname) ? (
+        children
+      ) : (
+        <Unauthenticated />
+      )}
     </AuthUserContext.Provider>
   )
 }

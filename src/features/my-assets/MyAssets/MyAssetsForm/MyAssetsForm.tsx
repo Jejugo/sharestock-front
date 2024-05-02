@@ -6,6 +6,7 @@ import * as S from './MyAssetsForm.style'
 import { IArrayToObject } from 'firebase/interfaces'
 import Router from 'next/router'
 import config from '../../../../configs'
+import Flex from '@components/container/Flex/Flex'
 
 const getStatusInvestLink: Record<'stocks' | 'reits', string> = {
   stocks: 'acoes',
@@ -26,7 +27,7 @@ const initialState = (tabName: AssetTypes) => {
 
 interface IMyAssetsForm {
   tabName: AssetTypes
-  asset: string | string[] | undefined
+  asset?: string | string[] | undefined
   dropdownList: IDropdownItem[]
   assetStrategyData?: any
   assetMap?: IArrayToObject<any>
@@ -73,22 +74,19 @@ export default function MyAssetsForm({
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
           <S.TopActions>
-            <S.StatusInvestBtn
-              onClick={handleStatusInvest}
-              disabled={false}
-              type="button"
-            >
-              Status Invest
-            </S.StatusInvestBtn>
-            <div>
-              <S.AddAssetBtn type="submit">Salvar</S.AddAssetBtn>
-              <S.AddAssetBtn
+            <S.AddAssetBtn type="button" onClick={() => Router.push(`/invest`)}>
+              Voltar
+            </S.AddAssetBtn>
+            <S.AddAssetBtn type="submit">Salvar</S.AddAssetBtn>
+            {!noStrategyTabs(tabName) && (
+              <S.StatusInvestBtn
+                onClick={handleStatusInvest}
+                disabled={false}
                 type="button"
-                onClick={() => Router.push(`/invest`)}
               >
-                Voltar
-              </S.AddAssetBtn>
-            </div>
+                Status Invest
+              </S.StatusInvestBtn>
+            )}
           </S.TopActions>
           <MyAssetsContent
             name={tabName}

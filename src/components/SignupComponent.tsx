@@ -1,6 +1,39 @@
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, getAuth } from '@firebase/auth'
 import Router from 'next/router'
+import styled from 'styled-components'
+
+const Container = styled.form`
+  width: 40%;
+  height: 50%;
+  margin: 0 auto;
+  position: relative;
+  top: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+const Title = styled.h1`
+  text-align: center;
+  font-size: 30px;
+`
+
+const Input = styled.input`
+  width: 100%;
+  padding: 5px;
+  font-size: 20px;
+  margin: 10px 0;
+`
+
+const Submit = styled.button`
+  margin: 10px 0 0 0;
+  padding: 5px 15px;
+  font-size: 16px;
+  border: 0;
+  border-radius: 5px;
+`
 
 const SignupComponent = () => {
   const [email, setEmail] = useState('')
@@ -19,74 +52,25 @@ const SignupComponent = () => {
   }
 
   return (
-    <form className="signup" onSubmit={handleSubmit}>
-      <h1 className="signup__title">Sign up</h1>
-      <div className="signup__input">
-        <input
-          className="signup__input_value"
-          value={email}
-          onChange={(e) => setEmail(() => e.target.value)}
-          placeholder="Digite seu email"
-        ></input>
-      </div>
-      <div className="signup__input">
-        <input
-          className="signup__input_value"
-          value={password}
-          onChange={(e) => setPassword(() => e.target.value)}
-          placeholder="Digite sua senha"
-        ></input>
-      </div>
-      <div className="signup__input">
-        <input
-          className="signup__input_value"
-          value={name}
-          onChange={(e) => setName(() => e.target.value)}
-          placeholder="Digite seu Nome"
-        ></input>
-      </div>
-      <button className="submit" type="submit">
-        Registrar
-      </button>
-      {/* <style jsx global>{`
-        .signup__title {
-          text-align: center;
-          font-size: 30px;
-        }
-        .signup {
-          width: 40%;
-          height: 50%;
-          margin: 0 auto;
-          position: relative;
-          top: 15%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .signup__input {
-          width: 50%;
-          height: 30px;
-          margin: 10px 0;
-          width: 100%;
-        }
-
-        .signup__input_value {
-          width: 100%;
-          padding: 5px;
-          font-size: 20px;
-        }
-
-        .submit {
-          margin: 10px 0 0 0;
-          padding: 5px 15px;
-          font-size: 16px;
-          border: 0;
-          border-radius: 5px;
-        }
-      `}</style> */}
-    </form>
+    <Container onSubmit={handleSubmit}>
+      <Title>Sign up</Title>
+      <Input
+        placeholder="Digite seu email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <Input
+        placeholder="Digite sua senha"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Input
+        placeholder="Digite seu Nome"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Submit type="submit">Registrar</Submit>
+    </Container>
   )
 }
 

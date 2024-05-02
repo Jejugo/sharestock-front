@@ -103,7 +103,9 @@ const PieChartComponent = ({
             {tooltip}
           </PieChart>
         </ResponsiveContainer>
-      ) : null}
+      ) : (
+        <div>No data</div>
+      )}
     </>
   )
 }

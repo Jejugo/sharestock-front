@@ -14,19 +14,23 @@ export default function useGoalsdata() {
         id: authUser.uid
       })
 
-      const formattedGoals = Object.keys(data).reduce((acc: any, curr: any) => {
-        return {
-          ...acc,
-          ...(data[curr].length
-            ? {
-                [curr]:
-                  data[curr] && sortArrayAlphabetically(data[curr], 'name')
-              }
-            : {})
-        }
-      }, {})
-
-      setGoals(formattedGoals)
+      if (data) {
+        const formattedGoals = Object.keys(data).reduce(
+          (acc: any, curr: any) => {
+            return {
+              ...acc,
+              ...(data[curr].length
+                ? {
+                    [curr]:
+                      data[curr] && sortArrayAlphabetically(data[curr], 'name')
+                  }
+                : {})
+            }
+          },
+          {}
+        )
+        setGoals(formattedGoals)
+      }
     }
 
     getFirestoreData().catch((err) => console.error(err))
