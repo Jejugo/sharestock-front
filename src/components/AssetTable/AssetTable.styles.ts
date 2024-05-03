@@ -54,7 +54,7 @@ export const MenuItem = styled.div<IMenuItem>`
 `
 
 export const MenuContent = styled.div`
-  height: auto;
+  min-height: auto;
   width: auto;
   background-color: white;
   position: absolute;

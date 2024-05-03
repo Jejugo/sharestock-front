@@ -25,10 +25,10 @@ export default function useBarChartData() {
   const [currentChartData, setCurrentChartData] = useState<IChartData[]>([])
   const [goalsChartData, setGoalsChartData] = useState<IChartData[]>([])
   const [totalValue, setTotalValue] = useState(0)
-  const { overview } = useGoalsdata()
+  const goals = useGoalsdata()
 
   useEffect(() => {
-    if (allRows?.length && overview?.length) {
+    if (allRows?.length && goals?.overview?.length) {
       const totalValues = calculateTotalByAssetType(allRows)
 
       const chartData = sortArrayAlphabetically(
@@ -45,16 +45,16 @@ export default function useBarChartData() {
       setCurrentChartData(chartData)
       setTotalValue(chartData.reduce((acc, curr) => acc + curr.value, 0))
       setGoalsChartData(
-        overview.map((overviewItem: { name: string; value: number }) => ({
+        goals.overview.map((overviewItem: { name: string; value: number }) => ({
           name: overviewItem.name,
           value: overviewItem.value || 0
         }))
       )
     }
-  }, [allRows, overview])
+  }, [allRows, goals.overview])
 
   const isLoading = useMemo(
-    () => currentChartData.length === 0 || goalsChartData.length === 0,
+    () => currentChartData === null || goalsChartData === null,
     [currentChartData, goalsChartData]
   )
 

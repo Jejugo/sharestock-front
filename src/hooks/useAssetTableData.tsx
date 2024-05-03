@@ -21,12 +21,11 @@ const fetcher = ({ url, token }: FetcherArgs) => {
   }).then((res: Response) => res.json())
 }
 
-export default function useAssetTableData(
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>> = () => null
-) {
+export default function useAssetTableData() {
   const [rows, setRows] = useState<ITableRow[]>([])
   const [columns, setColumns] = useState<ITableColumn[]>([])
   const { authUser } = useAuth()
+  const [loading, setLoading] = useState(false)
 
   const { data, isLoading, mutate } = useSWR(
     {
@@ -40,22 +39,25 @@ export default function useAssetTableData(
     return useMemo(() => rows.filter((item) => item?.type === type), [rows])
   }
 
-  useEffect(() => {
-    setIsLoading(isLoading)
-  }, [isLoading])
+  const refreshData = async () => {
+    setLoading(true) // Set loading true before re-fetch
+    await mutate() // Await ensures we wait for re-fetch to complete
+    setLoading(false) // Set loading false after re-fetch
+  }
 
   useEffect(() => {
     if (data && data.items) {
       const allRows = Object.values(data.items)
         .flatMap((item: any) => item.tableData)
         .filter((a) => a)
-      setRows(allRows)
 
+      setRows(allRows)
       setColumns(columnsNames)
     }
   }, [data])
 
   return {
+    isLoading: loading || isLoading,
     allRows: rows,
     stocks: filterRowsByType('stocks'),
     reits: filterRowsByType('reits'),
@@ -63,6 +65,6 @@ export default function useAssetTableData(
     international: filterRowsByType('international'),
     crypto: filterRowsByType('crypto'),
     columns,
-    mutate
+    refreshData
   }
 }

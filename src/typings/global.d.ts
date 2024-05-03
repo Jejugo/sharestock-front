@@ -116,6 +116,8 @@ declare global {
   interface IDropdownItem {
     value: string
     label: string
+    default?: boolean
+    name?: string
   }
 
   interface IUser {

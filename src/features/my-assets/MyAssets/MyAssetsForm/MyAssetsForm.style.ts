@@ -7,7 +7,6 @@ export const AddAssetBtn = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  margin-left: 20px;
 `
 
 export const StatusInvestBtn = styled.button`
@@ -32,6 +31,7 @@ export const AddCompanyInput = styled.input`
 
 export const TopActions = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin: 20px 0px;
+  gap: 20px;
 `

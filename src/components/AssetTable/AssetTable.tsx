@@ -96,10 +96,9 @@ export const AssetTable = React.memo(() => {
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(50)
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null) // Set this to the row's unique identifier
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const { userData } = useUserDataContext()
 
-  const { allRows, columns, mutate } = useAssetTableData(setIsLoading)
+  const { allRows, columns, refreshData, isLoading } = useAssetTableData()
 
   const [assetTypeFilter, setAssetTypeFilter] = React.useState<string>('all')
 
@@ -138,6 +137,7 @@ export const AssetTable = React.memo(() => {
       )
       if (result) {
         e.preventDefault()
+        e.stopPropagation()
 
         await fetch(
           `${process.env.NEXT_PUBLIC_SHARE_API}/assets/${row.type}/${row.symbol}`,
@@ -149,7 +149,7 @@ export const AssetTable = React.memo(() => {
           }
         )
 
-        mutate()
+        refreshData()
       }
     } catch (err) {
       console.error(err)
@@ -173,7 +173,7 @@ export const AssetTable = React.memo(() => {
         }
       }
     )
-    mutate()
+    refreshData()
   }
 
   const filteredAssets = allRows.filter((row: ITableRow) =>
@@ -268,7 +268,8 @@ export const AssetTable = React.memo(() => {
                             renderRow(row, column, userData.showMoneyInvested)
                           )}
                           <S.MenuItem
-                            onClick={() => {
+                            onClick={(e: any) => {
+                              e.stopPropagation()
                               setSelectedRow((prevState) => {
                                 return prevState === index ? null : index
                               })
@@ -279,6 +280,11 @@ export const AssetTable = React.memo(() => {
                           {selectedRow === index && (
                             <S.MenuContent ref={menuContentRef}>
                               <S.MenuContentList>
+                                <S.MenuContentListItem
+                                  onClick={() => goToAssetStrategy(row)}
+                                >
+                                  Open
+                                </S.MenuContentListItem>
                                 <S.MenuContentListItem
                                   onClick={(e) => handleDeleteItem(e, row)}
                                 >

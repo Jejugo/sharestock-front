@@ -22,7 +22,7 @@ interface IAddAssets {
 }
 
 const tabsList = Object.values(assetTypes).filter(
-  (assetType) => assetType.name === 'stocks' || assetType.name === 'reits'
+  (assetType) => assetType.name !== 'overview'
 )
 
 export default function StockInvest({ stockMap, dropdownList }: IAddAssets) {
