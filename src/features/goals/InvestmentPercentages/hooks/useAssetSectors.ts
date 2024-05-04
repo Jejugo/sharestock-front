@@ -48,9 +48,29 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
   }
 
   const removeAssetSector = (id: string) => {
-    setValue(
+    if (name === 'overview') {
+      const shouldRemove = window.confirm(
+        `Remover essa categoria irá remover os objetivos já definidos na aba referente a ele. Você tem certeza que deseja continuar?`
+      )
+      if (shouldRemove) {
+        const tab = value.find((asset: GoalsFormAsset) => asset.id === id)
+
+        setValue(
+          name,
+          value.filter((asset: GoalsFormAsset) => asset.id !== id)
+        )
+
+        setValue(tab.name, [])
+
+        return
+      }
+
+      return
+    }
+
+    return setValue(
       name,
-      value.filter((stock: GoalsFormAsset) => stock.id !== id)
+      value.filter((asset: GoalsFormAsset) => asset.id !== id)
     )
   }
 
