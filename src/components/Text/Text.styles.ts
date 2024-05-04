@@ -51,7 +51,6 @@ export const Tooltip = styled.div`
 
 export const TextContainer = styled.div`
   position: relative;
-  display: inline-block;
   max-width: 100%; // Ensure it does not exceed the bounding container
 
   &:hover ${Tooltip} {

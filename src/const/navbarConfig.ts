@@ -45,7 +45,7 @@ export default [
   {
     icon: PaidIcon,
     text: 'Aportar',
-    href: '/invest'
+    href: '/invest/stocks'
   },
   {
     icon: TipsAndUpdatesIcon,
