@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useAuth } from '@context/AuthUserContext'
 
@@ -26,8 +26,6 @@ const COLORS = [
   '#fbbaf7',
   '#82a8f4'
 ]
-
-const tabsList = Object.values(assetTypes)
 
 interface IInvestmentPercentages {
   stockSectors: Sector[]
@@ -73,6 +71,20 @@ export default function InvestmentPercentages({
   const methods = useForm<GoalsForm>({
     defaultValues
   })
+
+  const tabsList = useMemo(
+    () =>
+      Object.values(assetTypes).filter((value) =>
+        methods
+          .getValues()
+          .overview.some(
+            (asset) =>
+              asset.name === value.title ||
+              value.title === 'Porcentagens Gerais'
+          )
+      ),
+    [methods.getValues().overview]
+  )
 
   const { sectors, removeDropdownItem, onAddNewDropdownItem } = useSectors(
     {
