@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import Firestore from 'firebase/Firestore'
 import { useAuth } from '@context/AuthUserContext'
 import { getAllAssetsByCategory } from '../firebase'
+import { enqueueSnackbar } from 'notistack'
 
 function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
@@ -70,7 +71,10 @@ export default function useMyAssetsForm({
       return
     }
 
-    alert('Data saved successfully')
+    enqueueSnackbar('Dados salvos com sucesso!', {
+      variant: 'success',
+      preventDuplicate: true
+    })
   }
 
   useEffect(() => {

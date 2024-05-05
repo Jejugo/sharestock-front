@@ -7,6 +7,7 @@ import initFirebase from '../firebase'
 import Fonts from '@components/Fonts'
 import { NextComponentType, NextPageContext } from 'next/types'
 import { FirebaseApp } from 'firebase/app'
+import { SnackbarProvider } from 'notistack'
 
 interface IGetInitialProps {
   Component: NextComponentType<NextPageContext, any, any>
@@ -42,8 +43,10 @@ class MyApp extends App<IApp, any> {
     return (
       <AuthUserProvider>
         <UserDataProvider>
-          <GlobalStyles />
-          <Component {...props} />
+          <SnackbarProvider>
+            <GlobalStyles />
+            <Component {...props} />
+          </SnackbarProvider>
         </UserDataProvider>
       </AuthUserProvider>
     )

@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 interface ILandingPageLayout {
   children: React.ReactNode
@@ -8,30 +9,30 @@ export default function LandingPageLayout({ children }: ILandingPageLayout) {
   return (
     <section className="lendingPage">
       <section className="lendingPage__banner">
-        <h1 className="lendingPage__banner_title">Sharestock App</h1>
+        <img
+          src="https://images.pexels.com/photos/6770610/pexels-photo-6770610.jpeg"
+          alt="logo"
+          width="100%"
+          height="100%"
+        />
+        <section className="lendingPage__content">{children}</section>
       </section>
-      <section className="lendingPage__content">{children}</section>
       <style>{`
-                .lendingPage{
-                    display:flex;
-                }
                 .lendingPage__banner{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    position: relative;
                     background-color: black;
-                    height: 100vh;
-                    width: 60vw;
-                }
-                .lendingPage__banner_title{
-                    font-size: 50px;
-                    text-align: center;
-                    line-height: 50px;
-                    width: 30%;
+                    height: 99vh;
+                    width: 100vw;
                 }
                 .lendingPage__content{
-                    background-color: #262626;
-                    width: 40vw;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: rgba(0, 0, 0, 0.2);
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+                    width: 600px;
+                    height: 100vh;
+                    z-index: 999;
                 }
             `}</style>
     </section>

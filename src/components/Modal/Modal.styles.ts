@@ -1,4 +1,4 @@
-import { fonts, colors } from '@styles/constants'
+import { fonts, colors, spacings } from '@styles/constants'
 import styled from 'styled-components'
 
 export const ModalOverlay = styled.div`
@@ -33,4 +33,8 @@ export const ModalCloseButton = styled.button`
   border: none;
   font-size: ${fonts.xlarge}px;
   cursor: pointer;
+`
+
+export const ModalTextContent = styled.div`
+  margin: ${spacings.large}px 0px 0px 0px;
 `

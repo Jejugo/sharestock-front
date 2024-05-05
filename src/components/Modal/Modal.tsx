@@ -21,7 +21,7 @@ const Modal = ({ isOpen, children, onClose }: any) => {
     <S.ModalOverlay onClick={onClose}>
       <S.ModalContent onClick={(e) => e.stopPropagation()}>
         <S.ModalCloseButton onClick={onClose}>X</S.ModalCloseButton>
-        {children}
+        <S.ModalTextContent>{children}</S.ModalTextContent>
       </S.ModalContent>
     </S.ModalOverlay>
   )

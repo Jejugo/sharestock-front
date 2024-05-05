@@ -77,9 +77,9 @@ export const Percentages = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  width: 100%;
   height: 50px;
   display: flex;
+  gap: ${spacings.small}px;
   justify-content: center;
   margin: ${spacings.xxlarge}px 0;
 `
@@ -126,7 +126,7 @@ export const AddItem = styled.div`
   }
 `
 
-export const AssetTypeModalWrapper = styled.div`
+export const CreateCategoriesModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

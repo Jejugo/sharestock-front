@@ -40,7 +40,9 @@ export default function StrategyList({
           <div key={index}>
             <S.StrategyFormListItem>
               <S.Statement>
-                <Text color="white">{statement}</Text>
+                <Text color="white" noWrap>
+                  {statement}
+                </Text>
               </S.Statement>
               <S.StockCheckListWeight>
                 {dropdownWeights[weight]}

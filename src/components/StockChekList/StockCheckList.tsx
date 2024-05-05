@@ -6,6 +6,7 @@ import {
 } from 'firebase/utils'
 import React, { useEffect } from 'react'
 import Switch from 'react-switch'
+import { enqueueSnackbar } from 'notistack'
 import { useAuth } from '@context/AuthUserContext'
 import Firestore from 'firebase/Firestore'
 import * as S from './styles'
@@ -155,7 +156,11 @@ export default function StockCheckList({
           } else return state
         })
       ])
-    } else alert('Escolha um ativo primeiro.')
+    } else
+      enqueueSnackbar('Escolha um ativo primeiro.', {
+        variant: 'warning',
+        preventDuplicate: true
+      })
   }
 
   return (

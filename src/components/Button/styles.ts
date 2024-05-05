@@ -1,13 +1,14 @@
 import styled from 'styled-components'
-import { fonts } from '@styles/constants'
+import { colors, fonts } from '@styles/constants'
 
 export type ButtonTypes = 'button' | 'submit' | 'reset'
 export type ButtonSizes = 'small' | 'medium' | 'large'
 
 interface Size {
-  width: ButtonSizes | number | string
+  width?: ButtonSizes | number | string
   type: ButtonTypes
   height?: number | string
+  variant?: 'primary' | 'secondary' | 'error' | 'outlined'
 }
 
 const sizeValues = {
@@ -23,7 +24,30 @@ export const Button = styled.button<Size>`
   width: ${(props) =>
     sizeValues[props.width as ButtonSizes] || `${props.width}px`};
   height: ${(props) => (props.height ? `${props.height}px` : '100%')};
-  background-color: #ffcd00;
+  color: ${(props) => {
+    switch (props.variant) {
+      case 'primary':
+        return `${colors.black}`
+      case 'secondary':
+        return `${colors.white}`
+      case 'error':
+        return `${colors.white}`
+      default:
+        return `${colors.black}`
+    }
+  }};
+  background-color: ${(props) => {
+    switch (props.variant) {
+      case 'primary':
+        return `${colors.orange}`
+      case 'secondary':
+        return `${colors.blue}`
+      case 'error':
+        return `${colors.danger}`
+      default:
+        return `${colors.orange}`
+    }
+  }};
   cursor: pointer;
   border: none;
   border-radius: 5px;

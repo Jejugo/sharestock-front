@@ -10,7 +10,9 @@ import Text from '@components/Text/Text'
 import { Sector, Option } from '../interfaces'
 import useAssetSectors from '../hooks/useAssetSectors'
 import Flex from '@components/container/Flex/Flex'
-import AssetTypeModal from './AssetTypeModal'
+import CreateCategoriesModal from './CreateCategoriesModal'
+import { enqueueSnackbar } from 'notistack'
+import ConfirmationModal from '@components/ConfirmationModal/ConfirmationModal'
 
 interface IAssetType {
   value: number
@@ -36,6 +38,12 @@ export default function AssetType({
   const initialValue: IAssetType[] = []
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] =
     React.useState(false)
+
+  const [isRemoveAssetSectorModalOpen, setIsRemoveAssetSectorModalOpen] =
+    React.useState(false)
+  const [removeAssetSectorId, setRemoveAssetSectorId] = React.useState<
+    string | null
+  >(null)
 
   const {
     value,
@@ -107,7 +115,14 @@ export default function AssetType({
                   ></CustomSelect>
 
                   <S.PercentageItemRemove
-                    onClick={() => removeAssetSector(asset.id)}
+                    onClick={() => {
+                      if (name === 'overview') {
+                        setIsRemoveAssetSectorModalOpen(true)
+                        setRemoveAssetSectorId(asset.id)
+                      } else {
+                        removeAssetSector(asset.id)
+                      }
+                    }}
                   >
                     <DeleteIcon />
                   </S.PercentageItemRemove>
@@ -139,25 +154,48 @@ export default function AssetType({
                 <S.AddItem onClick={() => setIsCategoriesModalOpen(true)}>
                   <Text color="white">Criar categoria</Text>
                 </S.AddItem>
-                <AssetTypeModal
-                  isOpen={isCategoriesModalOpen}
-                  setIsOpen={setIsCategoriesModalOpen}
-                  onAddNewDropdownItem={async (item) => {
-                    try {
-                      await onAddNewDropdownItem(item, name)
-                      setIsCategoriesModalOpen(false)
-                      alert('Categoria adicionada com sucesso.')
-                    } catch (err) {
-                      alert('Houve um erro ao adicionar categoria')
-                      console.error('There was an error adding the item: ', err)
-                    }
-                  }}
-                />
               </>
             )}
           </Flex>
         </S.PercentageList>
       </S.Percentages>
+      <CreateCategoriesModal
+        isOpen={isCategoriesModalOpen}
+        setIsOpen={setIsCategoriesModalOpen}
+        onAddNewDropdownItem={async (item) => {
+          try {
+            await onAddNewDropdownItem(item, name)
+            setIsCategoriesModalOpen(false)
+            enqueueSnackbar('Categoria adicionada com sucesso.', {
+              variant: 'success',
+              preventDuplicate: true
+            })
+          } catch (err) {
+            enqueueSnackbar('Houve um erro ao adicionar essa categoria.', {
+              variant: 'error',
+              preventDuplicate: true
+            })
+            console.error('There was an error adding the item: ', err)
+          }
+        }}
+      />
+      {isRemoveAssetSectorModalOpen && removeAssetSectorId && (
+        <ConfirmationModal
+          onConfirm={() => {
+            removeAssetSector(removeAssetSectorId)
+            setIsRemoveAssetSectorModalOpen(false)
+          }}
+          isOpen={isRemoveAssetSectorModalOpen}
+          onCancel={() => {
+            setIsRemoveAssetSectorModalOpen(false)
+          }}
+        >
+          <Text>
+            Remover essa categoria irá remover os objetivos já definidos na aba
+            referente a ele. Você tem certeza que deseja continuar?
+          </Text>
+        </ConfirmationModal>
+      )}
     </S.PercentageWrapper>
   )
 }

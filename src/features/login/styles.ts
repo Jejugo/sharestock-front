@@ -34,7 +34,6 @@ export const LoginInput = styled.input`
 export const LoginSubmit = styled.button`
   margin: 10px 0 0 0;
   padding: 5px 15px;
-  font-size: 16px;
   border: 0;
   border-radius: 5px;
 `

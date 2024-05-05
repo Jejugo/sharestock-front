@@ -1,6 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import { GoalsFormAsset, Option } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
+import { enqueueSnackbar } from 'notistack'
 
 interface IAssetType {
   value: number
@@ -36,7 +37,10 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
           stock.name.toLowerCase() === option.name.toLowerCase()
       )
     ) {
-      alert('Voce ja possui esse ativo!')
+      enqueueSnackbar('Você já possui esse ativo', {
+        variant: 'error',
+        preventDuplicate: true
+      })
       return
     }
     setAssetType(
@@ -49,21 +53,14 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
 
   const removeAssetSector = (id: string) => {
     if (name === 'overview') {
-      const shouldRemove = window.confirm(
-        `Remover essa categoria irá remover os objetivos já definidos na aba referente a ele. Você tem certeza que deseja continuar?`
+      const tab = value.find((asset: GoalsFormAsset) => asset.id === id)
+
+      setValue(
+        name,
+        value.filter((asset: GoalsFormAsset) => asset.id !== id)
       )
-      if (shouldRemove) {
-        const tab = value.find((asset: GoalsFormAsset) => asset.id === id)
 
-        setValue(
-          name,
-          value.filter((asset: GoalsFormAsset) => asset.id !== id)
-        )
-
-        setValue(tab.name, [])
-
-        return
-      }
+      setValue(tab.name, [])
 
       return
     }

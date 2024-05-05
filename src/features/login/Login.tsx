@@ -26,7 +26,6 @@ const LoginComponent = () => {
       <S.LoginTitle>Login</S.LoginTitle>
       <S.LoginInputWrapper>
         <S.LoginInput
-          className="login__LoginInput_value"
           value={email}
           onChange={(e) => setEmail(() => e.target.value)}
           placeholder="Digite seu email"
@@ -35,7 +34,6 @@ const LoginComponent = () => {
       </S.LoginInputWrapper>
       <S.LoginInputWrapper>
         <S.LoginInput
-          className="login__S.LoginInput_value"
           value={password}
           onChange={(e) => setPassword(() => e.target.value)}
           placeholder="Digite sua senha"
