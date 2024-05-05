@@ -3,7 +3,8 @@ import * as S from './styles'
 
 interface IButton {
   text: string
-  width: S.ButtonSizes | number | string
+  variant?: 'primary' | 'secondary' | 'error' | 'outlined'
+  width?: S.ButtonSizes | number | string
   height?: number | string
   disabled?: boolean
   type?: S.ButtonTypes
@@ -15,15 +16,19 @@ export default function Button({
   height,
   disabled = false,
   type = 'button',
-  onClick
+  variant = 'primary',
+  onClick,
+  ...rest
 }: IButton) {
   return (
     <S.Button
       type={type}
+      variant={variant}
       onClick={onClick}
       width={width}
       height={height}
       disabled={disabled}
+      {...rest}
     >
       {text}
     </S.Button>

@@ -22,6 +22,7 @@ export const radius = {
 }
 
 export const colors = {
+  black: '#1c1c1c',
   darkGrey: 'rgba(28, 28, 28, 0.8)',
   grey: 'rgba(38, 38, 38, 0.8)',
   lightGrey: '#777',
@@ -29,5 +30,6 @@ export const colors = {
   white: '#eee',
   alert: '#FFBB28',
   success: '#55B030',
-  danger: '#d04444'
+  danger: '#d04444',
+  orange: '#ffcd00'
 }

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import { useAuth } from './AuthUserContext'
+import { enqueueSnackbar } from 'notistack'
 
 interface InvestContextProviderProps {
   children: React.ReactNode
@@ -35,7 +36,10 @@ const InvestContextProvider = ({ children }: InvestContextProviderProps) => {
   } as IAssetStrategy)
 
   const onSubmit = async () => {
-    alert('Data saved successfully')
+    enqueueSnackbar('Dados salvos com sucesso!', {
+      variant: 'success',
+      preventDuplicate: true
+    })
   }
 
   return (

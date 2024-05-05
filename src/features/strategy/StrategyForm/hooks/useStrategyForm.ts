@@ -4,6 +4,7 @@ import { formatSubmitData, formatGetData } from '../utils'
 import { useAuth } from '@context/AuthUserContext'
 import { useForm } from 'react-hook-form'
 import initialFormState, { IStrategyForm } from '../initialFormValues'
+import { enqueueSnackbar } from 'notistack'
 
 export default function useStrategyForm() {
   const { authUser } = useAuth() as IAuthUserContext
@@ -26,7 +27,10 @@ export default function useStrategyForm() {
       setIsLoading(false)
     }
 
-    alert('Estratégia salva com sucesso!')
+    enqueueSnackbar('Estratégia salva com sucesso!', {
+      variant: 'success',
+      preventDuplicate: true
+    })
   }
 
   const onDeleteItem = async (

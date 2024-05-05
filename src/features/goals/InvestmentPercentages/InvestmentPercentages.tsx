@@ -4,6 +4,7 @@ import { useAuth } from '@context/AuthUserContext'
 
 import * as S from './styles'
 import Button from '@components/Button/Button'
+import { enqueueSnackbar } from 'notistack'
 import TabContent from '@components/TabContent/TabContent'
 import AssetType from './AssetType/AssetType'
 import assetTypes from '@const/AssetTypes'
@@ -118,15 +119,22 @@ export default function InvestmentPercentages({
     )
 
     if (hasErrorOnSubmit) {
-      alert(
-        'Os valores de todas as abas devem somar 100% respectivamente e os setores devem ser válidos'
+      enqueueSnackbar(
+        'Os valores de todas as abas devem somar 100% respectivamente e os setores devem ser válidos',
+        {
+          variant: 'warning',
+          preventDuplicate: true
+        }
       )
       return
     }
 
     // If all validations pass, then save data
     await setFirestoreGoalsData(goalsData, authUser.uid)
-    alert('Dados salvos com sucesso!')
+    enqueueSnackbar('Dados salvos com sucesso!', {
+      variant: 'success',
+      preventDuplicate: true
+    })
   }
 
   useEffect(() => {
@@ -134,9 +142,6 @@ export default function InvestmentPercentages({
       try {
         setIsLoading(true)
         const allItems = await getFirestoreGoals(authUser.uid)
-
-        console.log('all items', allItems)
-
         methods.reset({ ...allItems })
       } catch (error) {
         // TODO: Handle error, possibly show a user-friendly message
@@ -184,6 +189,11 @@ export default function InvestmentPercentages({
 
               <S.ButtonWrapper>
                 <Button type="submit" text="Salvar" width="medium" />
+                <Button
+                  text="Restaurar valores"
+                  width="medium"
+                  onClick={() => methods.reset()}
+                />
               </S.ButtonWrapper>
             </>
           )}

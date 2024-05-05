@@ -7,17 +7,17 @@ import Button from '@components/Button/Button'
 
 import * as S from '../styles'
 
-type AssetTypeModalProps = {
+type CreateCategoriesModalProps = {
   isOpen: boolean
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   onAddNewDropdownItem: (item: string) => Promise<void>
 }
 
-export default function AssetTypeModal({
+export default function CreateCategoriesModal({
   isOpen,
   setIsOpen,
   onAddNewDropdownItem
-}: AssetTypeModalProps) {
+}: CreateCategoriesModalProps) {
   const [inputValue, setInputValue] = useState('')
 
   const handleSubmit = useCallback(
@@ -50,7 +50,7 @@ export default function AssetTypeModal({
 
   return (
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-      <S.AssetTypeModalWrapper>
+      <S.CreateCategoriesModalWrapper>
         <Title text="Nova categoria" color="black" />
 
         <Input
@@ -59,7 +59,7 @@ export default function AssetTypeModal({
           onChange={(e) => setInputValue(e.target.value)}
         />
         <Button text="Salvar" width="100" height="30" onClick={handleSubmit} />
-      </S.AssetTypeModalWrapper>
+      </S.CreateCategoriesModalWrapper>
     </Modal>
   )
 }

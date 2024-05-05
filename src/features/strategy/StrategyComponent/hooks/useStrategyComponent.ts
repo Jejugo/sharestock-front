@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 import { TabName } from '@features/strategy/StrategyForm/initialFormValues'
+import { enqueueSnackbar } from 'notistack'
 
 const TRIM_ZEROES_STRING = /^0+(\d)|(\d)0+$/gm
 
@@ -24,7 +25,10 @@ export default function useStrategyComponent({
     e.preventDefault()
 
     if (!weight) {
-      alert('Coloque um peso!')
+      enqueueSnackbar('Coloque um peso para sua estratégia', {
+        variant: 'warning',
+        preventDuplicate: true
+      })
       return
     }
 

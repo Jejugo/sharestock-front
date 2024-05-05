@@ -5,6 +5,7 @@ interface TextProps {
   color?: string
   size?: string
   weight?: string
+  noWrap?: boolean
   style?: CSSObject
   noMargin?: boolean
 }
@@ -17,7 +18,7 @@ export const StyledText = styled.p<TextProps>`
   ${({ noMargin }) => noMargin && 'margin: 0;'}
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  ${({ noWrap }) => (noWrap ? 'white-space: nowrap;' : 'wrap')}
   cursor: pointer; // Indicates it's interactive (optional)
 `
 
@@ -51,6 +52,7 @@ export const Tooltip = styled.div`
 
 export const TextContainer = styled.div`
   position: relative;
+  display: inline-block;
   max-width: 100%; // Ensure it does not exceed the bounding container
 
   &:hover ${Tooltip} {

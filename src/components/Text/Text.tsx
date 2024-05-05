@@ -10,6 +10,7 @@ interface TextProps {
   weight?: string
   style?: CSSObject
   noMargin?: boolean
+  noWrap?: boolean
 }
 
 const Text: FC<TextProps> = ({
@@ -18,6 +19,7 @@ const Text: FC<TextProps> = ({
   size = '16px',
   weight = 'normal',
   noMargin = false,
+  noWrap = false,
   style
 }) => {
   const [textRef, isOverflowing] = useOverflowTooltip()
@@ -30,6 +32,7 @@ const Text: FC<TextProps> = ({
         size={size}
         weight={weight}
         noMargin={noMargin}
+        noWrap={noWrap}
         style={style as CSSObject}
       >
         {children}
