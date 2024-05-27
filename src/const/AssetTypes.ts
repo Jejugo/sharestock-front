@@ -4,7 +4,7 @@ export type IAssetTypesList = {
   dropdownItems?: string[]
 }
 
-interface IAssetTypes {
+export interface IAssetTypes {
   [key: string]: IAssetTypesList
 }
 

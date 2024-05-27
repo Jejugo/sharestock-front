@@ -17,10 +17,10 @@ export interface GoalsFormAsset {
   default?: boolean
 }
 export interface GoalsForm {
-  stocks: { name: string; value: string; id: string; default: boolean }[]
-  bonds: { name: string; value: string; id: string; default: boolean }[]
-  reits: { name: string; value: string; id: string; default: boolean }[]
-  international: { name: string; value: string; id: string; default: boolean }[]
-  overview: { name: string; value: string; id: string; default: boolean }[]
-  crypto: { name: string; value: string; id: string; default: boolean }[]
+  stocks: GoalsFormAsset[]
+  bonds: GoalsFormAsset[]
+  reits: GoalsFormAsset[]
+  international: GoalsFormAsset[]
+  overview: GoalsFormAsset[]
+  crypto: GoalsFormAsset[]
 }

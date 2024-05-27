@@ -2,7 +2,7 @@ export interface IStategyFormAsset {
   defaultValues: FormAsset
 }
 
-interface FormAsset {
+export interface FormAsset {
   statement: string
   weight: string
   statements: IStatement[]
