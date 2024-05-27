@@ -1,13 +1,14 @@
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import * as S from './StrategyList.style'
-import { useFormContext } from 'react-hook-form'
 import Text from '@components/Text/Text'
+import { FormAsset } from '@features/strategy/StrategyForm/initialFormValues'
 
 interface IStrategyList {
   handleWeightChange?: any
   handleRemoveStatement: any
-  name: Omit<AssetTypes, 'overview'>
+  strategies: FormAsset
+  name: string
 }
 
 interface IWeight {
@@ -28,14 +29,12 @@ const dropdownWeights: IWeight = {
 export default function StrategyList({
   handleWeightChange,
   handleRemoveStatement,
-  name = 'stocks'
+  strategies,
+  name
 }: IStrategyList) {
-  const { getValues } = useFormContext()
-  const value = getValues()[name as 'stocks' | 'reits'] || {}
-
   return (
     <div>
-      {value.statements.map(
+      {strategies.statements.map(
         ({ statement, weight }: IStatementsMap, index: number) => (
           <div key={index}>
             <S.StrategyFormListItem>

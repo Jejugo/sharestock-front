@@ -4,6 +4,7 @@ import StrategyInputValues from '../StrategyInputValues/StrategyInputValues'
 import * as S from './StrategyTabContent.style'
 import useStrategyComponent from '../hooks/useStrategyComponent'
 import Button from '@components/Button/Button'
+import { useFormContext } from 'react-hook-form'
 
 export default function StrategyTabContent({
   tab,
@@ -21,6 +22,9 @@ export default function StrategyTabContent({
     useStrategyComponent({
       name: tab.name
     })
+
+  const { getValues } = useFormContext()
+  const strategies = getValues()[tab.name as 'stocks' | 'reits'] || {}
 
   return (
     <>
@@ -40,11 +44,14 @@ export default function StrategyTabContent({
               handleWeightChange={handleWeightChange}
               handleRemoveStatement={onDeleteItem}
               name={tab.name}
+              strategies={strategies}
             />
           </S.StrategyFormList>
-          <S.StrategyFormBtnWrapper>
-            <Button type="submit" text="Salvar" width="medium" />
-          </S.StrategyFormBtnWrapper>
+          {strategies.statements.length > 0 && (
+            <S.StrategyFormBtnWrapper>
+              <Button type="submit" text="Salvar" width="medium" />
+            </S.StrategyFormBtnWrapper>
+          )}
         </>
       )}
     </>

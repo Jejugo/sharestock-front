@@ -2,6 +2,7 @@ import { useFormContext } from 'react-hook-form'
 import { GoalsFormAsset, Option } from '../interfaces'
 import { v4 as uuidv4 } from 'uuid'
 import { enqueueSnackbar } from 'notistack'
+import AssetTypes from '@const/AssetTypes'
 
 interface IAssetType {
   value: number
@@ -51,22 +52,31 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
     )
   }
 
+  /**
+   * Whnen removing athe overview asset, also remove the tab
+   */
   const removeAssetSector = (id: string) => {
     if (name === 'overview') {
-      const tab = value.find((asset: GoalsFormAsset) => asset.id === id)
+      const tabLabelName = value.find(
+        (asset: GoalsFormAsset) => asset.id === id
+      ).name
 
       setValue(
-        name,
+        name.toLowerCase(),
         value.filter((asset: GoalsFormAsset) => asset.id !== id)
       )
 
-      setValue(tab.name, [])
+      const tab = Object.values(AssetTypes).find(
+        (assetType) => assetType.title === tabLabelName
+      )
+
+      if (tab) setValue(tab.name, [])
 
       return
     }
 
     return setValue(
-      name,
+      name.toLowerCase(),
       value.filter((asset: GoalsFormAsset) => asset.id !== id)
     )
   }

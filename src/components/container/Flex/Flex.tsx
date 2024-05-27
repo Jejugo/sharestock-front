@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled, { CSSObject } from 'styled-components'
 
 // Define FlexProps interface for TypeScript type checking
 interface FlexProps {
@@ -15,6 +15,7 @@ interface FlexProps {
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
   gap?: number
   children: React.ReactNode
+  styles?: CSSObject
 }
 
 // Styled component applying flexbox styles based on props
@@ -25,6 +26,7 @@ const StyledFlex = styled.div<FlexProps>`
   align-items: ${(props) => props.alignItems || 'stretch'};
   flex-wrap: ${(props) => props.flexWrap || 'nowrap'};
   ${(props) => props.gap && `gap: ${props.gap}px;`}
+  ${(props) => props.styles}
 `
 
 const Flex: React.FC<FlexProps> = (props) => {

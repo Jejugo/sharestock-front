@@ -126,6 +126,10 @@ export const AddItem = styled.div`
   }
 `
 
+export const AddFirstItem = styled.div`
+  height: 70vh;
+`
+
 export const CreateCategoriesModalWrapper = styled.div`
   display: flex;
   flex-direction: column;

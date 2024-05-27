@@ -38,11 +38,15 @@ interface IInvestmentPercentages {
 }
 
 const isTotalEqualTo100 = (items: Array<GoalsFormAsset>) => {
-  const total = items.reduce(
-    (acc, item) => acc + parseFloat(item.value || '0'),
-    0
-  )
-  return total === 100
+  if (items.length) {
+    const total = items.reduce(
+      (acc, item) => acc + parseFloat(item.value || '0'),
+      0
+    )
+    return total === 100
+  }
+
+  return true
 }
 
 const hasEmptySectorNames = (items: Array<GoalsFormAsset>) =>
@@ -73,19 +77,16 @@ export default function InvestmentPercentages({
     defaultValues
   })
 
-  const tabsList = useMemo(
-    () =>
-      Object.values(assetTypes).filter((value) =>
-        methods
-          .getValues()
-          .overview.some(
-            (asset) =>
-              asset.name === value.title ||
-              value.title === 'Porcentagens Gerais'
-          )
-      ),
-    [methods.getValues().overview]
-  )
+  const tabsList = useMemo(() => {
+    const result = Object.values(assetTypes).filter((value) =>
+      methods.getValues().overview.some((asset) => asset.name === value.title)
+    )
+    if (!result.length) {
+      result.push({ name: 'overview', title: 'Porcentagens Gerais' })
+    }
+
+    return result
+  }, [methods.getValues().overview])
 
   const { sectors, removeDropdownItem, onAddNewDropdownItem } = useSectors(
     {
@@ -112,11 +113,12 @@ export default function InvestmentPercentages({
       {}
     )
 
-    const hasErrorOnSubmit = Object.keys(data).some(
-      (key) =>
+    const hasErrorOnSubmit = Object.keys(data).some((key) => {
+      return (
         !isTotalEqualTo100(data[key as keyof GoalsForm]) ||
         hasEmptySectorNames(data[key as keyof GoalsForm])
-    )
+      )
+    })
 
     if (hasErrorOnSubmit) {
       enqueueSnackbar(
@@ -141,7 +143,12 @@ export default function InvestmentPercentages({
     const getData = async () => {
       try {
         setIsLoading(true)
-        const allItems = await getFirestoreGoals(authUser.uid)
+        const allItems = (await getFirestoreGoals(authUser.uid)) as GoalsForm
+
+        const isAllEmpty = Object.values(allItems).every(
+          (value: GoalsFormAsset[]) => value.length === 0
+        )
+
         methods.reset({ ...allItems })
       } catch (error) {
         // TODO: Handle error, possibly show a user-friendly message
