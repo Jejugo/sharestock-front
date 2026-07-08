@@ -1,7 +1,7 @@
 import { convertObjectToArray } from '@builders/arrays'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 import { useAuth } from '@context/AuthUserContext'
 import { getAllAssetsByCategory } from '../firebase'
 import { enqueueSnackbar } from 'notistack'

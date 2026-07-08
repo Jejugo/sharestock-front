@@ -1,4 +1,4 @@
-import styled, { CSSObject } from 'styled-components'
+import styled from 'styled-components'
 
 interface TextProps {
   ref?: React.RefObject<HTMLElement>
@@ -6,7 +6,6 @@ interface TextProps {
   size?: string
   weight?: string
   noWrap?: boolean
-  style?: CSSObject
   noMargin?: boolean
 }
 
@@ -14,7 +13,6 @@ export const StyledText = styled.p<TextProps>`
   color: ${({ color }) => color || 'black'};
   font-size: ${({ size }) => size || '16px'};
   font-weight: ${({ weight }) => weight || 'normal'};
-  ${({ style }) => style};
   ${({ noMargin }) => noMargin && 'margin: 0;'}
   overflow: hidden;
   text-overflow: ellipsis;

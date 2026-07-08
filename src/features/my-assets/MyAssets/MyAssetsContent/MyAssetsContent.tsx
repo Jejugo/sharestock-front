@@ -11,7 +11,7 @@ import {
   getAllUserInternational,
   getAllUserBonds,
   getAllUserCrypto
-} from 'firebase/utils'
+} from '@firebaseLocal/utils'
 import Router from 'next/router'
 
 const noStrategyTabs = (tabName: AssetTypes) =>

@@ -1,4 +1,4 @@
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 
 interface DeleteDropdownItemRequest {
   itemId: string

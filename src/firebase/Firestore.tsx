@@ -8,7 +8,7 @@ import {
   arrayRemove,
   deleteDoc,
   deleteField
-} from '@firebase/firestore'
+} from 'firebase/firestore'
 
 import {
   IFirebaseAddToArray,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { WishListContext } from '@context/WishList'
 import { useAuth } from '@context/AuthUserContext'
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 import WishList from '@features/indicators/WishList/WishList'
 
 const WishListPopUp = () => {

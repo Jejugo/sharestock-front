@@ -1,41 +1,74 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "ignoreDeprecations": "6.0",
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "strictNullChecks": true,
     "alwaysStrict": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "sourceMap": true,
     "baseUrl": "./",
-    "types": ["node", "jest", "@testing-library/jest-dom", "@types/jest"],
+    "types": [
+      "node",
+      "jest",
+      "@testing-library/jest-dom",
+      "@types/jest"
+    ],
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@features/*": ["src/features/*"],
-      "@const/*": ["src/const/*"],
-      "@interfaces/*": ["src/interfaces/*"],
-      "@context/*": ["src/context/*"],
-      "@validations/*": ["src/validations/*"],
-      "@skeleton/*": ["src/skeleton/*"],
-      "@builders/*": ["src/builders/*"],
-      "firebase/*": ["src/firebase/*"],
-      "@styles/*": ["src/styles/*"],
-      "@layout/*": ["src/layout/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@features/*": [
+        "src/features/*"
+      ],
+      "@const/*": [
+        "src/const/*"
+      ],
+      "@interfaces/*": [
+        "src/interfaces/*"
+      ],
+      "@context/*": [
+        "src/context/*"
+      ],
+      "@validations/*": [
+        "src/validations/*"
+      ],
+      "@skeleton/*": [
+        "src/skeleton/*"
+      ],
+      "@builders/*": [
+        "src/builders/*"
+      ],
+      "@firebaseLocal/*": [
+        "src/firebase/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@layout/*": [
+        "src/layout/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ]
     },
-
     "noEmit": true
   },
   "include": [
@@ -46,5 +79,7 @@
     "next.config.js",
     "jest.config.js"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

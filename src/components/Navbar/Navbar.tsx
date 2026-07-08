@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { signOut, getAuth } from '@firebase/auth'
+import { signOut, getAuth } from 'firebase/auth'
 import navbarConfig, { INavbarItem } from '@const/navbarConfig'
 import * as S from './styles'
 import Router from 'next/router'
@@ -7,6 +7,7 @@ import { useAuth } from '@context/AuthUserContext'
 import CloseIcon from '@mui/icons-material/Close'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import initFirebase from '../../firebase'
 
 interface INavbar {
   isNavbarOpen: boolean
@@ -16,9 +17,10 @@ interface INavbar {
 const Navbar = ({ isNavbarOpen, setIsNavbarOpen }: INavbar) => {
   const [loggedUser, setLoggedUser] = useState<string>('')
   const { authUser } = useAuth() as IAuthUserContext
-  const auth = getAuth()
 
   const handleSignout = async () => {
+    initFirebase()
+    const auth = getAuth()
     await signOut(auth)
     const router = Router
     router.push('/login')

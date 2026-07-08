@@ -1,4 +1,4 @@
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 import { useEffect, useState } from 'react'
 import { formatSubmitData, formatGetData } from '../utils'
 import { useAuth } from '@context/AuthUserContext'

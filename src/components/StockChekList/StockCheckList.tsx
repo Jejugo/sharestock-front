@@ -3,12 +3,12 @@ import {
   strategyStatementsToArray,
   getStocksStrategy,
   getReitsStrategy
-} from 'firebase/utils'
+} from '@firebaseLocal/utils'
 import React, { useEffect } from 'react'
 import Switch from 'react-switch'
 import { enqueueSnackbar } from 'notistack'
 import { useAuth } from '@context/AuthUserContext'
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 import * as S from './styles'
 import { sortArrayAlphabetically } from '@builders/arrays'
 
