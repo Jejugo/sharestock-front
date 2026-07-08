@@ -130,7 +130,10 @@ export const AssetTable = React.memo(() => {
     []
   )
 
-  const handleDeleteItem = async (e: any, row: any) => {
+  const handleDeleteItem = async (
+    e: React.MouseEvent<HTMLElement>,
+    row: ITableRow
+  ) => {
     try {
       const result = window.confirm(
         'Are you sure you want to delete this item?'
@@ -247,6 +250,13 @@ export const AssetTable = React.memo(() => {
                         {column.label}
                       </TableCell>
                     ))}
+                    <TableCell
+                      sx={{
+                        backgroundColor: '#222',
+                        color: 'white',
+                        width: 48
+                      }}
+                    />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -261,38 +271,42 @@ export const AssetTable = React.memo(() => {
                           role="checkbox"
                           tabIndex={-1}
                           key={index}
-                          isHighlighted={isHighlighted}
+                          $isHighlighted={isHighlighted}
                           onClick={() => goToAssetStrategy(row)}
                         >
                           {columns.map((column: ITableColumn) =>
                             renderRow(row, column, userData.showMoneyInvested)
                           )}
-                          <S.MenuItem
-                            onClick={(e: any) => {
-                              e.stopPropagation()
-                              setSelectedRow((prevState) => {
-                                return prevState === index ? null : index
-                              })
-                            }}
-                          >
-                            &#xFE19;
-                          </S.MenuItem>
-                          {selectedRow === index && (
-                            <S.MenuContent ref={menuContentRef}>
-                              <S.MenuContentList>
-                                <S.MenuContentListItem
-                                  onClick={() => goToAssetStrategy(row)}
-                                >
-                                  Open
-                                </S.MenuContentListItem>
-                                <S.MenuContentListItem
-                                  onClick={(e) => handleDeleteItem(e, row)}
-                                >
-                                  Delete
-                                </S.MenuContentListItem>
-                              </S.MenuContentList>
-                            </S.MenuContent>
-                          )}
+                          <TableCell sx={{ position: 'relative', width: 48 }}>
+                            <S.MenuItem
+                              onClick={(
+                                e: React.MouseEvent<HTMLDivElement>
+                              ) => {
+                                e.stopPropagation()
+                                setSelectedRow((prevState) => {
+                                  return prevState === index ? null : index
+                                })
+                              }}
+                            >
+                              &#xFE19;
+                            </S.MenuItem>
+                            {selectedRow === index && (
+                              <S.MenuContent ref={menuContentRef}>
+                                <S.MenuContentList>
+                                  <S.MenuContentListItem
+                                    onClick={() => goToAssetStrategy(row)}
+                                  >
+                                    Open
+                                  </S.MenuContentListItem>
+                                  <S.MenuContentListItem
+                                    onClick={(e) => handleDeleteItem(e, row)}
+                                  >
+                                    Delete
+                                  </S.MenuContentListItem>
+                                </S.MenuContentList>
+                              </S.MenuContent>
+                            )}
+                          </TableCell>
                         </S.TableRowStyle>
                       )
                     })}

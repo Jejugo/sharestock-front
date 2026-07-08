@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import StockCheckList from '@components/StockChekList/StockCheckList'
 import { useController } from 'react-hook-form'
 import { useAuth } from '@context/AuthUserContext'
@@ -19,7 +19,6 @@ const noStrategyTabs = (tabName: AssetTypes) =>
 
 export default function MyAssetsContent({
   name,
-  asset,
   dropdownAssetList = []
 }: {
   name: AssetTypes
@@ -32,10 +31,16 @@ export default function MyAssetsContent({
     name
   })
   const { authUser } = useAuth()
+  const currentValue = value ?? {
+    statements: [],
+    selectedAsset: '',
+    quantity: '',
+    value: ''
+  }
 
   const setStatements = (statements: IStatement[]) =>
     onFieldChange({
-      ...value,
+      ...currentValue,
       statements
     })
 
@@ -61,7 +66,7 @@ export default function MyAssetsContent({
     const tabKey = noStrategyTabs(name) ? 'value' : 'quantity'
 
     onFieldChange({
-      ...value,
+      ...currentValue,
       selectedAsset: {
         value: data.value,
         label: data.label
@@ -77,11 +82,15 @@ export default function MyAssetsContent({
           options={dropdownAssetList}
           placeholder="Ativo"
           onChange={(data) => {
-            noStrategyTabs(name)
-              ? setDropdown(data)
-              : Router.push(`/invest/${name}/${data.value}`)
+            if (!data) return
+            if (noStrategyTabs(name)) {
+              setDropdown(data)
+              return
+            }
+
+            Router.push(`/invest/${name}/${data.value}`)
           }}
-          value={value.selectedAsset}
+          value={currentValue.selectedAsset}
         ></Select>
       </div>
       <S.AddCompanyInput
@@ -90,17 +99,17 @@ export default function MyAssetsContent({
         step="1"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           onFieldChange({
-            ...value,
+            ...currentValue,
             [noStrategyTabs(name) ? 'value' : 'quantity']: e.target.value
           })
         }}
-        value={value[noStrategyTabs(name) ? 'value' : 'quantity']}
+        value={currentValue[noStrategyTabs(name) ? 'value' : 'quantity'] ?? ''}
       ></S.AddCompanyInput>
-      {value.statements.length > 0 ? (
+      {currentValue.statements.length > 0 ? (
         <StockCheckList
           assetType={name}
-          assetValue={value.selectedAsset}
-          statements={value.statements}
+          assetValue={currentValue.selectedAsset}
+          statements={currentValue.statements}
           setStatements={setStatements}
         ></StockCheckList>
       ) : null}

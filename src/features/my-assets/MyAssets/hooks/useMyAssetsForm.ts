@@ -81,7 +81,7 @@ export default function useMyAssetsForm({
     const getInitialData = async () => {
       let statementsData: IStatement[] = []
       let selectedItem: IDropdownItem | undefined
-      let quantity: string | undefined
+      let quantity = ''
 
       if (assetStrategyData?.[tabName]?.length) {
         statementsData = convertObjectToArray<IStatement>(
@@ -97,7 +97,9 @@ export default function useMyAssetsForm({
 
         const assets = await getAllAssetsByCategory(tabName, authUser)
 
-        quantity = selectedItem ? assets?.[selectedItem?.value]?.quantity : ''
+        quantity = selectedItem
+          ? (assets?.[selectedItem?.value]?.quantity ?? '')
+          : ''
       }
 
       methods.reset({
