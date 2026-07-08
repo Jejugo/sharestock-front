@@ -6,6 +6,7 @@ export const fonts = {
   xlarge: 20,
   xxlarge: 24
 }
+
 export const spacings = {
   xsmall: 8,
   small: 12,

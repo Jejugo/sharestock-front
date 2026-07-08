@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { createUserWithEmailAndPassword, getAuth } from '@firebase/auth'
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
 import Router from 'next/router'
 import styled from 'styled-components'
+import initFirebase from '../firebase'
 
 const Container = styled.form`
   width: 40%;
@@ -39,11 +40,12 @@ const SignupComponent = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
-  const auth = getAuth()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
+      initFirebase()
+      const auth = getAuth()
       const user = await createUserWithEmailAndPassword(auth, email, password)
       if (user) Router.push('/')
     } catch (err) {

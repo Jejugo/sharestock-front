@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { signInWithEmailAndPassword, getAuth } from '@firebase/auth'
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
 import Router from 'next/router'
 import * as S from './styles'
+import initFirebase from '../../firebase'
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('')
@@ -11,6 +12,7 @@ const LoginComponent = () => {
     e.preventDefault()
     try {
       const router = Router
+      initFirebase()
       const auth = getAuth()
       const user = await signInWithEmailAndPassword(auth, email, password)
       if (user) router.push('/')

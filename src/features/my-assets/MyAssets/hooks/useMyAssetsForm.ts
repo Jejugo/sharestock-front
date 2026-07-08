@@ -1,7 +1,7 @@
 import { convertObjectToArray } from '@builders/arrays'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 import { useAuth } from '@context/AuthUserContext'
 import { getAllAssetsByCategory } from '../firebase'
 import { enqueueSnackbar } from 'notistack'
@@ -81,7 +81,7 @@ export default function useMyAssetsForm({
     const getInitialData = async () => {
       let statementsData: IStatement[] = []
       let selectedItem: IDropdownItem | undefined
-      let quantity: string | undefined
+      let quantity = ''
 
       if (assetStrategyData?.[tabName]?.length) {
         statementsData = convertObjectToArray<IStatement>(
@@ -97,7 +97,9 @@ export default function useMyAssetsForm({
 
         const assets = await getAllAssetsByCategory(tabName, authUser)
 
-        quantity = selectedItem ? assets?.[selectedItem?.value]?.quantity : ''
+        quantity = selectedItem
+          ? (assets?.[selectedItem?.value]?.quantity ?? '')
+          : ''
       }
 
       methods.reset({

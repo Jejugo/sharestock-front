@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import * as S from './Text.styles'
-import { CSSObject } from 'styled-components'
 import useOverflowTooltip from './hooks/useOverflowTooltip'
 
 interface TextProps {
@@ -8,7 +7,7 @@ interface TextProps {
   color?: string
   size?: string
   weight?: string
-  style?: CSSObject
+  style?: React.CSSProperties
   noMargin?: boolean
   noWrap?: boolean
 }
@@ -33,7 +32,7 @@ const Text: FC<TextProps> = ({
         weight={weight}
         noMargin={noMargin}
         noWrap={noWrap}
-        style={style as CSSObject}
+        style={style}
       >
         {children}
       </S.StyledText>

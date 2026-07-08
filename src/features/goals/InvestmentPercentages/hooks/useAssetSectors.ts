@@ -85,13 +85,17 @@ const useAssetSectors = (name: AssetTypes, initialValue: IAssetType[]) => {
     setValue(name, [...value, { id: uuidv4(), name: '', value: 0 }])
   }
 
-  const handleAssetPercentage = (e: Event, id: string) => {
+  const handleAssetPercentage = (
+    _e: Event,
+    sliderValue: number | number[],
+    id: string
+  ) => {
+    const nextValue = Array.isArray(sliderValue) ? sliderValue[0] : sliderValue
+
     setValue(
       name,
       value.map((stock: GoalsFormAsset) =>
-        stock.id === id
-          ? { ...stock, value: (e.target as HTMLInputElement).value }
-          : stock
+        stock.id === id ? { ...stock, value: String(nextValue) } : stock
       )
     )
   }

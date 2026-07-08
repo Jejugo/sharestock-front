@@ -36,8 +36,14 @@ export default function useAssetTableData() {
   )
 
   const filterRowsByType = (type: string) => {
-    return useMemo(() => rows.filter((item) => item?.type === type), [rows])
+    return rows.filter((item) => item?.type === type)
   }
+
+  const stocks = useMemo(() => filterRowsByType('stocks'), [rows])
+  const reits = useMemo(() => filterRowsByType('reits'), [rows])
+  const bonds = useMemo(() => filterRowsByType('bonds'), [rows])
+  const international = useMemo(() => filterRowsByType('international'), [rows])
+  const crypto = useMemo(() => filterRowsByType('crypto'), [rows])
 
   const refreshData = async () => {
     setLoading(true) // Set loading true before re-fetch
@@ -59,11 +65,11 @@ export default function useAssetTableData() {
   return {
     isLoading: loading || isLoading,
     allRows: rows,
-    stocks: filterRowsByType('stocks'),
-    reits: filterRowsByType('reits'),
-    bonds: filterRowsByType('bonds'),
-    international: filterRowsByType('international'),
-    crypto: filterRowsByType('crypto'),
+    stocks,
+    reits,
+    bonds,
+    international,
+    crypto,
     columns,
     refreshData
   }

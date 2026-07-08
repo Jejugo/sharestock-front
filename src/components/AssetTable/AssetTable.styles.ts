@@ -7,12 +7,12 @@ export const TableContainerStyle = styled(TableContainer)`
 `
 
 interface TableRowStyleProps {
-  isHighlighted: boolean
+  $isHighlighted: boolean
 }
 
-export const TableRowStyle = styled(TableRow)`
+export const TableRowStyle = styled(TableRow)<TableRowStyleProps>`
   ${(props: TableRowStyleProps) => {
-    return props.isHighlighted
+    return props.$isHighlighted
       ? 'background-color: rgba(250, 238, 156, 0.2);'
       : ''
   }}
@@ -37,11 +37,7 @@ export const TableRowStyle = styled(TableRow)`
   cursor: pointer;
 `
 
-interface IMenuItem {
-  onClick: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export const MenuItem = styled.div<IMenuItem>`
+export const MenuItem = styled.div`
   cursor: pointer;
   position: absolute;
   right: 10px;

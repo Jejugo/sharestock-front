@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Firestore from 'firebase/Firestore'
+import Firestore from '@firebaseLocal/Firestore'
 import { useAuth } from '@context/AuthUserContext'
 import { sortArrayAlphabetically } from '@builders/arrays'
 

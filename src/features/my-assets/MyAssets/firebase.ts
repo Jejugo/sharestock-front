@@ -4,7 +4,7 @@ import {
   getAllUserInternational,
   getAllUserBonds,
   getAllUserCrypto
-} from 'firebase/utils'
+} from '@firebaseLocal/utils'
 
 type IUserAssetList = {
   [key: string]: IUserStockItem | IUserReitItem

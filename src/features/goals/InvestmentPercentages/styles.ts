@@ -96,18 +96,18 @@ export const PercentageSlider = styled.div`
 `
 
 interface ISlider {
-  customColor: string
+  $customColor: string
 }
 
-export const CustomSlider = styled(Slider)((props: ISlider) => ({
+export const CustomSlider = styled(Slider)<ISlider>((props) => ({
   '& .MuiSlider-thumb': {
-    backgroundColor: props.customColor //color of thumbs
+    backgroundColor: props.$customColor //color of thumbs
   },
   '& .MuiSlider-rail': {
-    color: props.customColor ////color of the slider outside  teh area between thumbs
+    color: props.$customColor ////color of the slider outside  teh area between thumbs
   },
   '& .MuiSlider-track': {
-    color: props.customColor ////color of the slider outside  teh area between thumbs
+    color: props.$customColor ////color of the slider outside  teh area between thumbs
   }
 }))
 

@@ -135,9 +135,11 @@ export default function AssetType({
                       aria-valuetext=""
                       step={5}
                       valueLabelDisplay="auto"
-                      onChange={(e) => handleAssetPercentage(e, asset.id)}
-                      value={asset.value}
-                      customColor={colors[index]}
+                      onChange={(e, sliderValue) =>
+                        handleAssetPercentage(e, sliderValue, asset.id)
+                      }
+                      value={Number(asset.value) || 0}
+                      $customColor={colors[index]}
                     />
                     <S.PercentageValue>{asset.value}%</S.PercentageValue>
                   </S.PercentageSlider>
